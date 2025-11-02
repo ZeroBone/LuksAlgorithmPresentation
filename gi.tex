@@ -58,11 +58,11 @@
 	
 \frame{\titlepage}
 
-\begin{frame}{Graph Isomorphism}
+\begin{frame}{The Graph Isomorphism Problem}
 	
-	\textbf{Intuition}: Two graphs are called isomorphic whenever they are equal up to renaming of vertices.
+	% \textbf{Intuition}: Two graphs are called isomorphic whenever they are equal up to renaming of vertices.
 	
-	\begin{definition}
+	\begin{definition}[Graph isomorphism]
 		Undirected graphs \( G_1 = (V_1, E_1) \) and \( G_2 = (V_2, E_2) \) are called \textbf{isomorphic} (denoted $ G_1 \cong G_2 $) if there exists a bijection $ f : V_1 \to V_2 $ such that \[
 		\{u,v\} \in E_1 \iff \{f(u), f(v)\} \in E_2.
 		\]
@@ -116,24 +116,12 @@
 		\end{tabular}
 	\end{center}
 \end{example}
-\end{frame}
 
-\begin{frame}{The Graph Isomorphism Problem}
-	$ \GI $ is the following decision problem:
+\begin{definition}[Graph Isomorphism Problem ($ \GI $)]
+	\textbf{Given}: Undirected graphs $ G_1 $, $ G_2 $
 	
-	\begin{center}
-	\fbox{
-		\parbox{0.85\textwidth}{
-			\textbf{Given}: Undirected graphs $ G_1 $, $ G_2 $
-			
-			\textbf{Question}: Is $ G_1 \cong G_2 $?
-		}
-	}
-	\end{center}
-	
-	
-	
-	
+	\textbf{Decide}: Is $ G_1 \cong G_2 $?
+\end{definition}
 \end{frame}
 
 \begin{frame}{$ \GI $ has a very special status (for all we know)}
@@ -178,15 +166,15 @@
 			
 			% Example problems (directly inside regions)
 			% NPC
-			\node[anchor=west] at (\npSubclassExampleOffset,\npcYCoord + 0.5) {SAT, Clique, Coloring};
-			\node[anchor=west] at (\npSubclassExampleOffset,\npcYCoord) {Vertex-Cover, Set-Cover};
+			\node[anchor=west] at (\npSubclassExampleOffset,\npcYCoord + 0.5) {SAT, Clique, Coloring,};
+			\node[anchor=west] at (\npSubclassExampleOffset,\npcYCoord) {Vertex-Cover, Set-Cover,};
 			\node[anchor=west] at (\npSubclassExampleOffset,\npcYCoord - 0.5) {Hitting-Set, Subset-Sum, $ \dots $};
 			% NPI
 			\node[MagentaZB, anchor=west] (ginode) at (\npSubclassExampleOffset,\npiYCoord) {Graph Isomorphism ($ \GI $)};
 			\node[anchor=west] at ($ (ginode.east |- 0,\npiYCoord) + (-0.25,-0.1) $) {, $\dots$};
 			% P
-			\node[anchor=west] at (\npSubclassExampleOffset,\pYCoord + 0.5) {2-SAT, Edge-Cover, 2-Coloring};
-			\node[anchor=west] at (\npSubclassExampleOffset,\pYCoord) {Primes, Maximal-Matching};
+			\node[anchor=west] at (\npSubclassExampleOffset,\pYCoord + 0.5) {2-SAT, Edge-Cover, 2-Coloring,};
+			\node[anchor=west] at (\npSubclassExampleOffset,\pYCoord) {Primes, Maximal-Matching,};
 			\node[anchor=west] at (\npSubclassExampleOffset,\pYCoord - 0.5) {Shortest-Path, $ \dots $};
 			
 		\end{tikzpicture}
@@ -196,8 +184,8 @@
 
 \begin{frame}{Why is $ \GI $ (very likely) $ \NP $-intermediate?}
 	Intuitively: \begin{itemize}
-		\item $ \NP $-complete problems have purely ``search'' flavor;
-		\item $ \GI $ is a problem of ``comparison'' flavor;
+		\item $ \NP $-complete problems have purely ``search'' flavor
+		\item $ \GI $ is a problem of ``comparison'' flavor
 	\end{itemize}
 
 	The ``comparison'' flavor of $ \GI $ can be rigorously captured as follows:
@@ -218,7 +206,7 @@
 	content...
 \end{frame}
 
-\begin{frame}{Strings}
+\begin{frame}{Strings and permutations}
 	% Fix some finite set $ \Omega $ and a finite alphabet $ \Sigma $.
 	
 	A string is a mapping $ u : \Omega \rightarrow \Sigma $ where $ \Omega, \Sigma $ are fixed finite sets.
@@ -241,7 +229,15 @@
 \end{frame}
 
 \begin{frame}{String Isomorphism Problem}
-	Fix a 
+	
+	\begin{definition}[String Isomorphism Problem]
+		\textbf{Given}: \begin{itemize}
+			\item Strings $ u, v $
+			\item A generating set of a group $ \Gamma \le \Sym(\Omega) $
+		\end{itemize}
+	
+		\textbf{Decide}: Is 
+	\end{definition}
 \end{frame}
 	
 \end{document}
