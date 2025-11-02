@@ -119,9 +119,19 @@
 \begin{frame}{The Graph Isomorphism Problem}
 	$ \GI $ is the following decision problem:
 	
-	\textbf{Given}: Undirected graphs $ G_1 $, $ G_2 $
+	\begin{center}
+	\fbox{
+		\parbox{0.85\textwidth}{
+			\textbf{Given}: Undirected graphs $ G_1 $, $ G_2 $
+			
+			\textbf{Question}: Is $ G_1 \cong G_2 $?
+		}
+	}
+	\end{center}
 	
-	\textbf{Question}: $ G_1 \cong G_2 $?
+	
+	
+	
 \end{frame}
 
 \begin{frame}{$ \GI $ has a very special status (for all we know)}
@@ -180,6 +190,26 @@
 		\end{tikzpicture}
 	\end{center}
 	\textbf{Warning}: this diagram assumes $ \PH $ does not collapse (long-standing open question) and $ \GI \notin \P $ (open).
+\end{frame}
+
+\begin{frame}{Why is $ \GI $ $ \NP $-indermediate?}
+	Intuitively: \begin{itemize}
+		\item $ \NP $-complete problems have purely ``search'' flavor;
+		\item $ \GI $ is a problem of ``comparison'' flavor;
+	\end{itemize}
+
+	This can be rigorously captured as follows:
+	
+	\begin{theorem}
+		$ \overline{\GI} \in \AM $
+	\end{theorem}
+
+	\begin{corollary}
+		$ \GI $ is not $ \NP $-complete unless $ \PH = \Sigma_2 \P $.
+	\end{corollary}
+	\begin{proof}
+		$ \NP $-hardness of $ \GI $ implies $ \coNP \subseteq \AM $ by above theorem. Since $ \AM \subseteq \Pi_2 \P $ we have $ \Sigma_2 \P = \Pi_2 \P $ and thus $ \PH = \Sigma_2 \P $.
+	\end{proof}
 \end{frame}
 	
 \end{document}
