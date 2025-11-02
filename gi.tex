@@ -1,0 +1,117 @@
+% \documentclass[handout]{beamer}
+\documentclass{beamer}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{amsmath, amsthm, amsfonts, amssymb}
+\usepackage{mathrsfs}
+
+\usepackage{oubraces}
+
+\usepackage{tikz}
+\usetikzlibrary{calc, intersections, positioning}
+
+\usepackage[sanserif]{complexity}
+
+% Algorithms
+\usepackage[ruled]{algorithm2e}
+\SetKw{Continue}{continue}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\title[On the graph isomorphism problem]{On the graph isomorphism problem}
+\author{Alexander Mayorov}
+\institute[MPI-INF]{Max-Planck Institute for Informatics}
+
+\renewclass{\EXP}{EXPTIME}
+
+\def\N{\mathbb{N}_{\ge 0}}
+\def\Npos{\mathbb{N}_{\ge 1}}
+\def\Nsimpl{\mathbb{N}}
+\def\R{\mathbb{R}}
+\def\Z{\mathbb{Z}}
+\def\Q{\mathbb{Q}}
+
+\def\X{\mathcal{X}}
+
+% expected value
+\def\ExpVal{\E}
+
+\newcommand{\var}[1]{\textcolor{blue}{#1}}
+\newcommand{\sol}[1]{\textcolor{orange}{#1}}
+
+\definecolor{OliveGreen}{rgb}{0,0.6,0}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+\definecolor{MagentaZB}{RGB}{255,0,255}
+\definecolor{LightBlueZB}{RGB}{51,51,179} % #3333B3
+
+\newenvironment<>{openproblem}[1][]{%
+	\setbeamercolor{block title}{fg=white,bg=magentazb}%
+	\begin{block}#1}{\end{block}}
+
+\begin{document}
+	
+\frame{\titlepage}
+
+\begin{frame}{Big picture: $ \P $, $ \NP $, and $ \NP $-intermediate problems}
+	Assuming $ \PH $ does not collapse, we have:
+	\begin{center}
+		\begin{tikzpicture}[scale=1.0, every node/.style={font=\large}]
+			% Parameters
+			\def\semiMajorAxis{5.5} % semi-major axis
+			\def\semiMinorAxis{3.5} % semi-minor axis
+			\def\npSubclassLabelOffset{-1.5}
+			\def\npSubclassExampleOffset{-1}
+			\def\pYCoord{-2.0}
+			\def\npiYCoord{0.0}
+			\def\npcYCoord{2.0}
+			
+			\path[use as bounding box] (-6,-3.2) rectangle (6,3.2);
+			
+			% NP ellipse (main region)
+			\path[name path=ellipse] (0,0) ellipse ({\semiMajorAxis} and {\semiMinorAxis});
+			\draw[fill=blue!10, thick, name path global=NP] (0,0) ellipse ({\semiMajorAxis} and {\semiMinorAxis});
+			\node at (4.7,2.6) {\textbf{NP}};
+			
+			% Define y positions of boundaries
+			\def\yP{-1.0}
+			\def\yC{1.0}
+			
+			% Define horizontal lines for boundaries
+			\path[name path=Pline] (-\semiMajorAxis-1,\yP) -- (\semiMajorAxis+1,\yP);
+			\path[name path=Cline] (-\semiMajorAxis-1,\yC) -- (\semiMajorAxis+1,\yC);
+			
+			% Find intersection points
+			\path[name intersections={of=ellipse and Pline, by={PL, PR}}];
+			\path[name intersections={of=ellipse and Cline, by={CL, CR}}];
+			
+			% Draw boundary lines exactly clipped to ellipse
+			\draw[dashed, thick] (PL) -- (PR);
+			\draw[dashed, thick] (CL) -- (CR);
+			
+			% Region labels
+			\node[font=\bfseries, green!80!black, anchor=east] at (\npSubclassLabelOffset,\pYCoord) {P};
+			\node[font=\bfseries, anchor=east] at (\npSubclassLabelOffset,\npiYCoord) {NP-intermediate};
+			\node[font=\bfseries, red!80!black, anchor=east] at (\npSubclassLabelOffset,\npcYCoord) {NP-complete};
+			
+			% Example problems (directly inside regions)
+			% NPC
+			\node[anchor=west] at (\npSubclassExampleOffset,\npcYCoord + 0.5) {SAT, Clique, Coloring};
+			\node[anchor=west] at (\npSubclassExampleOffset,\npcYCoord) {Vertex-Cover, Set-Cover};
+			\node[anchor=west] at (\npSubclassExampleOffset,\npcYCoord - 0.5) {Hitting-Set, Subset-Sum, $ \dots $};
+			% NPI
+			\node[MagentaZB, anchor=west] (ginode) at (\npSubclassExampleOffset,\npiYCoord) {Graph Isomorphism};
+			\node[anchor=west] at ($ (ginode.east |- 0,\npiYCoord) + (-0.25,-0.1) $) {, $\dots$};
+			% P
+			\node[anchor=west] at (\npSubclassExampleOffset,\pYCoord + 0.5) {2-SAT, Edge-Cover, 2-Coloring};
+			\node[anchor=west] at (\npSubclassExampleOffset,\pYCoord) {Primes, Maximal-Matching};
+			\node[anchor=west] at (\npSubclassExampleOffset,\pYCoord - 0.5) {Shortest-Path, $ \dots $};
+			
+		\end{tikzpicture}
+	\end{center}
+	% \textbf{Warning}: this diagram assumes $ \P \neq \NP $, which is not known.
+\end{frame}
+	
+\end{document}
