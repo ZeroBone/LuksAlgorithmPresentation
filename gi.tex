@@ -56,7 +56,6 @@
 \frame{\titlepage}
 
 \begin{frame}{Big picture: $ \P $, $ \NP $, and $ \NP $-intermediate problems}
-	Assuming $ \PH $ does not collapse, we have:
 	\begin{center}
 		\begin{tikzpicture}[scale=1.0, every node/.style={font=\large}]
 			% Parameters
@@ -102,7 +101,7 @@
 			\node[anchor=west] at (\npSubclassExampleOffset,\npcYCoord) {Vertex-Cover, Set-Cover};
 			\node[anchor=west] at (\npSubclassExampleOffset,\npcYCoord - 0.5) {Hitting-Set, Subset-Sum, $ \dots $};
 			% NPI
-			\node[MagentaZB, anchor=west] (ginode) at (\npSubclassExampleOffset,\npiYCoord) {Graph Isomorphism};
+			\node[MagentaZB, anchor=west] (ginode) at (\npSubclassExampleOffset,\npiYCoord) {Graph Isomorphism ($ \GI $)};
 			\node[anchor=west] at ($ (ginode.east |- 0,\npiYCoord) + (-0.25,-0.1) $) {, $\dots$};
 			% P
 			\node[anchor=west] at (\npSubclassExampleOffset,\pYCoord + 0.5) {2-SAT, Edge-Cover, 2-Coloring};
@@ -111,7 +110,7 @@
 			
 		\end{tikzpicture}
 	\end{center}
-	% \textbf{Warning}: this diagram assumes $ \P \neq \NP $, which is not known.
+	\textbf{Warning}: this diagram assumes $ \PH $ does not collapse and $ \GI \notin \P $.
 \end{frame}
 	
 \end{document}
