@@ -26,6 +26,7 @@
 \author{Alexander Mayorov}
 \institute[MPI-INF]{Max-Planck Institute for Informatics}
 
+\newlang{\SI}{SI}
 \renewclass{\EXP}{EXPTIME}
 
 \def\N{\mathbb{N}_{\ge 0}}
@@ -38,6 +39,7 @@
 \def\X{\mathcal{X}}
 
 \DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Iso}{Iso}
 
 % expected value
 \def\ExpVal{\E}
@@ -58,7 +60,7 @@
 	
 \frame{\titlepage}
 
-\begin{frame}{The Graph Isomorphism Problem}
+\begin{frame}{Graph Isomorphism Problem}
 	
 	% \textbf{Intuition}: Two graphs are called isomorphic whenever they are equal up to renaming of vertices.
 	
@@ -230,13 +232,17 @@
 
 \begin{frame}{String Isomorphism Problem}
 	
-	\begin{definition}[String Isomorphism Problem]
+	Let $ u, v $ be strings and $ \Gamma \le \Sym(\Omega) $. Define \[
+		\Iso_\Gamma(u, v) := \{\gamma \in \Gamma \mid u^\gamma = v\}
+	\] We say that $ u $ is $ \Gamma $-isomorphic to $ v $ and write $ u \cong_\Gamma v $ whenever $ \Iso_\Gamma(u, v) \neq \varnothing $.
+	
+	\begin{definition}[String Isomorphism Problem ($ \SI $)]
 		\textbf{Given}: \begin{itemize}
 			\item Strings $ u, v $
 			\item A generating set of a group $ \Gamma \le \Sym(\Omega) $
 		\end{itemize}
 	
-		\textbf{Decide}: Is 
+		\textbf{Decide}: Is $ u \cong_\Gamma v $?
 	\end{definition}
 \end{frame}
 	
