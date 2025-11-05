@@ -1,0 +1,29 @@
+\newlang{\SI}{SI}
+\renewclass{\EXP}{EXPTIME}
+
+\def\N{\mathbb{N}_{\ge 0}}
+\def\Npos{\mathbb{N}_{\ge 1}}
+\def\Nsimpl{\mathbb{N}}
+\def\R{\mathbb{R}}
+\def\Z{\mathbb{Z}}
+\def\Q{\mathbb{Q}}
+
+\def\X{\mathcal{X}}
+
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Iso}{Iso}
+\DeclareMathOperator{\ImageOf}{Im}
+
+% expected value
+\def\ExpVal{\E}
+
+\newcommand{\gen}[1]{\langle #1 \rangle}
+
+\definecolor{OliveGreenZB}{rgb}{0,0.6,0}
+\definecolor{LightCyanZB}{rgb}{0.88,1,1}
+\definecolor{MagentaZB}{RGB}{255,0,255}
+\definecolor{LightBlueZB}{RGB}{51,51,179} % #3333B3
+
+\newenvironment<>{openproblem}[1][]{%
+	\setbeamercolor{block title}{fg=white,bg=magentazb}%
+	\begin{block}#1}{\end{block}}

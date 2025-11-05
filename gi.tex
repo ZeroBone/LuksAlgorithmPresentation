@@ -1,5 +1,5 @@
-\documentclass[handout]{beamer}
-% \documentclass{beamer}
+% \documentclass[handout]{beamer}
+\documentclass{beamer}
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -9,9 +9,9 @@
 
 \usepackage{oubraces}
 \usepackage{array}
+\usepackage{varwidth}
 
-\usepackage{tikz}
-\usetikzlibrary{calc, intersections, positioning}
+\input{tikz_config}
 
 \usepackage[sanserif]{complexity}
 
@@ -26,35 +26,7 @@
 \author{Alexander Mayorov}
 \institute[MPI-INF]{Max-Planck Institute for Informatics}
 
-\newlang{\SI}{SI}
-\renewclass{\EXP}{EXPTIME}
-
-\def\N{\mathbb{N}_{\ge 0}}
-\def\Npos{\mathbb{N}_{\ge 1}}
-\def\Nsimpl{\mathbb{N}}
-\def\R{\mathbb{R}}
-\def\Z{\mathbb{Z}}
-\def\Q{\mathbb{Q}}
-
-\def\X{\mathcal{X}}
-
-\DeclareMathOperator{\Sym}{Sym}
-\DeclareMathOperator{\Iso}{Iso}
-\DeclareMathOperator{\ImageOf}{Im}
-
-% expected value
-\def\ExpVal{\E}
-
-\newcommand{\gen}[1]{\langle #1 \rangle}
-
-\definecolor{OliveGreen}{rgb}{0,0.6,0}
-\definecolor{LightCyan}{rgb}{0.88,1,1}
-\definecolor{MagentaZB}{RGB}{255,0,255}
-\definecolor{LightBlueZB}{RGB}{51,51,179} % #3333B3
-
-\newenvironment<>{openproblem}[1][]{%
-	\setbeamercolor{block title}{fg=white,bg=magentazb}%
-	\begin{block}#1}{\end{block}}
+\input{defs}
 
 \begin{document}
 	
@@ -162,7 +134,7 @@
 			\draw[dashed, thick] (CL) -- (CR);
 			
 			% Region labels
-			\node[font=\bfseries, OliveGreen!80!black, anchor=east] at (\npSubclassLabelOffset,\pYCoord) {P};
+			\node[font=\bfseries, OliveGreenZB!80!black, anchor=east] at (\npSubclassLabelOffset,\pYCoord) {P};
 			\node[font=\bfseries, anchor=east] at (\npSubclassLabelOffset,\npiYCoord) {NP-intermediate};
 			\node[font=\bfseries, red!80!black, anchor=east] at (\npSubclassLabelOffset,\npcYCoord) {NP-complete};
 			
@@ -204,9 +176,29 @@
 	\end{proof}
 \end{frame}
 
-%\begin{frame}{High-level overview}
-%	content...
-%\end{frame}
+\begin{frame}{High-level overview}
+	We will show how to solve $ \GI $ via an intermediate problem:
+	\begin{center}
+		\begin{tikzpicture}[thick]
+			% problems
+			\node [block] (gi) {\blocktext{Graph Isomorphism Problem (GI)}};
+			\node [block, right=4em of gi] (si) {\blocktext{String Isomorphism Problem (SI)}};
+			
+			% algorithms
+			\node [below=1.5em of si] (luks) {Luks's algorithm};
+			
+			% reductions
+			\draw[->, LightBlueZB] (gi) --node[midway, above]{reduce} (si);
+			\draw[->, LightBlueZB] (si) --node[midway, right]{solve} (luks);
+		\end{tikzpicture}
+	\end{center}
+
+	Motivation for introducing $ \SI $: \begin{itemize}
+		\item In $ \GI $ we have to deal with \textbf{vertices} and \textbf{edges}
+		\item In $ \SI $ we have to deal with only \textbf{characters}
+		\item $ \rightsquigarrow $ $ \SI $ is much more convenient to work with
+	\end{itemize}
+\end{frame}
 
 \begin{frame}{Strings and permutations}
 	% Fix some finite set $ \Omega $ and a finite alphabet $ \Sigma $.
@@ -252,11 +244,122 @@
 	\end{example}
 \end{frame}
 
+\newcommand{\giToSiReductionGraphZero}{
+	\raisebox{-.5\height}{
+		\begin{tikzpicture}[every node/.style={circle, draw, fill=gray!10, inner sep=1pt, minimum size=18pt}, scale=0.8]
+			\node (a3) at (0,0) {3};
+			\node (a4) at (1.2,0) {4};
+			\node (a2) at (1.2,1.2) {2};
+			\node (a1) at (0,1.2) {1};
+			\draw (a3)--(a1)--(a2)--(a3)--(a4);
+		\end{tikzpicture}
+	}
+}
+
+\newcommand{\giToSiReductionGraphOne}{
+	\raisebox{-.5\height}{
+		\begin{tikzpicture}[every node/.style={circle, draw, fill=gray!10, inner sep=1pt, minimum size=18pt}, scale=0.8]
+			\node (b3) at (0,0) {1};
+			\node (b4) at (1.2,0) {2};
+			\node (b2) at (1.2,1.2) {4};
+			\node (b1) at (0,1.2) {3};
+			\draw (b3)--(b1)--(b2)--(b3)--(b4);
+		\end{tikzpicture}
+	}
+}
+
+% The essence of the above reduction is to ``lift`` isomorphism test from the level of nodes to the level of edges.
+
+\begin{frame}{Towards a reduction from $ \GI $ to $ \SI $}
+	\only<1|handout:1>{We reduce the following $ \GI $ instance to $ \SI $:\begin{center}
+		\renewcommand{\arraystretch}{1.5} % row height
+		\begin{tabular}{c c c}
+			$ G_0 $ && $ G_1 $\\
+			\giToSiReductionGraphZero & $\overset{?}{\cong}$ & \giToSiReductionGraphOne
+		\end{tabular}
+	\end{center}}
+	\only<1|handout:1>{\textbf{Idea}: encode existence of edges into a string:}
+	\only<1-2|handout:1-2>{\begin{center}
+		\begin{tabular}{c|c c c c c c}
+			$ \omega \in \Omega $ & $ \{1, 2\} $ & $ \{1, 3\} $ & $ \{1, 4\} $ & $ \{2, 3\} $ & $ \{2, 4\} $ & $ \{3, 4\} $\\
+			\hline
+			$ u_0(\omega) $ & $ 1 $ & $ 1 $ & $ 0 $ & $ 1 $ & $ 0 $ & $ 1 $\\
+			$ u_1(\omega) $ & $ 1 $ & $ 1 $ & $ 1 $ & $ 0 $ & $ 0 $ & $ 1 $
+		\end{tabular}
+	\end{center}}
+	\only<2-3|handout:2-3>{This $ \SI $ instance has the following solution:\begin{center}
+		\begin{tikzpicture}[thick]
+			
+			% labels
+			\node (l12) {$\{1,2\}$};
+			\node[right=.5em of l12] (l13) {$\{1,3\}$};
+			\node[right=.5em of l13] (l14) {$\{1,4\}$};
+			\node[right=.5em of l14] (l23) {$\{2,3\}$};
+			\node[right=.5em of l23] (l24) {$\{2,4\}$};
+			\node[right=.5em of l24] (l34) {$\{3,4\}$};
+			
+			% u_0
+			\node[below=.5em of l12] (u0at12) {$ 1 $};
+			\node[below=.5em of l13] (u0at13) {$ 1 $};
+			\node[below=.5em of l14] (u0at14) {$ 0 $};
+			\node[below=.5em of l23] (u0at23) {$ 1 $};
+			\node[below=.5em of l24] (u0at24) {$ 0 $};
+			\node[below=.5em of l34] (u0at34) {$ 1 $};
+			
+			\node[left=2em of u0at12] {$ u_0 $};
+			
+			% v
+			\node[below=3em of u0at12] (vat12) {$ 0 $};
+			\node[below=3em of u0at13] (vat13) {$ 1 $};
+			\node[below=3em of u0at14] (vat14) {$ 1 $};
+			\node[below=3em of u0at23] (vat23) {$ 1 $};
+			\node[below=3em of u0at24] (vat24) {$ 0 $};
+			\node[below=3em of u0at34] (vat34) {$ 1 $};
+			
+			\node[left=2em of vat12] {$ v $};
+			
+			% edges from u_0 to v
+			\draw[->, LightBlueZB] (u0at12.south) -- (vat14.north);
+			\draw[->, LightBlueZB] (u0at13.south) -- (vat13.north);
+			\draw[->, LightBlueZB] (u0at14.south) -- (vat12.north);
+			\draw[->, LightBlueZB] (u0at23.south) -- (vat34.north);
+			\draw[->, LightBlueZB] (u0at24.south) -- (vat24.north);
+			\draw[->, LightBlueZB] (u0at34.south) -- (vat23.north);
+			
+			% u_1
+			\node[below=3em of vat12] (u1at12) {$ 1 $};
+			\node[below=3em of vat13] (u1at13) {$ 1 $};
+			\node[below=3em of vat14] (u1at14) {$ 1 $};
+			\node[below=3em of vat23] (u1at23) {$ 0 $};
+			\node[below=3em of vat24] (u1at24) {$ 0 $};
+			\node[below=3em of vat34] (u1at34) {$ 1 $};
+			
+			\node[left=2em of u1at12] {$ u_1 $};
+			
+			% edges from v to u_1
+			\draw[->, OliveGreenZB] (vat12.south) -- (u1at23.north);
+			\draw[->, OliveGreenZB] (vat13.south) -- (u1at13.north);
+			\draw[->, OliveGreenZB] (vat14.south) -- (u1at34.north);
+			\draw[->, OliveGreenZB] (vat23.south) -- (u1at12.north);
+			\draw[->, OliveGreenZB] (vat24.south) -- (u1at24.north);
+			\draw[->, OliveGreenZB] (vat34.south) -- (u1at14.north);
+			
+		\end{tikzpicture}
+	\end{center}}
+	\only<3|handout:3>{\begin{center}
+			\renewcommand{\arraystretch}{1.5} % row height
+			\begin{tabular}{c c c}
+				$ G_0 $ && $ G_1 $\\
+				\giToSiReductionGraphZero & $\overset{?}{\cong}$ & \giToSiReductionGraphOne
+			\end{tabular}
+	\end{center}}
+\end{frame}
+
+%\textbf{Proof idea}: encode each graph into a string such that relabeling vertices corresponds to permuting characters of the string.
 \begin{frame}{$ \GI $ reduces to $ \SI $ efficiently}
-	\begin{theorem}
+	\vspace{-4pt}\begin{theorem}
 		$ \GI \le_m^p \SI $
-	\end{theorem}
-	%\textbf{Proof idea}: encode each graph into a string such that relabeling vertices corresponds to permuting characters of the string.
+	\end{theorem}\vspace{-4pt}
 	\begin{proof}
 		W.l.o.g. assume $ V_0 = V_1 = \{1, \dots, n\} $. Set $ \Sigma := \{0, 1\} $ and $ \Omega := \{\{i, j\} \mid 1 \le i < j \le n\} $. For $ b \in \{0, 1\} $ let $ u_b $ be a string defined by \[
 			u_b(\{i, j\}) = 1 \iff \{i, j\} \in E_b
@@ -266,56 +369,9 @@
 			\psi(\sigma) := \Big(\{i, j\} \mapsto \{\sigma(i), \sigma(j)\}\Big)
 		\] Therefore, $ \ImageOf(\psi) = \gen{\psi((1, 2)), \psi((1, \dots, n))} $ and the result follows.
 	\end{proof}
-\end{frame}
-
-\newcommand{\graphD}{%
-	\raisebox{-.5\height}{%
-		\begin{tikzpicture}[every node/.style={circle, draw, fill=gray!10, inner sep=1pt, minimum size=18pt}, scale=0.8]
-			\node (a3) at (0,0) {3};
-			\node (a4) at (1.2,0) {4};
-			\node (a2) at (1.2,1.2) {2};
-			\node (a1) at (0,1.2) {1};
-			\draw (a3)--(a1)--(a2)--(a3)--(a4);
-		\end{tikzpicture}%
-	}%
-}
-
-\newcommand{\graphE}{%
-	\raisebox{-.5\height}{%
-		\begin{tikzpicture}[every node/.style={circle, draw, fill=gray!10, inner sep=1pt, minimum size=18pt}, scale=0.8]
-			\node (b3) at (0,0) {1};
-			\node (b4) at (1.2,0) {2};
-			\node (b2) at (1.2,1.2) {4};
-			\node (b1) at (0,1.2) {3};
-			\draw (b3)--(b1)--(b2)--(b3)--(b4);
-		\end{tikzpicture}%
-	}%
-}
-
-\begin{frame}{Example}
-	% The essence of the above reduction is to ``lift`` isomorphism test from the level of nodes to the level of edges.
-	We reduce the following $ \GI $ instance to $ \SI $:
-	\begin{center}
-		\renewcommand{\arraystretch}{1.5} % row height
-		\begin{tabular}{c c c}
-			$ G_0 $ && $ G_1 $\\
-			\graphD & $\cong$ & \graphE
-		\end{tabular}
-	\end{center}
-
-	We have:
-	\begin{center}
-		\begin{tabular}{c|c c c c c c}
-			$ \omega \in \Omega $ & $ \{1, 2\} $ & $ \{1, 3\} $ & $ \{1, 4\} $ & $ \{2, 3\} $ & $ \{2, 4\} $ & $ \{3, 4\} $\\
-			\hline
-			$ u_0(\omega) $ & $ 1 $ & $ 1 $ & $ 0 $ & $ 1 $ & $ 0 $ & $ 1 $\\
-			$ u_1(\omega) $ & $ 1 $ & $ 1 $ & $ 1 $ & $ 0 $ & $ 0 $ & $ 1 $
-		\end{tabular}
-	\end{center}
-
-	This is a yes-instance to the string isomorphism problem because \[
-		u_1 = u_0^{\psi((1,3)(2,4))}
-	\] Indeed, $ (1,3)(2,4) \in S_4 $ is the relabeling that makes $ G_0 $ equal $ G_1 $.
+% This is a yes-instance to the string isomorphism problem because \[
+%u_1 = u_0^{\psi((1,3)(2,4))}
+%\] Indeed, $ (1,3)(2,4) \in S_4 $ is the relabeling that makes $ G_0 $ equal $ G_1 $.
 \end{frame}
 
 \end{document}

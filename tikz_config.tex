@@ -1,0 +1,30 @@
+\usepackage{tikz}
+\usetikzlibrary{intersections}
+\usetikzlibrary{calc}
+\usetikzlibrary{patterns}
+\usetikzlibrary{chains}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+\usetikzlibrary{shapes.arrows}
+\usetikzlibrary{hobby}
+
+\tikzset{%
+	decision/.style = {diamond,draw, fill=blue!50},
+	line/.style = {draw, -stealth, thick},
+	block/.style = {rectangle, draw, minimum height=10mm,
+		align=center}
+}
+
+\tikzset{suspend join/.code={\def\tikz@after@path{}}}
+
+\tikzstyle{shapeaftershift}=[thick,dashed]
+\tikzstyle{shapebeforeshift}=[gray,opacity=.5]
+
+\newcommand*{\blocktext}[1]{%
+	\begin{varwidth}{9em}%
+		\centering
+		#1%
+	\end{varwidth}%
+}
