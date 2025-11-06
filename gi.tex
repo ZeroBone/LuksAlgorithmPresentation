@@ -527,28 +527,36 @@
 	\end{center}
 \end{frame}
 
+\begin{frame}{Groups and their composition factors}
+	\vspace{-5pt}\begin{definition}
+		Let $ \Gamma $ be a finite group. A \textit{subnormal series} of $ \Gamma $ is a sequence \[
+		\{\id\} \trianglelefteq \Gamma_1 \trianglelefteq \Gamma_2 \trianglelefteq \dots \trianglelefteq \Gamma_k = \Gamma
+		\] where $ \Gamma_1, \dots, \Gamma_k $ are groups. A subnormal series is a \textit{composition series} of $ \Gamma $ if it is strictly increasing and every $ \Gamma_i/\Gamma_{i-1} $ is simple (factor groups $ \Gamma_i/\Gamma_{i-1} $ are called \textit{composition factors}).
+	\end{definition}
+	\vspace{-5pt}\begin{proposition}
+		Every finite group can be decomposed uniquely into its composition factors.
+	\end{proposition}
+	\vspace{-5pt}\begin{example}
+		The composition series of $ S_n $ is $ \{\id\} \trianglelefteq A_n \trianglelefteq S_n $. Thus, $ S_n $ can be decomposed as $ S_n \cong \Z_2 \rtimes A_n $.
+	\end{example}
+\end{frame}
+
 \begin{frame}{Graphs of bounded degree -- example}
+	Consider connected graphs with maximum vertex degree $ \le 2 $:
 	\begin{center}
 		\setlength{\extrarowheight}{3pt}
-		\begin{columns}
-			\begin{column}{0.4\textwidth}
-				\begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2.5cm}}
-					Orbit&Stabilizer\\
-					\hline\vspace{5pt}\orbitTwo&$ \Z_2 \times \Z_2 $\\
-					\hline\vspace{5pt}\orbitThree&$ \Z_2 $\\
-					\hline\vspace{5pt}\orbitFour&$ \Z_2 $\\
-					\hline\orbitSix&$ S_3 $\\
-					\hline\orbitSeven&$ \gen{(1\,2\,3\,4),(1\,3)} $\\
-				\end{tabular}
-			\end{column}
-			\begin{column}{0.4\textwidth}  %%<--- here
-				\begin{itemize}
-					\item Consider connected graphs with maximum vertex degree $ \le 2 $
-					\item Can you see any patterns?
-				\end{itemize}
-			\end{column}
-		\end{columns}
-	\end{center}
+		\vspace{-2pt}\begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{1.3cm}|>{\centering\arraybackslash}m{5cm} >{\centering\arraybackslash}m{2cm}}
+			Orbit of $ G $&$ \Aut(G) $&Composition series of $ \Aut(G) $&Composition factors\\
+			\hline\vspace{5pt}\orbitFour&$ \Z_2 $&$ \{\id\} \trianglelefteq \Z_2 $&$ \Z_2 $\\
+			\hline\orbitSeven&$ \gen{r,(1\,3)} $&$ \{\id\} \trianglelefteq \gen{r^2} \trianglelefteq \gen{r} \trianglelefteq \gen{r,(1\,3)} $&$ \Z_2, \Z_2, \Z_2 $
+		\end{tabular}
+	\end{center}\begin{itemize}
+		\item Here, $ r := (1\,2\,3\,4) $ is the rotation permutation
+		\item \textbf{Note}: All composition factors are bounded by $ 2 $
+	\end{itemize}\pause
+	\textcolor{MagentaZB}{\textbf{Key fact}}: This is not a coincidence: \begin{theorem}[Luks]
+		Let $ d \ge 2 $. For any finite graph $ G $ of maximum degree at most $ d $ and $ v \in V(G) $, the composition factors of $ \Aut(G, v) $ are subgroups of $ S_d $.
+	\end{theorem}
 \end{frame}
 
 \begin{frame}
@@ -564,31 +572,15 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Groups and their composition factors}
-	\vspace{-5pt}\begin{definition}
-		Let $ \Gamma $ be a finite group. A \textit{subnormal series} of $ \Gamma $ is a sequence \[
-		\{\id\} \trianglelefteq \Gamma_1 \trianglelefteq \Gamma_2 \trianglelefteq \dots \trianglelefteq \Gamma_k = \Gamma
-		\] where $ \Gamma_1, \dots, \Gamma_k $ are groups. A subnormal series is a \textit{composition series} of $ \Gamma $ if it is strictly increasing and every $ \Gamma_i/\Gamma_{i-1} $ is simple (factor groups $ \Gamma_i/\Gamma_{i-1} $ are called \textit{composition factors}).
-	\end{definition}
-	\vspace{-5pt}\begin{proposition}
-		Every finite group can be decomposed uniquely into its composition factors.
-	\end{proposition}
-	\vspace{-5pt}\begin{example}
-		The composition series of $ S_n $ is $ \{\id\} \trianglelefteq A_n \trianglelefteq S_n $. Thus, $ S_n $ can be decomposed as $ S_n \cong (\Z/2\Z) \times A_n $.
-	\end{example}
-\end{frame}
-
 \begin{frame}{$ \widehat{\Gamma}_d $-groups}
 	
 	\begin{definition}[Luks]
-		For $ d \ge 2 $ define $ \widehat{\Gamma}_d $ to be the class of all groups $ \Gamma $ such that every composition factor of $ \Gamma $ is isomorphic to a subgroup of $ S_d $.
+		For $ d \ge 2 $ define  to be the class of all groups $ \Gamma $ such that every composition factor of $ \Gamma $ is isomorphic to a subgroup of $ S_d $.
 	\end{definition}
 
 	$ \widehat{\Gamma}_d $-groups are central to the $ \GI $ problem for bounded-degree graphs because:
 
-	\begin{theorem}[Luks]
-		
-	\end{theorem}
+	
 \end{frame}
 
 \end{document}
