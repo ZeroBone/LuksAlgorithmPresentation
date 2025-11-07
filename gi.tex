@@ -489,7 +489,7 @@
 				&\hspace*{-40pt}\solSpaceExGraphTwo&
 			\end{tabular}
 	\end{center}\begin{itemize}
-	\item $ \rightsquigarrow $ The set of isomorphisms between a graph $ G $ and itself forms a group called automorphism group and denoted $ \Aut(G) $
+	\item $ \rightsquigarrow $ The set of isomorphisms between a graph $ G $ and itself forms a group called \textit{automorphism group} and denoted $ \Aut(G) $
 	\item \textbf{This example}: $ \Aut(G) \cong S_3 $
 \end{itemize}}
 \end{frame}
@@ -555,8 +555,89 @@
 		\item \textbf{Note}: All composition factors are bounded by $ 2 $
 	\end{itemize}\pause
 	\textcolor{MagentaZB}{\textbf{Key fact}}: This is not a coincidence: \begin{theorem}[Luks]
-		Let $ d \ge 2 $. For any finite graph $ G $ of maximum degree at most $ d $ and $ v \in V(G) $, the composition factors of $ \Aut(G, v) $ are subgroups of $ S_d $.
+		Let $ d \ge 2 $. For any finite graph $ G $ of maximum degree at most $ d $ and $ v \in V(G) $, all composition factors of $ \Aut(G, v) $ are subgroups of $ S_d $.
 	\end{theorem}
+\end{frame}
+
+\begin{frame}{Solving $ \GI$ for bounded-degree graphs}
+	By combining this result with the idea of the reduction $ \GI \le_m^p \SI $ that we proved earlier, alongside other insights, one can show: \begin{theorem}[Babai, Luks]
+		There is a polynomial-time Turing reduction from $ \GI $ for graphs of maximum degree $ d $ to $ \SI $ for a group $ \Gamma $ whose composition factors are all among the subgroups of $ S_d $.
+	\end{theorem}
+
+	Building upon this result (and numerous other ones), Luks has proved: \begin{theorem}[Luks]
+		$ \GI $ for graphs of maximum degree $ d $ can be solved in time $ n^{O(d)} $.
+	\end{theorem}
+\end{frame}
+
+\begin{frame}{Luks's algorithm -- high level overview}
+	\textbf{General idea}: Recursively split the strings $ u $, $ v $ of the $ \SI $ instance according to the structure of the group action.
+	
+	\begin{enumerate}
+		\item Compute the orbits of $ \Gamma $'s action on $ \Omega $
+		\item If the action is trivial, return $ u \cong_\Gamma v $ iff $ u = v $
+		\item If $ u $ and $ v $ disagree on some orbit, then return $ u \not\cong_\Gamma v $
+		\item If the action is not transitive\footnote{Transitivity means that $ \Gamma $'s action is capable of moving any element of $ \Sym(\Omega) $ to any other element (formally: $ \alpha^\Gamma = \Omega\ \forall \alpha \in \Omega $)} on $ \Omega $:\begin{itemize}
+			\item Solve $ \SI $ recursively for all orbits
+			\item Return $ u \cong_\Gamma v $ iff all recursive calls give a solution
+		\end{itemize}
+		\item Find minimal block system $ B_1, \dots, B_k $ of the action of $ \Gamma $ on $ \Omega $ (\textbf{Crucial}: elements $ B_i $ correspond to composition factors of $ \Aut(G) $ which are bounded by $ S_d $ by Luks's Theorem above)
+		\item Recursively solve $ \SI $ for every $ B_1, \dots, B_k $
+		\item Recursively solve $ \SI $ for the above solutions over $ \Gamma/\KernelOf(\Gamma\rightarrow\{B_1, \dots, B_k\}) $ and forward what the recursive call returns
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\begin{tikzpicture}
+			\coordinate (blockwidth) at (9, 0);
+			\coordinate (blockheight) at (0, .75);
+			
+			\coordinate (omega1sep) at ($ (0, 0)!0.2!(blockwidth) $);
+			\coordinate (omega2sep) at ($ (0, 0)!0.4!(blockwidth) $);
+			\coordinate (omegam1sep) at ($ (0, 0)!0.8!(blockwidth) $);
+			
+			\coordinate (utl) at (0, 0); % top left
+			\coordinate (utr) at (blockwidth); % top right
+			\coordinate (ubl) at ($ (0,0)-(blockheight) $); % bottom left
+			\coordinate (ubr) at ($ (ubl)+(blockwidth) $);
+			
+			\coordinate (uomega1sept) at ($ (utl-|omega1sep) $);
+			\coordinate (uomega1sepb) at ($ (ubl-|omega1sep) $);
+			\coordinate (uomega2sept) at ($ (utl-|omega2sep) $);
+			\coordinate (uomega2sepb) at ($ (ubl-|omega2sep) $);
+			\coordinate (uomegam1sept) at ($ (utl-|omegam1sep) $);
+			\coordinate (uomegam1sepb) at ($ (ubl-|omegam1sep) $);
+			
+			\coordinate (vtl) at ($ (ubl)-(blockheight) $); % top left
+			\coordinate (vtr) at ($ (vtl) + (blockwidth) $); % top right
+			\coordinate (vbl) at ($ (vtl)-(blockheight) $); % bottom left
+			\coordinate (vbr) at ($ (vbl)+(blockwidth) $);
+			
+			\coordinate (vomega1sept) at ($ (vtl-|omega1sep) $);
+			\coordinate (vomega1sepb) at ($ (vbl-|omega1sep) $);
+			\coordinate (vomega2sept) at ($ (vtl-|omega2sep) $);
+			\coordinate (vomega2sepb) at ($ (vbl-|omega2sep) $);
+			\coordinate (vomegam1sept) at ($ (vtl-|omegam1sep) $);
+			\coordinate (vomegam1sepb) at ($ (vbl-|omegam1sep) $);
+			
+			\draw[thick] (uomega1sept)--(uomega1sepb) (uomega2sept)--(uomega2sepb) (uomegam1sept)--(uomegam1sepb);
+			\draw[thick] (vomega1sept)--(vomega1sepb) (vomega2sept)--(vomega2sepb) (vomegam1sept)--(vomegam1sepb);
+			\draw[thick] (utl) -- (utr) -- (ubr) -- (ubl) -- cycle;
+			\draw[thick] (vtl) -- (vtr) -- (vbr) -- (vbl) -- cycle;
+			
+			\draw[thick, dashed] (ubl)--(vtl) (uomega1sepb)--(vomega1sept) (uomega2sepb)--(vomega2sept) (uomegam1sepb)--(vomegam1sept) (ubr)--(vtr);
+			
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (utl) -- (ubl) node[pos=0.5,left=10pt,black]{$ u $};
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (vtl) -- (vbl) node[pos=0.5,left=10pt,black]{$ v $};
+			
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (utl) -- (uomega1sept) node[pos=0.5,above=10pt,black]{$ \Omega_1 $};
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomega1sept) -- (uomega2sept) node[pos=0.5,above=10pt,black]{$ \Omega_2 $};
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomegam1sept) -- (utr) node[pos=0.5,above=10pt,black]{$ \Omega_s $};
+			
+			\draw ($ (uomega2sepb)!0.5!(uomegam1sept) $) node {$ \dots $};
+			\draw ($ (vomega2sepb)!0.5!(vomegam1sept) $) node {$ \dots $};
+		\end{tikzpicture}
+	\end{center}
 \end{frame}
 
 \end{document}
