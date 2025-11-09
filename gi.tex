@@ -217,8 +217,8 @@
 
 	\begin{example}
 		Let $ \Omega := \{1, 2, 3\} $ and $ \Sigma := \{a, b, c\} $. Then \[
-			abc^{()} = abc \qquad abc^{(1, 2, 3)} = cab \qquad abc^{(1, 3, 2)} = bca
-		\] where $ xyz \in \Sigma^3 $ denotes mapping $ 1 \mapsto x $, $ 2 \mapsto y $, $ 3 \mapsto z $.
+			abc^{()} = abc \qquad abc^{(1\,2\,3)} = cab \qquad abc^{(1\,3\,2)} = bca
+		\] where $ abc $ denotes mapping $ 1 \mapsto a $, $ 2 \mapsto b $, $ 3 \mapsto c $.
 	\end{example}
 
 \end{frame}
@@ -503,24 +503,24 @@
 		\setlength{\extrarowheight}{3pt}
 		\begin{columns}
 			\begin{column}{0.4\textwidth}
-				\begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm}}
-					Orbit&Stabilizer\\
-					\hline\orbitOne&$ S_4 $\\
-					\hline\vspace{5pt}\orbitTwo&$ \Z_2 \times \Z_2 $\\
-					\hline\vspace{5pt}\orbitThree&$ \Z_2 $\\
-					\hline\vspace{5pt}\orbitFour&$ \Z_2 $\\
-					\hline\orbitFive&$ S_4 $
-				\end{tabular}
-			\end{column}
-			\begin{column}{0.4\textwidth}  %%<--- here
 				\begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2.5cm}}
 					Orbit&Stabilizer\\
-					\hline\orbitSix&$ S_3 $\\
-					\hline\orbitSeven&$ \gen{(1\,2\,3\,4),(1\,3)} $\\
-					\hline\vspace{5pt}\orbitEight&$ \Z_2 \times \Z_2 $\\
-					\hline\vspace{5pt}\orbitNine&$ \Z_2 $\\
-					\hline\orbitTen&$ \gen{(1\,2\,3\,4),(1\,3)} $\\
-					\hline\orbitEleven&$ S_3 $
+					\hline\orbitOne&$ S_4 $\\
+					\hline\orbitTwo&$ S_4 $\\
+					\hline\vspace{5pt}\orbitThree&$ \Z_2 $\\
+					\hline\vspace{5pt}\orbitFour&$ \Z_2 $\\
+					\hline\orbitFive&$ \gen{(1\,2\,3\,4),(1\,3)} $\\
+					\hline\orbitSix&$ \gen{(1\,2\,3\,4),(1\,3)} $
+				\end{tabular}
+			\end{column}
+			\begin{column}{0.4\textwidth}
+				\begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2.5cm}}
+					Orbit&Stabilizer\\
+					\hline\vspace{5pt}\orbitSeven&$ \gen{(1\,2\,3\,4),(1\,3)} $\\
+					\hline\orbitEight&$ \Z_2 \times \Z_2 $\\
+					\hline\orbitNine&$ \Z_2 $\\
+					\hline\vspace{5pt}\orbitTen&$ \gen{(1\,2\,3\,4),(1\,3)} $\\
+					\hline\vspace{5pt}\orbitEleven&$ S_3 $
 				\end{tabular}
 			\end{column}
 		\end{columns}
@@ -548,7 +548,7 @@
 		\vspace{-2pt}\begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{1.3cm}|>{\centering\arraybackslash}m{5cm} >{\centering\arraybackslash}m{2cm}}
 			Orbit of $ G $&$ \Aut(G) $&Composition series of $ \Aut(G) $&Composition factors\\
 			\hline\vspace{5pt}\orbitFour&$ \Z_2 $&$ \{\id\} \trianglelefteq \Z_2 $&$ \Z_2 $\\
-			\hline\orbitSeven&$ \gen{r,(1\,3)} $&$ \{\id\} \trianglelefteq \gen{r^2} \trianglelefteq \gen{r} \trianglelefteq \gen{r,(1\,3)} $&$ \Z_2, \Z_2, \Z_2 $
+			\hline\vspace{5pt}\orbitSeven&$ \gen{r,(1\,3)} $&$ \{\id\} \trianglelefteq \gen{r^2} \trianglelefteq \gen{r} \trianglelefteq \gen{r,(1\,3)} $&$ \Z_2, \Z_2, \Z_2 $
 		\end{tabular}
 	\end{center}\begin{itemize}
 		\item Here, $ r := (1\,2\,3\,4) \in S_4 $ is the rotation permutation
