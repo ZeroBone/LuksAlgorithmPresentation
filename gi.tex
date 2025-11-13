@@ -465,11 +465,11 @@
 	\end{lemma}
 \end{frame}
 
-\begin{frame}{$ \GI $ for bounded-degree graphs}
+\begin{frame}{Automorphism groups of bounded-degree graphs}
 	
 	\begin{itemize}
 		\item It would be nice if $ \Aut(G) \in \Gamma_d $ was true for graphs $ G $ of maximum degree $ \le d $
-		\item Unfortunately, this is not the case:
+		\item However, this is not the case:
 	\end{itemize}
 	\begin{theorem}[Frucht]
 		For any finite group $ \Gamma $ there exists a 3-regular graph $ G $ such that $ \Aut(G) \cong \Gamma $
@@ -482,20 +482,20 @@
 	\end{theorem}
 \end{frame}
 
-\begin{frame}{Graphs of bounded degree -- example}
-	Consider connected graphs with maximum vertex degree $ \le 2 $:
-	\begin{center}
-		\setlength{\extrarowheight}{3pt}
-		\vspace{-2pt}\begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{1.3cm}|>{\centering\arraybackslash}m{5cm} >{\centering\arraybackslash}m{2cm}}
-			Orbit of $ G $&$ \Aut(G) $&Composition series of $ \Aut(G) $&Composition factors\\
-			\hline\vspace{5pt}\orbitFour&$ \Z_2 $&$ \{\id\} \trianglelefteq \Z_2 $&$ \Z_2 $\\
-			\hline\vspace{5pt}\orbitSeven&$ \gen{r,(1\,3)} $&$ \{\id\} \trianglelefteq \gen{r^2} \trianglelefteq \gen{r} \trianglelefteq \gen{r,(1\,3)} $&$ \Z_2, \Z_2, \Z_2 $
-		\end{tabular}
-	\end{center}\begin{itemize}
-		\item Here, $ r := (1\,2\,3\,4) \in S_4 $ is the rotation permutation
-		\item \textbf{Note}: All composition factors are bounded by $ 2 $
-	\end{itemize}\pause
-	\textcolor{MagentaZB}{\textbf{Key fact}}: This is not a coincidence:
+\begin{frame}{Proof of Luks's theorem}
+	\begin{tikzpicture}[thick]
+		
+		\node[circle, draw] (v) at (0, 0) {$ v $};
+		
+		\def\r{0.7}          % base radius
+		\def\A{0.05}         % wave amplitude (radial)
+		\def\n{24}           % number of waves (integer ensures closure)
+		\def\R{3.5}
+		
+		\draw[blue!70, thick, fill=blue!10, fill opacity=0.15, samples=200, domain=0:360, smooth, variable=\t]
+		plot ({(\r + \A*sin(\n*\t)) * cos(\t)}, {(\r + \A*sin(\n*\t)) * sin(\t)});
+		
+	\end{tikzpicture}
 \end{frame}
 
 \begin{frame}{Solving $ \GI$ for bounded-degree graphs}
