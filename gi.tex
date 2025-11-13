@@ -157,48 +157,25 @@
 	\textbf{Warning}: this diagram assumes $ \PH $ does not collapse (long-standing open question) and $ \GI \notin \P $ (open).
 \end{frame}
 
-\begin{frame}{Why is $ \GI $ (very likely) $ \NP $-intermediate?}
-	Intuitively: \begin{itemize}
-		\item $ \NP $-complete problems have purely ``search'' flavor
-		\item $ \GI $ is a problem of ``comparison'' flavor
-	\end{itemize}
-
-	The ``comparison'' flavor of $ \GI $ can be rigorously captured as follows:
-	
-	\begin{theorem}
-		$ \GI \in \coAM $
-	\end{theorem}
-
-	\begin{corollary}
-		$ \GI $ is not $ \NP $-complete unless $ \PH = \Sigma_2 \P $.
-	\end{corollary}
-	\begin{proof}
-		$ \NP $-hardness of $ \GI $ implies $ \coNP \subseteq \AM $ by above theorem. Since $ \AM \subseteq \Pi_2 \P $ we have $ \Sigma_2 \P = \Pi_2 \P $ and thus $ \PH = \Sigma_2 \P $.
-	\end{proof}
-\end{frame}
-
 \begin{frame}{High-level overview}
 	We will show how to solve $ \GI $ via an intermediate problem:
 	\begin{center}
 		\begin{tikzpicture}[thick]
 			% problems
 			\node [block] (gi) {\blocktext{Graph Isomorphism Problem (GI)}};
-			\node [block, right=4em of gi] (si) {\blocktext{String Isomorphism Problem (SI)}};
+			\node [block, below=3em of gi] (si) {\blocktext{String Isomorphism Problem (SI)}};
 			
 			% algorithms
-			\node [below=1.5em of si] (luks) {Luks's algorithm};
+			\node [block, below=3em of si] (algo) {Luks's algorithm};
 			
 			% reductions
-			\draw[->, LightBlueZB] (gi) --node[midway, above]{reduce} (si);
-			\draw[->, LightBlueZB] (si) --node[midway, right]{solve} (luks);
+			\draw[->, LightBlueZB] (gi) --node[midway, right]{reduce} (si);
+			\draw[->, LightBlueZB] (si) --node[midway, right]{solve} (algo);
+			
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (gi.west) -- (si.west) node[pos=0.5,left=10pt,black]{\blocktext{Encode graphs into strings, introduce group}};
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (si.east) -- (algo.east) node[pos=0.5,right=10pt,black]{\blocktext{Use group-theoretic machinery}};
 		\end{tikzpicture}
 	\end{center}
-
-	Motivation for introducing $ \SI $: \begin{itemize}
-		\item In $ \GI $ we have to deal with \textbf{vertices} and \textbf{edges}
-		\item In $ \SI $ we have to deal with only \textbf{characters}
-		\item $ \rightsquigarrow $ $ \SI $ is much more convenient to work with
-	\end{itemize}
 \end{frame}
 
 \begin{frame}{Strings and permutations}
@@ -248,10 +225,10 @@
 \newcommand{\giToSiReductionGraphZero}{
 	\raisebox{-.5\height}{
 		\begin{tikzpicture}[every node/.style={circle, draw, fill=gray!10, inner sep=1pt, minimum size=18pt}, scale=0.8]
+			\node (a1) at (0,1.2) {1};
+			\node (a2) at (1.2,1.2) {2};
 			\node (a3) at (0,0) {3};
 			\node (a4) at (1.2,0) {4};
-			\node (a2) at (1.2,1.2) {2};
-			\node (a1) at (0,1.2) {1};
 			\draw (a3)--(a1)--(a2)--(a3)--(a4);
 		\end{tikzpicture}
 	}
@@ -260,10 +237,10 @@
 \newcommand{\giToSiReductionGraphOne}{
 	\raisebox{-.5\height}{
 		\begin{tikzpicture}[every node/.style={circle, draw, fill=gray!10, inner sep=1pt, minimum size=18pt}, scale=0.8]
-			\node (b3) at (0,0) {1};
-			\node (b4) at (1.2,0) {2};
-			\node (b2) at (1.2,1.2) {4};
 			\node (b1) at (0,1.2) {3};
+			\node (b2) at (1.2,1.2) {2};
+			\node (b3) at (0,0) {1};
+			\node (b4) at (1.2,0) {4};
 			\draw (b3)--(b1)--(b2)--(b3)--(b4);
 		\end{tikzpicture}
 	}
@@ -285,7 +262,7 @@
 			$ \omega \in \Omega $ & $ \{1, 2\} $ & $ \{1, 3\} $ & $ \{1, 4\} $ & $ \{2, 3\} $ & $ \{2, 4\} $ & $ \{3, 4\} $\\
 			\hline
 			$ u_0(\omega) $ & $ 1 $ & $ 1 $ & $ 0 $ & $ 1 $ & $ 0 $ & $ 1 $\\
-			$ u_1(\omega) $ & $ 1 $ & $ 1 $ & $ 1 $ & $ 0 $ & $ 0 $ & $ 1 $
+			$ u_1(\omega) $ & $ 1 $ & $ 1 $ & $ 1 $ & $ 1 $ & $ 0 $ & $ 0 $
 		\end{tabular}
 	\end{center}}
 	\only<2-3|handout:2-3>{This $ \SI $ instance has the following solution:\begin{center}
@@ -309,41 +286,23 @@
 			
 			\node[left=2em of u0at12] {$ u_0 $};
 			
-			% v
-			\node[below=3em of u0at12] (vat12) {$ 0 $};
-			\node[below=3em of u0at13] (vat13) {$ 1 $};
-			\node[below=3em of u0at14] (vat14) {$ 1 $};
-			\node[below=3em of u0at23] (vat23) {$ 1 $};
-			\node[below=3em of u0at24] (vat24) {$ 0 $};
-			\node[below=3em of u0at34] (vat34) {$ 1 $};
-			
-			\node[left=2em of vat12] {$ v $};
-			
-			% edges from u_0 to v
-			\draw[->, LightBlueZB] (u0at12.south) -- (vat14.north);
-			\draw[->, LightBlueZB] (u0at13.south) -- (vat13.north);
-			\draw[->, LightBlueZB] (u0at14.south) -- (vat12.north);
-			\draw[->, LightBlueZB] (u0at23.south) -- (vat34.north);
-			\draw[->, LightBlueZB] (u0at24.south) -- (vat24.north);
-			\draw[->, LightBlueZB] (u0at34.south) -- (vat23.north);
-			
 			% u_1
-			\node[below=3em of vat12] (u1at12) {$ 1 $};
-			\node[below=3em of vat13] (u1at13) {$ 1 $};
-			\node[below=3em of vat14] (u1at14) {$ 1 $};
-			\node[below=3em of vat23] (u1at23) {$ 0 $};
-			\node[below=3em of vat24] (u1at24) {$ 0 $};
-			\node[below=3em of vat34] (u1at34) {$ 1 $};
+			\node[below=4em of u0at12] (u1at12) {$ 1 $};
+			\node[below=4em of u0at13] (u1at13) {$ 1 $};
+			\node[below=4em of u0at14] (u1at14) {$ 1 $};
+			\node[below=4em of u0at23] (u1at23) {$ 1 $};
+			\node[below=4em of u0at24] (u1at24) {$ 0 $};
+			\node[below=4em of u0at34] (u1at34) {$ 0 $};
 			
 			\node[left=2em of u1at12] {$ u_1 $};
 			
 			% edges from v to u_1
-			\draw[->, OliveGreenZB] (vat12.south) -- (u1at23.north);
-			\draw[->, OliveGreenZB] (vat13.south) -- (u1at13.north);
-			\draw[->, OliveGreenZB] (vat14.south) -- (u1at34.north);
-			\draw[->, OliveGreenZB] (vat23.south) -- (u1at12.north);
-			\draw[->, OliveGreenZB] (vat24.south) -- (u1at24.north);
-			\draw[->, OliveGreenZB] (vat34.south) -- (u1at14.north);
+			\draw[->, LightBlueZB] (u0at12.south) -- (u1at23.north);
+			\draw[->, LightBlueZB] (u0at13.south) -- (u1at13.north);
+			\draw[->, LightBlueZB] (u0at14.south) -- (u1at34.north);
+			\draw[->, LightBlueZB] (u0at23.south) -- (u1at12.north);
+			\draw[->, LightBlueZB] (u0at24.south) -- (u1at24.north);
+			\draw[->, LightBlueZB] (u0at34.south) -- (u1at14.north);
 			
 		\end{tikzpicture}
 	\end{center}}
@@ -351,7 +310,7 @@
 			\renewcommand{\arraystretch}{1.5} % row height
 			\begin{tabular}{c c c}
 				\giToSiReductionGraphZero & \begin{tikzpicture}[thick]
-					\draw[->] (0,0) --node[midway, above]{$ \sigma := \textcolor{LightBlueZB}{(2\,4)}\textcolor{OliveGreenZB}{(1\,3)} $} (4,0);
+					\draw[->] (0,0) --node[midway, above]{$ \sigma := \textcolor{LightBlueZB}{(1\,3)} $} (3,0);
 				\end{tikzpicture} & \giToSiReductionGraphOne
 			\end{tabular}
 	\end{center}}
@@ -383,19 +342,19 @@
 			\node[below=3em of u0at12] (u1at12) {$ 1 $};
 			\node[below=3em of u0at13] (u1at13) {$ 1 $};
 			\node[below=3em of u0at14] (u1at14) {$ 1 $};
-			\node[below=3em of u0at23] (u1at23) {$ 0 $};
+			\node[below=3em of u0at23] (u1at23) {$ 1 $};
 			\node[below=3em of u0at24] (u1at24) {$ 0 $};
-			\node[below=3em of u0at34] (u1at34) {$ 1 $};
+			\node[below=3em of u0at34] (u1at34) {$ 0 $};
 			
 			\node[left=2em of u1at12] {$ u_1 $};
 			
 			% edges from u_0 to u_1
 			\draw[->, MagentaZB] (u0at12.south) -- (u1at12.north);
 			\draw[->, MagentaZB] (u0at13.south) -- (u1at13.north);
-			\draw[->, MagentaZB] (u0at14.south) -- (u1at23.north);
+			\draw[->, MagentaZB] (u0at14.south) -- (u1at24.north);
 			\draw[->, MagentaZB] (u0at23.south) -- (u1at14.north);
-			\draw[->, MagentaZB] (u0at24.south) -- (u1at24.north);
-			\draw[->, MagentaZB] (u0at34.south) -- (u1at34.north);
+			\draw[->, MagentaZB] (u0at24.south) -- (u1at34.north);
+			\draw[->, MagentaZB] (u0at34.south) -- (u1at23.north);
 			
 		\end{tikzpicture}
 	\end{center}\begin{itemize}
@@ -403,8 +362,7 @@
 		\item $ \rightsquigarrow $ The reduction is complete but not sound!
 	\end{itemize}
 
-	\pause\textbf{\textcolor{OliveGreenZB}{Solution}}: Define $ \Gamma $ to contain exactly those permutations that encode valid graph isomorphisms.
-
+	\textbf{\textcolor{OliveGreenZB}{Solution}}: Define $ \Gamma $ to contain exactly those permutations that are induced by permutations on vertices.
 \end{frame}
 
 %\textbf{Proof idea}: encode each graph into a string such that relabeling vertices corresponds to permuting characters of the string.
@@ -533,9 +491,9 @@
 		\{\id\} \trianglelefteq \Gamma_1 \trianglelefteq \Gamma_2 \trianglelefteq \dots \trianglelefteq \Gamma_k = \Gamma
 		\] where $ \Gamma_1, \dots, \Gamma_k $ are groups. A subnormal series is a \textit{composition series} of $ \Gamma $ if it is strictly increasing and every $ \Gamma_i/\Gamma_{i-1} $ is simple (factor groups $ \Gamma_i/\Gamma_{i-1} $ are called \textit{composition factors}).
 	\end{definition}
-	\vspace{-5pt}\begin{proposition}
+	\vspace{-5pt}\begin{theorem}[Jordan-H{\"o}lder]
 		Every finite group can be decomposed uniquely into its composition factors.
-	\end{proposition}
+	\end{theorem}
 	\vspace{-5pt}\begin{example}
 		The composition series of $ S_n $ is $ \{\id\} \trianglelefteq A_n \trianglelefteq S_n $. Thus, $ S_n $ can be decomposed as $ S_n \cong \Z_2 \rtimes A_n $.
 	\end{example}
