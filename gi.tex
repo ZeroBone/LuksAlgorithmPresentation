@@ -163,7 +163,7 @@
 		\item Unlike with $ \NP $-complete problems, the space of solutions to $ \GI $ has a lot of structure!
 		\item To see this, consider first the isomorphisms between a graph and itself (a.k.a. automorphisms)
 	\end{itemize}
-	
+	% TODO
 	
 \end{frame}
 
@@ -455,7 +455,7 @@
 
 \begin{frame}{$ \Gamma_d $-groups}
 	\begin{definition}[Luks]
-		A finite group $ G $ is a $ \Gamma_d $-group (notation: $ G \in \Gamma_d $) if every composition factor of $ G $ is isomorphic to some subgroup of $ S_d $.
+		A finite group $ \Gamma $ is a $ \Gamma_d $-group (notation: $ \Gamma \in \Gamma_d $) if every composition factor of $ \Gamma $ is isomorphic to some subgroup of $ S_d $.
 	\end{definition}
 
 	\begin{lemma}
@@ -484,16 +484,56 @@
 
 \begin{frame}{Proof of Luks's theorem}
 	\begin{tikzpicture}[thick]
+		\def\r{0.6}                % inner frontier base radius (around v)
+		\def\A{0.05}               % inner wave amplitude (radial)
+		\def\n{24}                 % number of waves (integer) for inner frontier
+		\def\R{3.5}                % radius of arc where the 5 vertices lie
+		\def\margin{0.35}    % margin for outer frontier
 		
-		\node[circle, draw] (v) at (0, 0) {$ v $};
+		\node[circle, draw] (v) at (0,0) {$ v $};
 		
-		\def\r{0.7}          % base radius
-		\def\A{0.05}         % wave amplitude (radial)
-		\def\n{24}           % number of waves (integer ensures closure)
-		\def\R{3.5}
+		% 5 vertices on the i-1 frontier
+		\def\angi{-40}
+		\def\angii{-20}
+		\def\angiii{0}
+		\def\angiv{20}
+		\def\angv{40}
 		
-		\draw[blue!70, thick, fill=blue!10, fill opacity=0.15, samples=200, domain=0:360, smooth, variable=\t]
+		% u_1
+		\coordinate (p1) at ({\R*cos(\angi)},{\R*sin(\angi)});
+		\node[circle, draw] (u1) at (p1) {$ u_1 $};
+		
+		% u_2
+		\coordinate (p2) at ({\R*cos(\angii)},{\R*sin(\angii)});
+		\node[circle, draw] (u2) at (p2) {$ u_2 $};
+
+		% u_3
+		\coordinate (p3) at ({\R*cos(\angiii)},{\R*sin(\angiii)});
+		\node[circle, draw] (u3) at (p3) {$ u_3 $};
+
+		% u_4		
+		\coordinate (pdots) at ({\R*cos(\angiv)},{\R*sin(\angiv)});
+		\node[rotate=20] (udots) at ($ (pdots) - (0.2,0) $) {$ \vdots $};
+
+		% u_5		
+		\coordinate (pk) at ({\R*cos(\angv)},{\R*sin(\angv)});
+		\node[circle, draw] (uk) at (pk) {$ u_k $};
+		
+		\draw[dashed, gray] (v)--(u1) (v)--(u2) (v)--(u3) (v)--(uk);
+		
+		% R_0
+		\draw[blue!70, thick, fill=blue!10, fill opacity=0.15,
+		samples=360, domain=0:360, smooth, variable=\t]
 		plot ({(\r + \A*sin(\n*\t)) * cos(\t)}, {(\r + \A*sin(\n*\t)) * sin(\t)});
+		
+		\node[below=0.3 of v, blue!70] {$ R_0 $};
+		
+		% i-1 frontier
+		\coordinate (aboveuk) at ($ (uk) + (0, 0.75) $);
+		\coordinate (belowu1) at ($ (u1) - (0, 0.75) $);
+		\coordinate (leftv) at ($ (v) - (0.5, 0) $);
+		
+		\draw[decorate,decoration={snake, amplitude=2pt, segment length=6pt}, blue!70] (aboveuk) to[out=-35, in=35] (belowu1);
 		
 	\end{tikzpicture}
 \end{frame}
