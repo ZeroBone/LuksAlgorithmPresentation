@@ -1,0 +1,135 @@
+\begin{tikzpicture}[thick]
+	\def\r{0.6}                % inner frontier base radius (around v)
+	\def\A{0.05}               % inner wave amplitude (radial)
+	\def\n{24}                 % number of waves (integer) for inner frontier
+	\def\R{3.5}                % radius of arc of the i-1 frontier
+	\def\Ri{5.5}                % radius of arc of the i frontier
+	\def\margin{0.35}    % margin for outer frontier
+	
+	% vertices on the i-1 frontier
+	\def\angi{-40}
+	\def\angii{-20}
+	\def\angiii{0}
+	\def\angiv{20}
+	\def\angv{40}
+	
+	% vertices on the i frontier
+	\def\iangi{-35}
+	\def\iangii{-25}
+	\def\iangiii{-15}
+	\def\iangiv{-5}
+	\def\iangv{5}
+	\def\iangvi{20}
+	\def\iangl{35}
+	
+	\if\drawv1
+	\node[circle, draw] (v) at (0,0) {$ v $};
+	\fi
+	
+	% u_1
+	\coordinate (p1) at ({\R*cos(\angi)},{\R*sin(\angi)});
+	\node[circle, draw] (u1) at (p1) {$ u_1 $};
+	
+	% u_2
+	\coordinate (p2) at ({\R*cos(\angii)},{\R*sin(\angii)});
+	\node[circle, draw] (u2) at (p2) {$ u_2 $};
+	
+	% u_3
+	\coordinate (p3) at ({\R*cos(\angiii)},{\R*sin(\angiii)});
+	\node[circle, draw] (u3) at (p3) {$ u_3 $};
+	
+	% dots		
+	\coordinate (pdots) at ({\R*cos(\angiv)},{\R*sin(\angiv)});
+	\node[rotate=20] (udots) at ($ (pdots) - (0.2,0) $) {$ \vdots $};
+	
+	% u_k		
+	\coordinate (pk) at ({\R*cos(\angv)},{\R*sin(\angv)});
+	\node[circle, draw] (uk) at (pk) {$ u_k $};
+	
+	\if\drawv1
+	\draw[dashed, gray] (v)--(u1) (v)--(u2) (v)--(u3) (v)--(uk);
+	\fi
+	
+	\if\drawv1
+	% R_0
+	\draw[blue!70, thick, fill=blue!10, fill opacity=0.15,
+	samples=360, domain=0:360, smooth, variable=\t]
+	plot ({(\r + \A*sin(\n*\t)) * cos(\t)}, {(\r + \A*sin(\n*\t)) * sin(\t)});
+	
+	\node[below=0.3 of v, blue!70] {$ R_0 $};
+	\fi
+	
+	% i-1 frontier
+	\coordinate (aboveuk) at ($ (uk) + (0, 0.75) $);
+	\coordinate (belowu1) at ($ (u1) - (0, 0.75) $);
+	% \coordinate (leftv) at ($ (v) - (0.5, 0) $);
+	
+	\draw[decorate,decoration={snake, amplitude=2pt, segment length=6pt}, blue!70] (aboveuk) to[out=-35, in=35] (belowu1);
+	\node[below=0.1 of belowu1, blue!70] {$ R_{i-1} $};
+	
+	% w_1
+	\coordinate (wp1) at ({\Ri*cos(\iangi)},{\Ri*sin(\iangi)});
+	\if\colorwnodes1
+	\node[circle, draw, fill=green!50] (w1) at (wp1) {$ w_1 $};
+	\else
+	\node[circle, draw] (w1) at (wp1) {$ w_1 $};
+	\fi
+	
+	% w_2
+	\coordinate (wp2) at ({\Ri*cos(\iangii)},{\Ri*sin(\iangii)});
+	\if\colorwnodes1
+	\node[circle, draw, fill=green!50] (w2) at (wp2) {$ w_2 $};
+	\else
+	\node[circle, draw] (w2) at (wp2) {$ w_2 $};
+	\fi
+	
+	% w_3
+	\coordinate (wp3) at ({\Ri*cos(\iangiii)},{\Ri*sin(\iangiii)});
+	\if\colorwnodes1
+	\node[circle, draw, fill=orange!50] (w3) at (wp3) {$ w_3 $};
+	\else
+	\node[circle, draw] (w3) at (wp3) {$ w_3 $};
+	\fi
+	
+	% w_4
+	\coordinate (wp4) at ({\Ri*cos(\iangiv)},{\Ri*sin(\iangiv)});
+	\if\colorwnodes1
+	\node[circle, draw, fill=MagentaZB!50] (w4) at (wp4) {$ w_4 $};
+	\else
+	\node[circle, draw] (w4) at (wp4) {$ w_4 $};
+	\fi
+	
+	% w_5
+	\coordinate (wp5) at ({\Ri*cos(\iangv)},{\Ri*sin(\iangv)});
+	\if\colorwnodes1
+	\node[circle, draw, fill=MagentaZB!50] (w5) at (wp5) {$ w_5 $};
+	\else
+	\node[circle, draw] (w5) at (wp5) {$ w_5 $};
+	\fi
+	
+	% dots
+	\coordinate (pwdots) at ({\Ri*cos(\iangvi)},{\Ri*sin(\iangvi)});
+	\node[rotate=20] (wdots) at ($ (pwdots) - (0.2,0) $) {$ \vdots $};
+	
+	% w_l
+	\coordinate (wpl) at ({\Ri*cos(\iangl)},{\Ri*sin(\iangl)});
+	\if\colorwnodes1
+	\node[circle, draw, fill=orange!50] (wl) at (wpl) {$ w_l $};
+	\else
+	\node[circle, draw] (wl) at (wpl) {$ w_l $};
+	\fi
+	
+	% i frontier
+	\coordinate (rightwl) at ($ (wpl) + (0.75, 0.25) $);
+	\coordinate (rightw1) at ($ (wp1) + (0.75, -0.25) $);
+	
+	\draw[decorate,decoration={snake, amplitude=2pt, segment length=6pt}, blue!70] (rightwl) to[out=-60, in=60] (rightw1);
+	\node[below=0.1 of rightw1, blue!70] {$ R_i $};
+	
+	% edges between level i-1 and i
+	\draw[DarkRedZB] (u1)--(w1) (u1)--(w2) (u2)--(w1) (u2)--(w2) (uk)--(w3) (u3)--(w4) (u3)--(w5) (uk)--(wl);
+	
+	\if\drawv1
+	\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] ($ (v.north west) + (0, 0.25) $) -- (uk.north) node[pos=0.95,left=25pt,black,rotate=35]{$ \le i-1 $ steps};
+	\fi
+\end{tikzpicture}
