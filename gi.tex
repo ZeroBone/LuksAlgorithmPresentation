@@ -459,8 +459,8 @@
 	\end{definition}
 
 	\begin{lemma}
-		Let $ G $ be finite group and $ N \trianglelefteq G $. Then \[
-			G \in \Gamma_d \iff N \in \Gamma_d \text{ and } G/N \in \Gamma_d
+		Let $ H $ be finite group and $ N \trianglelefteq H $. Then \[
+			H \in \Gamma_d \iff N \in \Gamma_d \text{ and } H/N \in \Gamma_d
 		\]
 	\end{lemma}
 \end{frame}
@@ -483,59 +483,117 @@
 \end{frame}
 
 \begin{frame}{Proof of Luks's theorem}
-	\begin{tikzpicture}[thick]
-		\def\r{0.6}                % inner frontier base radius (around v)
-		\def\A{0.05}               % inner wave amplitude (radial)
-		\def\n{24}                 % number of waves (integer) for inner frontier
-		\def\R{3.5}                % radius of arc where the 5 vertices lie
-		\def\margin{0.35}    % margin for outer frontier
-		
-		\node[circle, draw] (v) at (0,0) {$ v $};
-		
-		% 5 vertices on the i-1 frontier
-		\def\angi{-40}
-		\def\angii{-20}
-		\def\angiii{0}
-		\def\angiv{20}
-		\def\angv{40}
-		
-		% u_1
-		\coordinate (p1) at ({\R*cos(\angi)},{\R*sin(\angi)});
-		\node[circle, draw] (u1) at (p1) {$ u_1 $};
-		
-		% u_2
-		\coordinate (p2) at ({\R*cos(\angii)},{\R*sin(\angii)});
-		\node[circle, draw] (u2) at (p2) {$ u_2 $};
+	\begin{columns}
+		\begin{column}{0.65\textwidth}
+			\begin{tikzpicture}[thick]
+				\def\r{0.6}                % inner frontier base radius (around v)
+				\def\A{0.05}               % inner wave amplitude (radial)
+				\def\n{24}                 % number of waves (integer) for inner frontier
+				\def\R{3.5}                % radius of arc of the i-1 frontier
+				\def\Ri{5.5}                % radius of arc of the i frontier
+				\def\margin{0.35}    % margin for outer frontier
+				
+				\node[circle, draw] (v) at (0,0) {$ v $};
+				
+				% vertices on the i-1 frontier
+				\def\angi{-40}
+				\def\angii{-20}
+				\def\angiii{0}
+				\def\angiv{20}
+				\def\angv{40}
+				
+				% u_1
+				\coordinate (p1) at ({\R*cos(\angi)},{\R*sin(\angi)});
+				\node[circle, draw] (u1) at (p1) {$ u_1 $};
+				
+				% u_2
+				\coordinate (p2) at ({\R*cos(\angii)},{\R*sin(\angii)});
+				\node[circle, draw] (u2) at (p2) {$ u_2 $};
+				
+				% u_3
+				\coordinate (p3) at ({\R*cos(\angiii)},{\R*sin(\angiii)});
+				\node[circle, draw] (u3) at (p3) {$ u_3 $};
+				
+				% dots		
+				\coordinate (pdots) at ({\R*cos(\angiv)},{\R*sin(\angiv)});
+				\node[rotate=20] (udots) at ($ (pdots) - (0.2,0) $) {$ \vdots $};
+				
+				% u_k		
+				\coordinate (pk) at ({\R*cos(\angv)},{\R*sin(\angv)});
+				\node[circle, draw] (uk) at (pk) {$ u_k $};
+				
+				\draw[dashed, gray] (v)--(u1) (v)--(u2) (v)--(u3) (v)--(uk);
+				
+				% R_0
+				\draw[blue!70, thick, fill=blue!10, fill opacity=0.15,
+				samples=360, domain=0:360, smooth, variable=\t]
+				plot ({(\r + \A*sin(\n*\t)) * cos(\t)}, {(\r + \A*sin(\n*\t)) * sin(\t)});
+				
+				\node[below=0.3 of v, blue!70] {$ R_0 $};
+				
+				% i-1 frontier
+				\coordinate (aboveuk) at ($ (uk) + (0, 0.75) $);
+				\coordinate (belowu1) at ($ (u1) - (0, 0.75) $);
+				\coordinate (leftv) at ($ (v) - (0.5, 0) $);
+				
+				\draw[decorate,decoration={snake, amplitude=2pt, segment length=6pt}, blue!70] (aboveuk) to[out=-35, in=35] (belowu1);
+				
+				\node[below=0.1 of belowu1, blue!70] {$ R_{i-1} $};
+				
+				% vertices on the i frontier
+				\def\iangi{-20}
+				\def\iangii{-10}
+				\def\iangiii{0}
+				\def\iangiv{10}
+				\def\iangv{20}
+				
+				% w_1
+				\coordinate (wp1) at ({\Ri*cos(\iangi)},{\Ri*sin(\iangi)});
+				\node[circle, draw] (w1) at (wp1) {$ w_1 $};
+				
+				% u_2
+				\coordinate (wp2) at ({\Ri*cos(\iangii)},{\Ri*sin(\iangii)});
+				\node[circle, draw] (w2) at (wp2) {$ w_2 $};
+				
+				% u_3
+				\coordinate (wp3) at ({\Ri*cos(\iangiii)},{\Ri*sin(\iangiii)});
+				\node[circle, draw] (w3) at (wp3) {$ w_3 $};
+				
+			\end{tikzpicture}
+		\end{column}
+		\begin{column}{0.35\textwidth}  %%<--- here
+			Let $ R_i $ be a graph with \textbf{vertices}:
+			
+			$ w \in G $ such that $ d_G(v, w) \le i $ 
+			
+			\textbf{edges}:
+			
+			$ \{w_1, w_2\} \in G $ such that $ d_G(v, w_1) \le i - 1 $ and $ d_G(v, w_2) \le i $
+		\end{column}
+	\end{columns}
+\end{frame}
 
-		% u_3
-		\coordinate (p3) at ({\R*cos(\angiii)},{\R*sin(\angiii)});
-		\node[circle, draw] (u3) at (p3) {$ u_3 $};
+\begin{frame}{Proof of Luks's theorem (continued)}
+	We prove $ \Aut(R_i, v) \in \Gamma_d $ by induction on $ i $.
+	
+	\textbf{Base case} ($ i = 0 $): $ \Aut(R_0, v) = \{\id\} \in \Gamma_d $
+	
+	\textbf{Inductive step}:
+	
+	Since $ \sigma \in \Aut(R_i, v) $ must send vertices in $ V(R_{i-1}) $ to $ V(R_{i-1}) $, the map \begin{align*}
+		\varphi_i : \Aut(R_i, v) &\rightarrow \Aut(R_{i-1}, v)\\
+		\sigma &\mapsto \sigma\restrict{V(R_{i-1})}
+	\end{align*} is well-defined. By induction hypothesis $ \Aut(R_{i-1}, v) \in \Gamma_d $ and thus \[
+		\Aut(R_i, v)/\KernelOf(\varphi_i) \cong \ImageOf(\varphi_i) = \Aut(R_{i-1}, v) \in \Gamma_d
+	\] By the above lemma, it is sufficient to prove $ \KernelOf(\varphi_i) \in \Gamma_d $.
+\end{frame}
 
-		% u_4		
-		\coordinate (pdots) at ({\R*cos(\angiv)},{\R*sin(\angiv)});
-		\node[rotate=20] (udots) at ($ (pdots) - (0.2,0) $) {$ \vdots $};
-
-		% u_5		
-		\coordinate (pk) at ({\R*cos(\angv)},{\R*sin(\angv)});
-		\node[circle, draw] (uk) at (pk) {$ u_k $};
-		
-		\draw[dashed, gray] (v)--(u1) (v)--(u2) (v)--(u3) (v)--(uk);
-		
-		% R_0
-		\draw[blue!70, thick, fill=blue!10, fill opacity=0.15,
-		samples=360, domain=0:360, smooth, variable=\t]
-		plot ({(\r + \A*sin(\n*\t)) * cos(\t)}, {(\r + \A*sin(\n*\t)) * sin(\t)});
-		
-		\node[below=0.3 of v, blue!70] {$ R_0 $};
-		
-		% i-1 frontier
-		\coordinate (aboveuk) at ($ (uk) + (0, 0.75) $);
-		\coordinate (belowu1) at ($ (u1) - (0, 0.75) $);
-		\coordinate (leftv) at ($ (v) - (0.5, 0) $);
-		
-		\draw[decorate,decoration={snake, amplitude=2pt, segment length=6pt}, blue!70] (aboveuk) to[out=-35, in=35] (belowu1);
-		
-	\end{tikzpicture}
+\begin{frame}{Proof of Luks's theorem (continued)}
+	\textbf{To show}: $ \KernelOf(\varphi_i) \in \Gamma_d $
+	
+	Observation: \[
+		\KernelOf(\varphi_i) = \{\sigma \in \Aut(R_i, v) \mid \sigma(u) = u\ \forall u \in V(R_{i-1})\}
+	\]
 \end{frame}
 
 \begin{frame}{Solving $ \GI$ for bounded-degree graphs}
