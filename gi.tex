@@ -725,13 +725,169 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}{Blocks of $ \Gamma = D_6 $ acting on $ \Omega := \{1,2,3,4,5,6\} $}
-	A \textit{block} is a set $ \varnothing \neq \Delta \subseteq \Omega $ such that for every $ \gamma \in \Gamma $\begin{itemize}
-		\item $ \gamma \cdot \Delta = \Delta $ \textbf{or}
-		\item $ \gamma \cdot \Delta \cap \Delta = \varnothing $
-	\end{itemize}
-	In the present example $ \{2, 4, 6\} $ and $ \{1, 4\} $ are blocks:
-	
+\begin{frame}{But not all subsets have this behavior}
+	Consider $ \{1, 3\} \subseteq \Omega $.
+	\begin{center}
+		\begin{tikzpicture}[scale=1, thick]
+			\begin{scope}[shift={(-2.75,0)}]
+				% hexagon vertices
+				\coordinate (v1) at ({90 - (0)*60}:2);
+				\coordinate (v2) at ({90 - (1)*60}:2);
+				\coordinate (v3) at ({90 - (2)*60}:2);
+				\coordinate (v4) at ({90 - (3)*60}:2);
+				\coordinate (v5) at ({90 - (4)*60}:2);
+				\coordinate (v6) at ({90 - (5)*60}:2);
+				
+				% hexagon
+				\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--(v6)--cycle;
+				
+				% labels
+				\node[font=\small] (l1) at ({90 - (0)*60}:2.3) {1};
+				\node[font=\small] (l2) at ({90 - (1)*60}:2.3) {2};
+				\node[font=\small] (l3) at ({90 - (2)*60}:2.3) {3};
+				\node[font=\small] (l4) at ({90 - (3)*60}:2.3) {4};
+				\node[font=\small] (l5) at ({90 - (4)*60}:2.3) {5};
+				\node[font=\small] (l6) at ({90 - (5)*60}:2.3) {6};
+				
+				% flip around 1--4 axis
+				\draw[dashed, LightBlueZB] (v1) -- (v4);
+				
+				% block failure visualization
+				\draw[very thick, red!80] (v1)--(v3);
+				\filldraw[red!80] (v1) circle (3pt);
+				\filldraw[red!80] (v3) circle (3pt);
+			\end{scope}
+			\begin{scope}[shift={(2.75,0)}]
+				% hexagon vertices
+				\coordinate (v1) at ({90 - (0)*60}:2);
+				\coordinate (v2) at ({90 - (1)*60}:2);
+				\coordinate (v3) at ({90 - (2)*60}:2);
+				\coordinate (v4) at ({90 - (3)*60}:2);
+				\coordinate (v5) at ({90 - (4)*60}:2);
+				\coordinate (v6) at ({90 - (5)*60}:2);
+				
+				% hexagon
+				\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--(v6)--cycle;
+				
+				% labels
+				\node[font=\small] (l1) at ({90 - (0)*60}:2.3) {1};
+				\node[font=\small] (l2) at ({90 - (1)*60}:2.3) {2};
+				\node[font=\small] (l3) at ({90 - (2)*60}:2.3) {3};
+				\node[font=\small] (l4) at ({90 - (3)*60}:2.3) {4};
+				\node[font=\small] (l5) at ({90 - (4)*60}:2.3) {5};
+				\node[font=\small] (l6) at ({90 - (5)*60}:2.3) {6};
+				
+				% flip around 1--4 axis
+				\draw[dashed, LightBlueZB] (v1) -- (v4);
+				
+				% block failure visualization
+				\draw[very thick, red!80] (v1)--(v5);
+				\filldraw[red!80] (v1) circle (3pt);
+				\filldraw[red!80] (v5) circle (3pt);
+			\end{scope}
+		
+			\draw[->] (-.5,0) --node[midway, above]{$ \textcolor{LightBlueZB}{f} $} (.5,0);
+		\end{tikzpicture}
+	\end{center}
+	Then $ \textcolor{LightBlueZB}{f} \cdot \{1, 3\} = \{1, 5\} $ neither permutes nor translates $ \{1, 3\} $
+\end{frame}
+
+\begin{frame}{Blocks and block systems}
+	% We capture this behavior rigorously:
+	\begin{center}
+		\vspace{-5pt}\begin{columns}
+			\begin{column}{0.6\textwidth}
+				\begin{itemize}
+					\item Let $ \cdot : \Gamma \times \Omega \rightarrow \Omega $ be an action
+					\item A \textit{block} is a set $ \varnothing \neq \Delta \subseteq \Omega $ such that for every $ \gamma \in \Gamma $\begin{itemize}
+						\item $ \gamma \cdot \Delta = \Delta $ \textbf{or}
+						\item $ (\gamma \cdot \Delta) \cap \Delta = \varnothing $
+					\end{itemize}
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.4\textwidth}
+				\begin{itemize}
+					\item A \textit{block system} of a block $ \Delta $ is the set $ \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} $
+					\item \textit{Trivial blocks}: $ \Omega $ and $ \{\omega\} $ for $ \omega \in \Omega $
+				\end{itemize}
+			\end{column}
+		\end{columns}
+	\end{center}
+	\textbf{Running example}:
+	\vspace{-10pt}\begin{center}
+		\begin{tikzpicture}[scale=.8, thick]
+			\begin{scope}[shift={(-3,0)}]
+				% hexagon vertices
+				\coordinate (v1) at ({90 - (0)*60}:2);
+				\coordinate (v2) at ({90 - (1)*60}:2);
+				\coordinate (v3) at ({90 - (2)*60}:2);
+				\coordinate (v4) at ({90 - (3)*60}:2);
+				\coordinate (v5) at ({90 - (4)*60}:2);
+				\coordinate (v6) at ({90 - (5)*60}:2);
+				
+				% hexagon
+				\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--(v6)--cycle;
+				
+				% labels
+				\node[font=\small] (l1) at ({90 - (0)*60}:2.3) {1};
+				\node[font=\small] (l2) at ({90 - (1)*60}:2.3) {2};
+				\node[font=\small] (l3) at ({90 - (2)*60}:2.3) {3};
+				\node[font=\small] (l4) at ({90 - (3)*60}:2.3) {4};
+				\node[font=\small] (l5) at ({90 - (4)*60}:2.3) {5};
+				\node[font=\small] (l6) at ({90 - (5)*60}:2.3) {6};
+				
+				% block system visualization
+				% first set
+				\draw[very thick, red!80] (v1)--(v4);
+				\filldraw[red!80] (v1) circle (3pt);
+				\filldraw[red!80] (v4) circle (3pt);
+				% second set
+				\draw[very thick, OliveGreenZB!80] (v2)--(v5);
+				\filldraw[OliveGreenZB!80] (v2) circle (3pt);
+				\filldraw[OliveGreenZB!80] (v5) circle (3pt);
+				% third set
+				\draw[very thick, blue!80] (v3)--(v6);
+				\filldraw[blue!80] (v3) circle (3pt);
+				\filldraw[blue!80] (v6) circle (3pt);
+				
+				\node[below=-.1 of l4] {$ \{\textcolor{red!80}{\{1,4\}},\textcolor{OliveGreenZB!80}{\{2,5\}},\textcolor{blue!80}{\{3,6\}}\} $};
+			\end{scope}
+			\begin{scope}[shift={(3,0)}]
+				% hexagon vertices
+				\coordinate (v1) at ({90 - (0)*60}:2);
+				\coordinate (v2) at ({90 - (1)*60}:2);
+				\coordinate (v3) at ({90 - (2)*60}:2);
+				\coordinate (v4) at ({90 - (3)*60}:2);
+				\coordinate (v5) at ({90 - (4)*60}:2);
+				\coordinate (v6) at ({90 - (5)*60}:2);
+				
+				% hexagon
+				\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--(v6)--cycle;
+				
+				% labels
+				\node[font=\small] (l1) at ({90 - (0)*60}:2.3) {1};
+				\node[font=\small] (l2) at ({90 - (1)*60}:2.3) {2};
+				\node[font=\small] (l3) at ({90 - (2)*60}:2.3) {3};
+				\node[font=\small] (l4) at ({90 - (3)*60}:2.3) {4};
+				\node[font=\small] (l5) at ({90 - (4)*60}:2.3) {5};
+				\node[font=\small] (l6) at ({90 - (5)*60}:2.3) {6};
+				
+				% block system visualization
+				% first set
+				\draw[very thick, blue!80] (v1)--(v3)--(v5)--cycle;
+				\filldraw[blue!80] (v1) circle (3pt);
+				\filldraw[blue!80] (v3) circle (3pt);
+				\filldraw[blue!80] (v5) circle (3pt);
+				% second set
+				\draw[very thick, red!80] (v4)--(v6)--(v2)--cycle;
+				\filldraw[red!80] (v4) circle (3pt);
+				\filldraw[red!80] (v6) circle (3pt);
+				\filldraw[red!80] (v2) circle (3pt);
+				
+				\node[below=-.1 of l4] {$ \{\textcolor{red!80}{\{2,4,6\}},\textcolor{blue!80}{\{1,3,5\}}\} $};
+			\end{scope}
+		\end{tikzpicture}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Solving $ \GI$ for bounded-degree graphs}
