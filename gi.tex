@@ -170,7 +170,7 @@
 \input{four_vertex_graph_iso_classes}
 
 \begin{frame}{Automorphism groups as stabilizers}
-	\textbf{Observation}: $ \Aut(G) $ is the stabilizer of $ G $ in the vertex renaming operation of $ \Sym(V(G)) $ on the set of all graphs with vertices $ V(G) $.
+	\textbf{Observation}: $ \Aut(G) $ is the stabilizer of $ G $ in the vertex renaming action of $ \Sym(V(G)) $ on the set of all graphs with vertices $ V(G) $.
 	
 	\textbf{Visualization for $ V(G) = \{1,2,3,4\} $}:\begin{center}
 		\setlength{\extrarowheight}{3pt}
@@ -552,7 +552,6 @@
 \end{frame}
 
 \begin{frame}{Effectivizing Luks's theorem}
-	
 	The level-driven construction in the proof of Luks's theorem can be turned into an algorithm for $ \GI $:
 	
 	\begin{theorem}[Babai, Luks]
@@ -573,11 +572,163 @@
 	\end{columns}
 \end{frame}
 
+\begin{frame}{Blocks of group actions}
+	\begin{columns}
+		\begin{column}{0.4\textwidth}
+			\begin{tikzpicture}[scale=1, thick]
+				
+				% hexagon vertices
+				\coordinate (v1) at ({90 - (0)*60}:2);
+				\coordinate (v2) at ({90 - (1)*60}:2);
+				\coordinate (v3) at ({90 - (2)*60}:2);
+				\coordinate (v4) at ({90 - (3)*60}:2);
+				\coordinate (v5) at ({90 - (4)*60}:2);
+				\coordinate (v6) at ({90 - (5)*60}:2);
+				
+				% hexagon
+				\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--(v6)--cycle;
+				
+				% labels
+				\node[font=\small] (l1) at ({90 - (0)*60}:2.3) {1};
+				\node[font=\small] (l2) at ({90 - (1)*60}:2.3) {2};
+				\node[font=\small] (l3) at ({90 - (2)*60}:2.3) {3};
+				\node[font=\small] (l4) at ({90 - (3)*60}:2.3) {4};
+				\node[font=\small] (l5) at ({90 - (4)*60}:2.3) {5};
+				\node[font=\small] (l6) at ({90 - (5)*60}:2.3) {6};
+				
+				% 60 degree rotation arrows
+				\draw[->, bend left=20, OliveGreenZB] (l1) to node[midway, above] {$ r $} (l2);
+				\draw[->, bend left=20, OliveGreenZB] (l2) to (l3);
+				\draw[->, bend left=20, OliveGreenZB] (l3) to (l4);
+				\draw[->, bend left=20, OliveGreenZB] (l4) to (l5);
+				\draw[->, bend left=20, OliveGreenZB] (l5) to (l6);
+				\draw[->, bend left=20, OliveGreenZB] (l6) to (l1);
+				
+				% flip around 1--4 axis
+				\draw[<->, LightBlueZB] ($ (l6.east) + (1,0) $) to node[midway, above] {$ f $} ($ (l2.west) - (1,0) $);
+				\draw[<->, LightBlueZB] ($ (l5.east) + (1,0) $) to ($ (l3.west) - (1,0) $);
+			\end{tikzpicture}
+		\end{column}
+		\begin{column}{0.6\textwidth}
+			\begin{itemize}
+				\item Let $ \Gamma \le S_6 $ be the symmetry group of the hexagon
+				\item $ \Gamma = \gen{\textcolor{OliveGreenZB}{r}, \textcolor{LightBlueZB}{f}} $ where $ \textcolor{OliveGreenZB}{r} := \textcolor{OliveGreenZB}{(1\,2\,3\,4\,5\,6)} $ and $ \textcolor{LightBlueZB}{f} := \textcolor{LightBlueZB}{(6\,2)(5\,3)} $
+				\item $ \Gamma $ acts on $ \Omega := \{1,2,3,4,5,6\} $ via $ \gamma \cdot \omega := \gamma(\omega) $
+				\item A \textit{block} is a set $ \varnothing \neq \Delta \subseteq \Omega $ such that for every $ \gamma \in \Gamma $\begin{itemize}
+					\item $ \gamma \cdot \Delta = \Delta $ \textbf{or}
+					\item $ \gamma \cdot \Delta \cap \Delta = \varnothing $
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Blocks of $ \Gamma = D_6 $ acting on $ \Omega := \{1,2,3,4,5,6\} $}
+	A \textit{block} is a set $ \varnothing \neq \Delta \subseteq \Omega $ such that for every $ \gamma \in \Gamma $\begin{itemize}
+		\item $ \gamma \cdot \Delta = \Delta $ \textbf{or}
+		\item $ \gamma \cdot \Delta \cap \Delta = \varnothing $
+	\end{itemize}
+	In the present example $ \{2, 4, 6\} $ and $ \{1, 4\} $ are blocks:
+	\begin{center}
+		\begin{tikzpicture}[scale=1, thick]
+			\begin{scope}[shift={(-2.75,0)}]
+				% hexagon vertices
+				\coordinate (v1) at ({90 - (0)*60}:2);
+				\coordinate (v2) at ({90 - (1)*60}:2);
+				\coordinate (v3) at ({90 - (2)*60}:2);
+				\coordinate (v4) at ({90 - (3)*60}:2);
+				\coordinate (v5) at ({90 - (4)*60}:2);
+				\coordinate (v6) at ({90 - (5)*60}:2);
+				
+				% hexagon
+				\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--(v6)--cycle;
+				
+				% labels
+				\node[font=\small] (l1) at ({90 - (0)*60}:2.3) {1};
+				\node[font=\small] (l2) at ({90 - (1)*60}:2.3) {2};
+				\node[font=\small] (l3) at ({90 - (2)*60}:2.3) {3};
+				\node[font=\small] (l4) at ({90 - (3)*60}:2.3) {4};
+				\node[font=\small] (l5) at ({90 - (4)*60}:2.3) {5};
+				\node[font=\small] (l6) at ({90 - (5)*60}:2.3) {6};
+				
+				% 60 degree rotation arrows
+				\draw[->, bend left=20, OliveGreenZB] (l1) to (l2);
+				\draw[->, bend left=20, OliveGreenZB] (l2) to (l3);
+				\draw[->, bend left=20, OliveGreenZB] (l3) to (l4);
+				\draw[->, bend left=20, OliveGreenZB] (l4) to (l5);
+				\draw[->, bend left=20, OliveGreenZB] (l5) to (l6);
+				\draw[->, bend left=20, OliveGreenZB] (l6) to (l1);
+				
+				% flip around 1--4 axis
+				\draw[dashed, LightBlueZB] (v1) -- (v4);
+				\draw[dashed, LightBlueZB] ($ (v1)!0.5!(v2) $) -- ($ (v4)!0.5!(v5) $);
+				\draw[dashed, LightBlueZB] (v2) -- (v5);
+				\draw[dashed, LightBlueZB] ($ (v2)!0.5!(v3) $) -- ($ (v5)!0.5!(v6) $);
+				\draw[dashed, LightBlueZB] (v3) -- (v6);
+				\draw[dashed, LightBlueZB] ($ (v3)!0.5!(v4) $) -- ($ (v6)!0.5!(v1) $);
+				
+				% block visualization
+				\draw[very thick, red!80] (v4)--(v6)--(v2)--cycle;
+				\filldraw[red!80] (v4) circle (3pt);
+				\filldraw[red!80] (v6) circle (3pt);
+				\filldraw[red!80] (v2) circle (3pt);
+			\end{scope}
+			\begin{scope}[shift={(2.75,0)}]
+				% hexagon vertices
+				\coordinate (v1) at ({90 - (0)*60}:2);
+				\coordinate (v2) at ({90 - (1)*60}:2);
+				\coordinate (v3) at ({90 - (2)*60}:2);
+				\coordinate (v4) at ({90 - (3)*60}:2);
+				\coordinate (v5) at ({90 - (4)*60}:2);
+				\coordinate (v6) at ({90 - (5)*60}:2);
+				
+				% hexagon
+				\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--(v6)--cycle;
+				
+				% labels
+				\node[font=\small] (l1) at ({90 - (0)*60}:2.3) {1};
+				\node[font=\small] (l2) at ({90 - (1)*60}:2.3) {2};
+				\node[font=\small] (l3) at ({90 - (2)*60}:2.3) {3};
+				\node[font=\small] (l4) at ({90 - (3)*60}:2.3) {4};
+				\node[font=\small] (l5) at ({90 - (4)*60}:2.3) {5};
+				\node[font=\small] (l6) at ({90 - (5)*60}:2.3) {6};
+				
+				% 60 degree rotation arrows
+				\draw[->, bend left=20, OliveGreenZB] (l1) to (l2);
+				\draw[->, bend left=20, OliveGreenZB] (l2) to (l3);
+				\draw[->, bend left=20, OliveGreenZB] (l3) to (l4);
+				\draw[->, bend left=20, OliveGreenZB] (l4) to (l5);
+				\draw[->, bend left=20, OliveGreenZB] (l5) to (l6);
+				\draw[->, bend left=20, OliveGreenZB] (l6) to (l1);
+				
+				% flip around 1--4 axis
+				\draw[dashed, LightBlueZB] (v1) -- (v4);
+				\draw[dashed, LightBlueZB] ($ (v1)!0.5!(v2) $) -- ($ (v4)!0.5!(v5) $);
+				\draw[dashed, LightBlueZB] (v2) -- (v5);
+				\draw[dashed, LightBlueZB] ($ (v2)!0.5!(v3) $) -- ($ (v5)!0.5!(v6) $);
+				\draw[dashed, LightBlueZB] (v3) -- (v6);
+				\draw[dashed, LightBlueZB] ($ (v3)!0.5!(v4) $) -- ($ (v6)!0.5!(v1) $);
+				
+				% block visualization
+				\draw[very thick, red!80] (v1)--(v4);
+				\filldraw[red!80] (v1) circle (3pt);
+				\filldraw[red!80] (v4) circle (3pt);
+			\end{scope}
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
 \begin{frame}{Solving $ \GI$ for bounded-degree graphs}
 	By combining this result with the idea of the reduction $ \GI \le_m^p \SI $ that we proved earlier, alongside other insights, one can show: 
 
 	Building upon this result (and numerous other ones), Luks has proved: \begin{theorem}[Luks]
 		$ \GI $ for graphs of maximum degree $ d $ can be solved in time $ n^{O(d)} $.
+	\end{theorem}
+\end{frame}
+
+\begin{frame}{TODO}
+	\begin{theorem}[Babai, Cameron, P\'{a}lfy]
+		For every $ d \in \Npos $ there exists $ c \in \R $ such that every primitive $ \Gamma_d $-group $ \Gamma \le S_n $ has order at most $ n^c $.
 	\end{theorem}
 \end{frame}
 
