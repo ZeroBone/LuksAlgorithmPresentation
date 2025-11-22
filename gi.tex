@@ -200,7 +200,7 @@
 		\begin{columns}
 			\begin{column}{0.4\textwidth}
 				\begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2.5cm}}
-					Orbit&Stabilizer of \textcolor{yellow!90!black}{$ G $}\\
+					Orbit&Stabilizer of \textcolor{yellow!70!black}{$ G $}\\
 					\hline\vspace{1pt}\orbitOne&$ S_4 $\\
 					\hline\vspace{1pt}\orbitTwo&$ S_4 $\\
 					\hline\vspace{1pt}\orbitThree&$ \gen{(1\,3)} $\\
@@ -211,7 +211,7 @@
 			\end{column}
 			\begin{column}{0.4\textwidth}
 				\begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2.5cm}}
-					Orbit&Stabilizer of \textcolor{yellow!90!black}{$ G $}\\
+					Orbit&Stabilizer of \textcolor{yellow!70!black}{$ G $}\\
 					\hline\vspace{1pt}\orbitSeven&$ \gen{(1\,4)(2\,3)} $\\
 					\hline\vspace{1pt}\orbitEight&$ S_3 $\\
 					\hline\vspace{1pt}\orbitNine&$ S_3 $\\
@@ -729,7 +729,7 @@
 				\draw[->, bend left=20, OliveGreenZB] (l5) to (l6);
 				\draw[->, bend left=20, OliveGreenZB] (l6) to (l1);
 				
-				% flip around 1--4 axis
+				% flip symmetries
 				\draw[dashed, LightBlueZB] (v1) -- (v4);
 				\draw[dashed, LightBlueZB] ($ (v1)!0.5!(v2) $) -- ($ (v4)!0.5!(v5) $);
 				\draw[dashed, LightBlueZB] (v2) -- (v5);
@@ -840,7 +840,7 @@
 			\end{column}
 		\end{columns}
 	\end{center}
-	\textbf{Running example} -- block systems of non-trivial blocks:
+	Block systems of non-trivial blocks in above example:
 	\vspace{-5pt}\begin{center}
 		\begin{tikzpicture}[scale=.8, thick]
 			\begin{scope}[shift={(-3,0)}]
@@ -919,11 +919,122 @@
 
 \begin{frame}{Primitive actions and groups}
 	\begin{itemize}
-		\item A block $ \Delta $ (and $ \Delta $'s block system) is called \textit{minimal} if there is no non-trivial block $ \Delta' \supseteq \Delta $
-		\item Running example: $ \{\textcolor{red!80}{\{1,4\}},\textcolor{OliveGreenZB!80}{\{2,5\}},\textcolor{blue!80}{\{3,6\}}\} $ and $ \{\textcolor{red!80}{\{2,4,6\}},\textcolor{blue!80}{\{1,3,5\}}\} $ are minimal but $ \{\{1\}, \{2\}, \{3\}, \{4\}, \{5\}, \{6\}\} $ is not
+		\item A block $ \Delta $ (and $ \Delta $'s block system) is called \textit{minimal} if there is no non-trivial block $ \Delta' \supsetneq \Delta $
+		\item Above example: $ \{\textcolor{red!80}{\{1,4\}},\textcolor{OliveGreenZB!80}{\{2,5\}},\textcolor{blue!80}{\{3,6\}}\} $ and $ \{\textcolor{red!80}{\{2,4,6\}},\textcolor{blue!80}{\{1,3,5\}}\} $ are minimal but $ \{\{1\}, \{2\}, \{3\}, \{4\}, \{5\}, \{6\}\} $ is not
 		\item An action $ \cdot : \Gamma \times \Omega \rightarrow \Omega $ of $ \Gamma $ on $ \Omega $ is called \textit{primitive} if it is transitive and has no non-trivial blocks
 		\item A group $ \Gamma \le \Sym(\Omega) $ is called \textit{primitive} if the natural action of $ \Gamma $ on $ \Omega $ (namely $ \gamma \cdot \omega := \gamma(\omega) $) is primitive
 	\end{itemize}
+	\begin{center}
+		\begin{columns}
+			\begin{column}{0.5\textwidth}
+				\textbf{Example}:\begin{itemize}
+					\item The symmetry group of the pentagon is primitive
+					\item Indeed, any non-trivial block system would imply a factorization of $ 5 = \abs{\Omega} $
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.4\textwidth}
+				\begin{tikzpicture}[scale=.8, thick]
+					% pentagon vertices
+					\coordinate (v1) at ({90 - (0)*72}:2);
+					\coordinate (v2) at ({90 - (1)*72}:2);
+					\coordinate (v3) at ({90 - (2)*72}:2);
+					\coordinate (v4) at ({90 - (3)*72}:2);
+					\coordinate (v5) at ({90 - (4)*72}:2);
+					
+					% labels
+					\node[font=\small] (l1) at ({90 - (0)*72}:2.3) {1};
+					\node[font=\small] (l2) at ({90 - (1)*72}:2.3) {2};
+					\node[font=\small] (l3) at ({90 - (2)*72}:2.3) {3};
+					\node[font=\small] (l4) at ({90 - (3)*72}:2.3) {4};
+					\node[font=\small] (l5) at ({90 - (4)*72}:2.3) {5};
+					
+					% 60 degree rotation arrows
+					\draw[->, bend left=20, OliveGreenZB] (l1) to (l2);
+					\draw[->, bend left=20, OliveGreenZB] (l2) to (l3);
+					\draw[->, bend left=20, OliveGreenZB] (l3) to (l4);
+					\draw[->, bend left=20, OliveGreenZB] (l4) to (l5);
+					\draw[->, bend left=20, OliveGreenZB] (l5) to (l1);
+					
+					% flip symmetries
+					\draw[dashed, LightBlueZB] (v1)--($ (v3)!0.5!(v4) $);
+					\draw[dashed, LightBlueZB] (v2)--($ (v4)!0.5!(v5) $);
+					\draw[dashed, LightBlueZB] (v3)--($ (v5)!0.5!(v1) $);
+					\draw[dashed, LightBlueZB] (v4)--($ (v1)!0.5!(v2) $);
+					\draw[dashed, LightBlueZB] (v5)--($ (v2)!0.5!(v3) $);
+					
+					% pentagon
+					\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--cycle;
+				\end{tikzpicture}
+			\end{column}
+		\end{columns}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Lifting actions from elements to blocks}
+	\begin{center}
+		\begin{columns}
+			\begin{column}{0.6\textwidth}
+				\begin{itemize}
+					\item Let $ \cdot : \Gamma \times \Omega \rightarrow \Omega $ be an action of group $ \Gamma $ on a set $ \Omega $
+					\item Let $ \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} $ be a block system of some block $ \Delta \subseteq \Omega $
+					\item Then $ \cdot $ induces an action \begin{align*}
+						\diamond : \Gamma \times \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} &\rightarrow \{\gamma \cdot \Delta \mid \gamma \in \Gamma\}\\
+						\gamma' \diamond (\gamma \cdot \Delta) &:= (\gamma'\gamma) \cdot \Delta
+					\end{align*} on the set of blocks!
+					\item Thus, $ \diamond $ gives a homomorphism $ \psi : \Gamma \rightarrow \Sym(\{\gamma \cdot \Delta \mid \gamma \in \Gamma\}) $
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.4\textwidth}
+				\begin{tikzpicture}[scale=1, thick]
+					% hexagon vertices
+					\coordinate (v1) at ({90 - (0)*60}:2);
+					\coordinate (v2) at ({90 - (1)*60}:2);
+					\coordinate (v3) at ({90 - (2)*60}:2);
+					\coordinate (v4) at ({90 - (3)*60}:2);
+					\coordinate (v5) at ({90 - (4)*60}:2);
+					\coordinate (v6) at ({90 - (5)*60}:2);
+					
+					% fr symmetry
+					\coordinate (frp1) at ({90 + (1)*30}:2.5);
+					\coordinate (frp2) at ({90 - (5)*30}:2.5);
+					\draw[dashed, MagentaZB] (frp1)--(frp2);
+					\node[right=.1 of frp1] {$ \textcolor{MagentaZB}{fr} $};
+					
+					% hexagon
+					\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--(v6)--cycle;
+					
+					% labels
+					\node[font=\small] (l1) at ({90 - (0)*60}:2.3) {1};
+					\node[font=\small] (l2) at ({90 - (1)*60}:2.3) {2};
+					\node[font=\small] (l3) at ({90 - (2)*60}:2.3) {3};
+					\node[font=\small] (l4) at ({90 - (3)*60}:2.3) {4};
+					\node[font=\small] (l5) at ({90 - (4)*60}:2.3) {5};
+					\node[font=\small] (l6) at ({90 - (5)*60}:2.3) {6};
+					
+					% r symmetry
+					\draw[->, bend left=20, gray] (l1) to node[midway, above] {$ r $} (l2);
+					
+					% block system visualization
+					% first set
+					\draw[very thick, red!80] (v1)--(v4);
+					\filldraw[red!80] (v1) circle (3pt);
+					\filldraw[red!80] (v4) circle (3pt);
+					% second set
+					\draw[very thick, OliveGreenZB!80] (v2)--(v5);
+					\filldraw[OliveGreenZB!80] (v2) circle (3pt);
+					\filldraw[OliveGreenZB!80] (v5) circle (3pt);
+					% third set
+					\draw[very thick, blue!80] (v3)--(v6);
+					\filldraw[blue!80] (v3) circle (3pt);
+					\filldraw[blue!80] (v6) circle (3pt);
+					
+					\node[below=-.1 of l4] (blocksystem) {$ \{\textcolor{red!80}{\underbrace{\{1,4\}}_{\Delta}},\textcolor{OliveGreenZB!80}{\underbrace{\{2,5\}}_{r\cdot\Delta}},\textcolor{blue!80}{\underbrace{\{3,6\}}_{r^2\cdot\Delta}}\} $};
+					\node[below=0 of blocksystem] (ex1) {$ \textcolor{gray}{r} \diamond \textcolor{red!80}{\{1,4\}} = \textcolor{OliveGreenZB!80}{\{2,5\}} $};
+					\node[below=0 of ex1] {$ \textcolor{MagentaZB}{fr} \diamond \textcolor{red!80}{\{1,4\}} = \textcolor{blue!80}{\{3,6\}} $};
+				\end{tikzpicture}
+			\end{column}
+		\end{columns}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Solving $ \GI$ for bounded-degree graphs}
