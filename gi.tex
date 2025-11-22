@@ -17,7 +17,7 @@
 \usepackage[sanserif]{complexity}
 
 % Algorithms
-\usepackage[ruled]{algorithm2e}
+\usepackage[plain]{algorithm2e}
 \SetKw{Continue}{continue}
 \SetKwIF{If}{ElseIf}{Else}{if}{then}{else if}{else}{} % removes "end" at the end of if statements
 
@@ -1178,31 +1178,35 @@
 \end{frame}
 
 \begin{frame}{Luks's algorithm}
-	\begin{algorithm}[H]
-		%\caption{Luks's algorithm}
-		\SetAlgoLined
-		\KwIn{Strings $ u, v : D \rightarrow \Sigma $, a coset $ \Gamma\sigma $ where $ \Gamma \le \Sym(D) $ and $ \sigma \in \Sym(D) $, and a $ \Gamma $-invariant set $ \Omega \subseteq D $}
-		\KwOut{Coset representation of $ \{\delta \in \Gamma\sigma \mid u(\omega) = v(\omega)\ \forall \omega \in \Omega\} $}
-		\SetKwFunction{luks}{striso}
-		\SetKwProg{luksproc}{Function}{}{end}
-		\luksproc{\luks{$ u $, $ v $, $ \Gamma\sigma $, $ \Omega $}}{
-			\nl\If{$ \sigma \neq \id $}{
-				\nl \Return TODO\;
-			}
-			\nl\If{$ \abs{\Omega} = 1 $}{
-				\nl \Return TODO\;
-			}
-			\nl\If{the action of $ \Gamma $ on $ \Omega $ is not transitive}{
-				\nl Compute an orbit $ \Omega' \subsetneq \Omega $\;
-				\nl $ \Gamma'\sigma' := \luks(u, v, \Gamma\sigma, \Omega') $\;
-				\nl \Return $ \luks(u, v, \Gamma'\sigma', \Omega \setminus \Omega') $\;
-			}
-			\nl Compute a minimal block $ \Delta $ of the action of $ \Gamma $ on $ \Omega $ and the associated block system $ \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} $\;
-			\nl Compute $ \KernelOf(\psi_\Delta) $\;
-			\nl Compute a transversal $ T $ of $ \KernelOf(\psi_\Delta) $ in $ \Gamma $\;
-			\nl \Return $ \luks(u, v, \Gamma'\sigma', \Omega \setminus \Omega') $\;
-		}
-	\end{algorithm}
+	\scalebox{0.85}{
+		\begin{minipage}{\linewidth}
+			\begin{algorithm}[H]
+				\SetAlgoLined
+				\KwIn{Strings $ u, v : D \rightarrow \Sigma $, a coset $ \Gamma\sigma $ (where $ \Gamma \le \Sym(D) $ and $ \sigma \in \Sym(D) $) and a $ \Gamma $-invariant set $ \Omega \subseteq D $}
+				\KwOut{$ \{\delta \in \Gamma\sigma \mid u(\omega) = v(\omega)\ \forall \omega \in \Omega\} $ represented as a coset}
+				\SetKwFunction{luks}{striso}
+				\SetKwProg{luksproc}{Function}{}{end}
+				\luksproc{\luks{$ u $, $ v $, $ \Gamma\sigma $, $ \Omega $}}{
+					\nl\If{$ \sigma \neq \id $}{
+						\nl \Return $ \luks(u, v^{\sigma^{-1}}, \Gamma, \Omega) \sigma $\;
+					}
+					\nl\If{$ \abs{\Omega} = 1 $}{
+						\nl Let $ \omega $ be such that $ \Omega = \{\omega\} $\;
+						\nl \Return $ \Gamma $ if $ u(\omega) = v(\omega) $ and $ \varnothing $ otherwise\;
+					}
+					\nl\If{the action of $ \Gamma $ on $ \Omega $ is not transitive}{
+						\nl Compute an orbit $ \Omega' \subsetneq \Omega $\;
+						\nl $ \Gamma'\sigma' := \luks(u, v, \Gamma, \Omega') $\;
+						\nl \Return $ \luks(u, v, \Gamma'\sigma', \Omega \setminus \Omega') $\;
+					}
+					\nl Compute a minimal block $ \Delta $ of the action of $ \Gamma $ on $ \Omega $ and the associated block system $ \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} =: \{\Delta_1, \dots, \Delta_k\}$\;
+					\nl Compute $ \KernelOf(\psi_\Delta) = \bigcap_{i=1}^k \Stab_{\psi_\Delta}(\Delta_i) $\;
+					\nl Compute a transversal $ T $ of $ \KernelOf(\psi_\Delta) $ in $ \Gamma $\;
+					\nl \Return $ \bigcup_{t \in T} \luks(u, v, \KernelOf(\psi_\Delta)t, \Omega) $\;
+				}
+			\end{algorithm}
+		\end{minipage}
+	}
 \end{frame}
 
 \begin{frame}{Visualization for the non-transitive case}
