@@ -926,7 +926,7 @@
 		\item A group $ \Gamma \le \Sym(\Omega) $ is called \textit{primitive} if the natural action of $ \Gamma $ on $ \Omega $ (namely $ \gamma \cdot \omega := \gamma(\omega) $) is primitive
 	\end{itemize}
 	\begin{center}
-		\begin{columns}
+		\vspace{-10pt}\begin{columns}
 			\begin{column}{0.5\textwidth}
 				\textbf{Example}:\begin{itemize}
 					\item The symmetry group of the pentagon is primitive
@@ -1173,17 +1173,133 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Primitivity and minimality}
-	TODO
+\begin{frame}{Flattening blocks of block-induced actions}
+	Any block of $ \psi_\Delta $ induces a block of $ \cdot $ via union, for example:
+	\begin{center}
+		\begin{tikzpicture}[scale=.8, thick]
+			\begin{scope}[shift={(-4,0)}]
+				% octagon vertices
+				\coordinate (v1) at ({90 - (0)*45}:2);
+				\coordinate (v2) at ({90 - (1)*45}:2);
+				\coordinate (v3) at ({90 - (2)*45}:2);
+				\coordinate (v4) at ({90 - (3)*45}:2);
+				\coordinate (v5) at ({90 - (4)*45}:2);
+				\coordinate (v6) at ({90 - (5)*45}:2);
+				\coordinate (v7) at ({90 - (6)*45}:2);
+				\coordinate (v8) at ({90 - (7)*45}:2);
+				
+				% octagon
+				\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--(v6)--(v7)--(v8)--cycle;
+				
+				% labels
+				\node[font=\small] (l1) at ({90 - (0)*45}:2.3) {1};
+				\node[font=\small] (l2) at ({90 - (1)*45}:2.3) {2};
+				\node[font=\small] (l3) at ({90 - (2)*45}:2.3) {3};
+				\node[font=\small] (l4) at ({90 - (3)*45}:2.3) {4};
+				\node[font=\small] (l5) at ({90 - (4)*45}:2.3) {5};
+				\node[font=\small] (l6) at ({90 - (5)*45}:2.3) {6};
+				\node[font=\small] (l7) at ({90 - (6)*45}:2.3) {7};
+				\node[font=\small] (l8) at ({90 - (7)*45}:2.3) {8};
+				
+				% block system visualization
+				% first set
+				\draw[very thick, red!80] (v1)--(v5);
+				\filldraw[red!80] (v1) circle (3pt);
+				\filldraw[red!80] (v5) circle (3pt);
+				% second set
+				\draw[very thick, OliveGreenZB!80] (v2)--(v6);
+				\filldraw[OliveGreenZB!80] (v2) circle (3pt);
+				\filldraw[OliveGreenZB!80] (v6) circle (3pt);
+				% third set
+				\draw[very thick, blue!80] (v3)--(v7);
+				\filldraw[blue!80] (v3) circle (3pt);
+				\filldraw[blue!80] (v7) circle (3pt);
+				% fourth set
+				\draw[very thick, DarkOrangeZB] (v4)--(v8);
+				\filldraw[DarkOrangeZB] (v4) circle (3pt);
+				\filldraw[DarkOrangeZB] (v8) circle (3pt);
+				
+				% r symmetry
+				\draw[->, bend left=20, gray] (l1) to node[midway, above] {$ r $} (l2);
+				
+				\node[below=0 of l5] (blocksystemofdot1) {$ \underbrace{\{\textcolor{red!80}{\underbrace{\{1,5\}}_{\Delta}},\textcolor{OliveGreenZB!80}{\underbrace{\{2,6\}}_{r\cdot\Delta}},\textcolor{blue!80}{\underbrace{\{3,7\}}_{r^2 \cdot\Delta}}, \textcolor{DarkOrangeZB}{\underbrace{\{4,8\}}_{r^3 \cdot \Delta}}\}}_{\text{Block system of}\ \cdot} $};
+			\end{scope}
+			\begin{scope}[shift={(4,0)}]
+				% octagon vertices
+				\coordinate (v1) at ({90 - (0)*45}:2);
+				\coordinate (v2) at ({90 - (1)*45}:2);
+				\coordinate (v3) at ({90 - (2)*45}:2);
+				\coordinate (v4) at ({90 - (3)*45}:2);
+				\coordinate (v5) at ({90 - (4)*45}:2);
+				\coordinate (v6) at ({90 - (5)*45}:2);
+				\coordinate (v7) at ({90 - (6)*45}:2);
+				\coordinate (v8) at ({90 - (7)*45}:2);
+				
+				% octagon
+				\draw[very thick] (v1)--(v2)--(v3)--(v4)--(v5)--(v6)--(v7)--(v8)--cycle;
+				
+				% labels
+				\node[font=\small] (l1) at ({90 - (0)*45}:2.3) {1};
+				\node[font=\small] (l2) at ({90 - (1)*45}:2.3) {2};
+				\node[font=\small] (l3) at ({90 - (2)*45}:2.3) {3};
+				\node[font=\small] (l4) at ({90 - (3)*45}:2.3) {4};
+				\node[font=\small] (l5) at ({90 - (4)*45}:2.3) {5};
+				\node[font=\small] (l6) at ({90 - (5)*45}:2.3) {6};
+				\node[font=\small] (l7) at ({90 - (6)*45}:2.3) {7};
+				\node[font=\small] (l8) at ({90 - (7)*45}:2.3) {8};
+				
+				% block system visualization
+				% first set
+				\draw[very thick, red!80] (v1)--(v5);
+				\filldraw[red!80] (v1) circle (3pt);
+				\filldraw[red!80] (v5) circle (3pt);
+				% second set
+				\draw[very thick, OliveGreenZB!80] (v2)--(v6);
+				\filldraw[OliveGreenZB!80] (v2) circle (3pt);
+				\filldraw[OliveGreenZB!80] (v6) circle (3pt);
+				% third set
+				\draw[very thick, red!80] (v3)--(v7);
+				\filldraw[red!80] (v3) circle (3pt);
+				\filldraw[red!80] (v7) circle (3pt);
+				% fourth set
+				\draw[very thick, OliveGreenZB] (v4)--(v8);
+				\filldraw[OliveGreenZB] (v4) circle (3pt);
+				\filldraw[OliveGreenZB] (v8) circle (3pt);
+				
+				% r symmetry
+				\draw[->, bend left=20, gray] (l1) to node[midway, above] {$ r $} (l2);
+				
+				\node[below=0 of l5] (blocksystemofdot2) {$ \underbrace{\{\textcolor{red!80}{\underbrace{\{1,3,5,7\}}_{\Delta'}},\textcolor{OliveGreenZB!80}{\underbrace{\{2,4,6,8\}}_{r\cdot\Delta'}}\}}_{\text{Block system of}\ \cdot} $};
+			\end{scope}
+		
+			\coordinate (blocksystemofdotc) at ($ (blocksystemofdot1)!0.5!(blocksystemofdot2) $);
+		
+			\node at ($ (blocksystemofdotc) + (0,-2) $) (blocksystemofpsi) {$ \underbrace{\{\{\textcolor{red!80}{\{1,5\}},\textcolor{blue!80}{\{3,7\}}\},\{\textcolor{OliveGreenZB!80}{\{2,6\}}, \textcolor{DarkOrangeZB}{\{4,8\}}\}\}}_{\text{Block system of}\ \psi_\Delta} $};
+			
+			\draw[->, bend right=50] (blocksystemofdot1.south) to node[midway, left, font=\footnotesize] {has block system} (blocksystemofpsi.west);
+			\draw[->, bend right=50] (blocksystemofpsi.east) to node[midway, right, font=\footnotesize] {flattening} (blocksystemofdot2.south);
+		\end{tikzpicture}
+	\end{center}
 \end{frame}
 
-\begin{frame}{Luks's algorithm}
+\begin{frame}{Primitivity and minimality}
+	\begin{lemma}
+		Let $ \Gamma $ be a group acting on $ \Omega $ with block $ \Delta \subseteq \Omega $. Then \[
+			\psi_\Delta\ \text{is primitive} \iff \Delta\ \text{is minimal}
+		\]
+	\end{lemma}
+	\begin{proof}
+		content...
+	\end{proof}
+\end{frame}
+
+\begin{frame}{Luks's algorithm for string isomorphism}
 	\scalebox{0.85}{
 		\begin{minipage}{\linewidth}
 			\begin{algorithm}[H]
 				\SetAlgoLined
 				\KwIn{Strings $ u, v : D \rightarrow \Sigma $, a coset $ \Gamma\sigma $ (where $ \Gamma \le \Sym(D) $ and $ \sigma \in \Sym(D) $) and a $ \Gamma $-invariant set $ \Omega \subseteq D $}
-				\KwOut{$ \{\delta \in \Gamma\sigma \mid u(\omega) = v(\omega)\ \forall \omega \in \Omega\} $ represented as a coset}
+				\KwOut{$ \{\delta \in \Gamma\sigma \mid u(\omega) = v(\omega^\delta)\ \forall \omega \in \Omega\} $ represented as a coset}
 				\SetKwFunction{luks}{striso}
 				\SetKwProg{luksproc}{Function}{}{end}
 				\luksproc{\luks{$ u $, $ v $, $ \Gamma\sigma $, $ \Omega $}}{
@@ -1291,8 +1407,8 @@
 	\end{theorem}
 \end{frame}
 
-\begin{frame}{Conclusion}
-	We have shown: 
+\begin{frame}{Final result}
+	Combining Luks's algorithm with the Babai-Luks reduction from $ \GI $ to $ \SI $ for $ \Gamma_d $ groups yields:
 	
 	\begin{theorem}[Luks]
 		$ \GI $ for graphs of maximum degree $ d $ can be solved in time $ n^{O(d)} $.
