@@ -30,9 +30,19 @@
 
 \input{defs}
 
+\AtBeginSection[]
+{
+	\begin{frame}
+		\frametitle{Table of Contents}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+
 \begin{document}
 	
 \frame{\titlepage}
+
+\section{Basics}
 
 \begin{frame}{Graph Isomorphism Problem}
 	
@@ -262,22 +272,23 @@
 	\end{center}
 \end{frame}
 
+\section{Luks's algorithm}
+
 \begin{frame}{Strings and permutations}
-	% Fix some finite set $ \Omega $ and a finite alphabet $ \Sigma $.
 	
-	A string is a mapping $ u : \Omega \rightarrow \Sigma $ where $ \Omega, \Sigma $ are fixed finite sets.
+	A string is a mapping $ u : D \rightarrow \Sigma $ where $ D, \Sigma $ are fixed finite sets.
 	
-	\textbf{Intuition}: Elements of $ \Omega $ are markers of positions, and values of $ u $ are characters at the corresponding positions.
+	\textbf{Intuition}: Elements of $ D $ are markers of positions, and values of $ u $ are characters at the corresponding positions.
 	
 	\begin{definition}[Permutation applied to a string]
-		For $ \sigma \in \Sym(\Omega) $, define string $ u^\sigma $ to be \begin{align*}
-			u^\sigma : \Omega &\rightarrow \Sigma \\
+		For $ \sigma \in \Sym(D) $, define string $ u^\sigma $ to be \begin{align*}
+			u^\sigma : D &\rightarrow \Sigma \\
 			\omega &\mapsto u (\sigma^{-1}(\omega))
 		\end{align*}
 	\end{definition}
 
 	\begin{example}
-		Let $ \Omega := \{1, 2, 3\} $ and $ \Sigma := \{a, b, c\} $. Then \[
+		Let $ D := \{1, 2, 3\} $ and $ \Sigma := \{a, b, c\} $. Then \[
 			abc^{()} = abc \qquad abc^{(1\,2\,3)} = cab \qquad abc^{(1\,3\,2)} = bca
 		\] where $ abc $ denotes mapping $ 1 \mapsto a $, $ 2 \mapsto b $, $ 3 \mapsto c $.
 	\end{example}
@@ -286,21 +297,21 @@
 
 \begin{frame}{String Isomorphism Problem}
 	
-	Let $ u, v $ be strings and $ \Gamma \le \Sym(\Omega) $. Define \[
+	Let $ u, v $ be strings and $ \Gamma \le \Sym(D) $. Define \[
 		\Iso_\Gamma(u, v) := \{\gamma \in \Gamma \mid u^\gamma = v\}
 	\] We say that $ u $ is $ \Gamma $-isomorphic to $ v $ and write $ u \cong_\Gamma v $ whenever $ \Iso_\Gamma(u, v) \neq \varnothing $.
 	
 	\begin{definition}[String Isomorphism Problem ($ \SI $)]
 		\textbf{Given}: \begin{itemize}
 			\item Strings $ u, v $
-			\item A generating set of a group $ \Gamma \le \Sym(\Omega) $
+			\item Group $ \Gamma \le \Sym(D) $ (represented as generating set)
 		\end{itemize}
 	
 		\textbf{Decide}: Is $ u \cong_\Gamma v $?
 	\end{definition}
 
 	\begin{example}
-		Consider $ \Gamma := \gen{(1,\dots,n)} \le S_n = \Sym(\Omega) $ for $ \Omega := \{1, \dots, n\} $.
+		Consider $ \Gamma := \gen{(1,\dots,n)} \le S_n = \Sym(D) $ for $ D := \{1, \dots, n\} $.
 		
 		Then $ u \cong_\Gamma v $ if and only if $ u $ and $ v $ are conjugate words.
 	\end{example}
@@ -455,17 +466,14 @@
 		$ \GI \le_m^p \SI $
 	\end{theorem}\vspace{-4pt}
 	\begin{proof}
-		W.l.o.g. assume $ V_0 = V_1 = \{1, \dots, n\} $. Set $ \Sigma := \{0, 1\} $ and $ \Omega := \{\{i, j\} \mid 1 \le i < j \le n\} $. For $ b \in \{0, 1\} $ let $ u_b $ be a string defined by \[
+		W.l.o.g. assume $ V_0 = V_1 = \{1, \dots, n\} $. Set $ \Sigma := \{0, 1\} $ and $ D := \{\{i, j\} \mid 1 \le i < j \le n\} $. For $ b \in \{0, 1\} $ let $ u_b $ be a string defined by \[
 			u_b(\{i, j\}) = 1 \iff \{i, j\} \in E_b
 		\] Then \[
-			G_0 \cong G_1 \iff u_0 \cong_{\ImageOf(\psi)} u_1
-		\] where $ \psi : S_n \rightarrow \Sym(\Omega) $ is the embedding homomorphism \[
-			\psi(\sigma) := \Big(\{i, j\} \mapsto \{\sigma(i), \sigma(j)\}\Big)
-		\] Therefore, $ \ImageOf(\psi) = \gen{\psi((1\,2)), \psi((1\,\dots\,n))} $ and the result follows.
+			G_0 \cong G_1 \iff u_0 \cong_{\ImageOf(\varphi)} u_1
+		\] where $ \varphi : S_n \rightarrow \Sym(\Omega) $ is the embedding homomorphism \[
+			\varphi(\sigma) := \Big(\{i, j\} \mapsto \{\sigma(i), \sigma(j)\}\Big)
+		\] Therefore, $ \ImageOf(\psi) = \gen{\varphi((1\,2)), \varphi((1\,\dots\,n))} $ and the result follows.
 	\end{proof}
-% This is a yes-instance to the string isomorphism problem because \[
-%u_1 = u_0^{\psi((1,3)(2,4))}
-%\] Indeed, $ (1,3)(2,4) \in S_4 $ is the relabeling that makes $ G_0 $ equal $ G_1 $.
 \end{frame}
 
 \begin{frame}{$ \GI $ for bounded-degree graphs}
@@ -1173,9 +1181,114 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Lifting non-minimal blocks to block-induced blocks}
-	Any blocks $ \Delta \subsetneq \Delta' $ of $ \cdot $ can be lifted to blocks of $ \psi_\Delta $, for example:
+\begin{frame}{Luks's algorithm for string isomorphism}
+	\scalebox{0.85}{
+		\begin{minipage}{\linewidth}
+			\begin{algorithm}[H]
+				\SetAlgoLined
+				\KwIn{Strings $ u, v : D \rightarrow \Sigma $, a coset $ \Gamma\sigma $ (where $ \Gamma \le \Sym(D) $ and $ \sigma \in \Sym(D) $) and a $ \Gamma $-invariant set $ \Omega \subseteq D $}
+				\KwOut{$ \{\delta \in \Gamma\sigma \mid u(\omega) = v(\omega^\delta)\ \forall \omega \in \Omega\} $ represented as a coset}
+				\SetKwFunction{luks}{striso}
+				\SetKwProg{luksproc}{Function}{}{end}
+				\luksproc{\luks{$ u $, $ v $, $ \Gamma\sigma $, $ \Omega $}}{
+					\nl\If{$ \sigma \neq \id $}{
+						\nl \Return $ \luks(u, v^{\sigma^{-1}}, \Gamma, \Omega) \sigma $\;
+					}
+					\nl\If{$ \abs{\Omega} = 1 $}{
+						\nl Let $ \omega $ be such that $ \Omega = \{\omega\} $\;
+						\nl \Return $ \Gamma $ if $ u(\omega) = v(\omega) $ and $ \varnothing $ otherwise\;
+					}
+					\nl\If{the action of $ \Gamma $ on $ \Omega $ is not transitive}{
+						\nl Compute an orbit $ \Omega' \subsetneq \Omega $\;
+						\nl $ \Gamma'\sigma' := \luks(u, v, \Gamma, \Omega') $\;
+						\nl \Return $ \luks(u, v, \Gamma'\sigma', \Omega \setminus \Omega') $\;
+					}
+					\nl Compute a minimal block $ \Delta $ of the action of $ \Gamma $ on $ \Omega $ and the associated block system $ \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} =: \{\Delta_1, \dots, \Delta_k\}$\;
+					\nl Compute $ \KernelOf(\psi_\Delta) = \bigcap_{i=1}^k \Stab_{\psi_\Delta}(\Delta_i) $\;
+					\nl Compute a transversal $ T $ of $ \KernelOf(\psi_\Delta) $ in $ \Gamma $\;
+					\nl \Return $ \bigcup_{t \in T} \luks(u, v, \KernelOf(\psi_\Delta)t, \Omega) $\;
+				}
+			\end{algorithm}
+		\end{minipage}
+	}
+\end{frame}
+
+\begin{frame}{Visualization for the non-transitive case}
 	\begin{center}
+		\begin{tikzpicture}
+			\coordinate (blockwidth) at (9, 0);
+			\coordinate (blockheight) at (0, .75);
+			
+			\coordinate (omega1sep) at ($ (0, 0)!0.2!(blockwidth) $);
+			\coordinate (omega2sep) at ($ (0, 0)!0.4!(blockwidth) $);
+			\coordinate (omegam1sep) at ($ (0, 0)!0.8!(blockwidth) $);
+			
+			\coordinate (utl) at (0, 0); % top left
+			\coordinate (utr) at (blockwidth); % top right
+			\coordinate (ubl) at ($ (0,0)-(blockheight) $); % bottom left
+			\coordinate (ubr) at ($ (ubl)+(blockwidth) $);
+			
+			\coordinate (uomega1sept) at ($ (utl-|omega1sep) $);
+			\coordinate (uomega1sepb) at ($ (ubl-|omega1sep) $);
+			\coordinate (uomega2sept) at ($ (utl-|omega2sep) $);
+			\coordinate (uomega2sepb) at ($ (ubl-|omega2sep) $);
+			\coordinate (uomegam1sept) at ($ (utl-|omegam1sep) $);
+			\coordinate (uomegam1sepb) at ($ (ubl-|omegam1sep) $);
+			
+			\coordinate (vtl) at ($ (ubl)-(blockheight) $); % top left
+			\coordinate (vtr) at ($ (vtl) + (blockwidth) $); % top right
+			\coordinate (vbl) at ($ (vtl)-(blockheight) $); % bottom left
+			\coordinate (vbr) at ($ (vbl)+(blockwidth) $);
+			
+			\coordinate (vomega1sept) at ($ (vtl-|omega1sep) $);
+			\coordinate (vomega1sepb) at ($ (vbl-|omega1sep) $);
+			\coordinate (vomega2sept) at ($ (vtl-|omega2sep) $);
+			\coordinate (vomega2sepb) at ($ (vbl-|omega2sep) $);
+			\coordinate (vomegam1sept) at ($ (vtl-|omegam1sep) $);
+			\coordinate (vomegam1sepb) at ($ (vbl-|omegam1sep) $);
+			
+			\draw[thick] (uomega1sept)--(uomega1sepb) (uomega2sept)--(uomega2sepb) (uomegam1sept)--(uomegam1sepb);
+			\draw[thick] (vomega1sept)--(vomega1sepb) (vomega2sept)--(vomega2sepb) (vomegam1sept)--(vomegam1sepb);
+			\draw[thick] (utl) -- (utr) -- (ubr) -- (ubl) -- cycle;
+			\draw[thick] (vtl) -- (vtr) -- (vbr) -- (vbl) -- cycle;
+			
+			\draw[thick, dashed] (ubl)--(vtl) (uomega1sepb)--(vomega1sept) (uomega2sepb)--(vomega2sept) (uomegam1sepb)--(vomegam1sept) (ubr)--(vtr);
+			
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (utl) -- (ubl) node[pos=0.5,left=10pt,black]{$ u $};
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (vtl) -- (vbl) node[pos=0.5,left=10pt,black]{$ v $};
+			
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (utl) -- (uomega1sept) node[pos=0.5,above=10pt,black]{Orbit 1};
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomega1sept) -- (uomega2sept) node[pos=0.5,above=10pt,black]{Orbit 2};
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomegam1sept) -- (utr) node[pos=0.5,above=10pt,black]{Orbit $ s $};
+			
+			\draw ($ (uomega2sepb)!0.5!(uomegam1sept) $) node {$ \dots $};
+			\draw ($ (vomega2sepb)!0.5!(vomegam1sept) $) node {$ \dots $};
+			
+			\coordinate (redarr1start) at ($ (vbl)!0.5!(vomega1sepb) $);
+			\coordinate (redarr2start) at ($ (vomega1sepb)!0.5!(vomega2sepb) $);
+			\coordinate (redarrm1start) at ($ (vomegam1sepb)!0.5!(vbr) $);
+			
+			\node [below=1 of redarr1start] (rec1) {Recursive call 1};
+			\node [below=1.5 of redarr2start] (rec2) {Recursive call 2};
+			\node [below=1 of redarrm1start] (recm1) {Recursive call $ s $};
+			
+			% reductions
+			\draw[->, thick, LightBlueZB] (redarr1start) -- (rec1);
+			\draw[->, thick, LightBlueZB] (redarr2start) -- (rec2);
+			\draw[->, thick, LightBlueZB] (redarrm1start) -- (recm1);
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\section{Analysis of Luks's algorithm}
+
+\begin{frame}{Lifting non-minimal blocks to block-induced blocks}
+	Any blocks $ \Delta \subsetneq \Delta' $ of $ \cdot $ can be lifted to blocks of $ \psi_\Delta $ by\begin{itemize}
+		\item Writing $ \Delta' $ as a union of blocks in $ \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} $
+		\item Treating the sets in that union as elements
+	\end{itemize}
+	\textbf{Example}:
+	\vspace{-20pt}\begin{center}
 		\begin{tikzpicture}[scale=1, thick]
 			% octagon vertices
 			\coordinate (v1) at ({90 - (0)*45}:2);
@@ -1227,7 +1340,7 @@
 			\node[below=0 of hencearr] (blocksystemofpsi) {$ \underbrace{\{\{\textcolor{red!80}{\{1,5\}},\textcolor{blue!80}{\{3,7\}}\},\{\textcolor{OliveGreenZB!80}{\{2,6\}}, \textcolor{DarkOrangeZB}{\{4,8\}}\}\}}_{\text{Block system of}\ \psi_\Delta} $};
 		\end{tikzpicture}
 	\end{center}
-	$ \rightsquigarrow $ Non-minimality of $ \Delta \implies $ Non-primitivity of $ \psi_\Delta $
+	\vspace{-15pt}$ \rightsquigarrow $ Non-minimality of $ \Delta \implies $ Non-primitivity of $ \psi_\Delta $
 \end{frame}
 
 \begin{frame}{Flattening blocks of block-induced actions}
@@ -1342,112 +1455,13 @@
 
 \begin{frame}{Primitivity and minimality}
 
-	These constructions hold in general are the essence of the proof of:
+	These constructions hold in general and are the essence of the proof of:
 	
 	\begin{theorem}
 		Let $ \Gamma $ be a group acting on $ \Omega $ with block $ \Delta \subseteq \Omega $. Then \[
 			\psi_\Delta\ \text{is primitive} \iff \Delta\ \text{is minimal}
 		\]
 	\end{theorem}
-\end{frame}
-
-\begin{frame}{Luks's algorithm for string isomorphism}
-	\scalebox{0.85}{
-		\begin{minipage}{\linewidth}
-			\begin{algorithm}[H]
-				\SetAlgoLined
-				\KwIn{Strings $ u, v : D \rightarrow \Sigma $, a coset $ \Gamma\sigma $ (where $ \Gamma \le \Sym(D) $ and $ \sigma \in \Sym(D) $) and a $ \Gamma $-invariant set $ \Omega \subseteq D $}
-				\KwOut{$ \{\delta \in \Gamma\sigma \mid u(\omega) = v(\omega^\delta)\ \forall \omega \in \Omega\} $ represented as a coset}
-				\SetKwFunction{luks}{striso}
-				\SetKwProg{luksproc}{Function}{}{end}
-				\luksproc{\luks{$ u $, $ v $, $ \Gamma\sigma $, $ \Omega $}}{
-					\nl\If{$ \sigma \neq \id $}{
-						\nl \Return $ \luks(u, v^{\sigma^{-1}}, \Gamma, \Omega) \sigma $\;
-					}
-					\nl\If{$ \abs{\Omega} = 1 $}{
-						\nl Let $ \omega $ be such that $ \Omega = \{\omega\} $\;
-						\nl \Return $ \Gamma $ if $ u(\omega) = v(\omega) $ and $ \varnothing $ otherwise\;
-					}
-					\nl\If{the action of $ \Gamma $ on $ \Omega $ is not transitive}{
-						\nl Compute an orbit $ \Omega' \subsetneq \Omega $\;
-						\nl $ \Gamma'\sigma' := \luks(u, v, \Gamma, \Omega') $\;
-						\nl \Return $ \luks(u, v, \Gamma'\sigma', \Omega \setminus \Omega') $\;
-					}
-					\nl Compute a minimal block $ \Delta $ of the action of $ \Gamma $ on $ \Omega $ and the associated block system $ \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} =: \{\Delta_1, \dots, \Delta_k\}$\;
-					\nl Compute $ \KernelOf(\psi_\Delta) = \bigcap_{i=1}^k \Stab_{\psi_\Delta}(\Delta_i) $\;
-					\nl Compute a transversal $ T $ of $ \KernelOf(\psi_\Delta) $ in $ \Gamma $\;
-					\nl \Return $ \bigcup_{t \in T} \luks(u, v, \KernelOf(\psi_\Delta)t, \Omega) $\;
-				}
-			\end{algorithm}
-		\end{minipage}
-	}
-\end{frame}
-
-\begin{frame}{Visualization for the non-transitive case}
-	\begin{center}
-		\begin{tikzpicture}
-			\coordinate (blockwidth) at (9, 0);
-			\coordinate (blockheight) at (0, .75);
-			
-			\coordinate (omega1sep) at ($ (0, 0)!0.2!(blockwidth) $);
-			\coordinate (omega2sep) at ($ (0, 0)!0.4!(blockwidth) $);
-			\coordinate (omegam1sep) at ($ (0, 0)!0.8!(blockwidth) $);
-			
-			\coordinate (utl) at (0, 0); % top left
-			\coordinate (utr) at (blockwidth); % top right
-			\coordinate (ubl) at ($ (0,0)-(blockheight) $); % bottom left
-			\coordinate (ubr) at ($ (ubl)+(blockwidth) $);
-			
-			\coordinate (uomega1sept) at ($ (utl-|omega1sep) $);
-			\coordinate (uomega1sepb) at ($ (ubl-|omega1sep) $);
-			\coordinate (uomega2sept) at ($ (utl-|omega2sep) $);
-			\coordinate (uomega2sepb) at ($ (ubl-|omega2sep) $);
-			\coordinate (uomegam1sept) at ($ (utl-|omegam1sep) $);
-			\coordinate (uomegam1sepb) at ($ (ubl-|omegam1sep) $);
-			
-			\coordinate (vtl) at ($ (ubl)-(blockheight) $); % top left
-			\coordinate (vtr) at ($ (vtl) + (blockwidth) $); % top right
-			\coordinate (vbl) at ($ (vtl)-(blockheight) $); % bottom left
-			\coordinate (vbr) at ($ (vbl)+(blockwidth) $);
-			
-			\coordinate (vomega1sept) at ($ (vtl-|omega1sep) $);
-			\coordinate (vomega1sepb) at ($ (vbl-|omega1sep) $);
-			\coordinate (vomega2sept) at ($ (vtl-|omega2sep) $);
-			\coordinate (vomega2sepb) at ($ (vbl-|omega2sep) $);
-			\coordinate (vomegam1sept) at ($ (vtl-|omegam1sep) $);
-			\coordinate (vomegam1sepb) at ($ (vbl-|omegam1sep) $);
-			
-			\draw[thick] (uomega1sept)--(uomega1sepb) (uomega2sept)--(uomega2sepb) (uomegam1sept)--(uomegam1sepb);
-			\draw[thick] (vomega1sept)--(vomega1sepb) (vomega2sept)--(vomega2sepb) (vomegam1sept)--(vomegam1sepb);
-			\draw[thick] (utl) -- (utr) -- (ubr) -- (ubl) -- cycle;
-			\draw[thick] (vtl) -- (vtr) -- (vbr) -- (vbl) -- cycle;
-			
-			\draw[thick, dashed] (ubl)--(vtl) (uomega1sepb)--(vomega1sept) (uomega2sepb)--(vomega2sept) (uomegam1sepb)--(vomegam1sept) (ubr)--(vtr);
-			
-			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (utl) -- (ubl) node[pos=0.5,left=10pt,black]{$ u $};
-			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (vtl) -- (vbl) node[pos=0.5,left=10pt,black]{$ v $};
-			
-			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (utl) -- (uomega1sept) node[pos=0.5,above=10pt,black]{Orbit 1};
-			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomega1sept) -- (uomega2sept) node[pos=0.5,above=10pt,black]{Orbit 2};
-			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomegam1sept) -- (utr) node[pos=0.5,above=10pt,black]{Orbit $ s $};
-			
-			\draw ($ (uomega2sepb)!0.5!(uomegam1sept) $) node {$ \dots $};
-			\draw ($ (vomega2sepb)!0.5!(vomegam1sept) $) node {$ \dots $};
-			
-			\coordinate (redarr1start) at ($ (vbl)!0.5!(vomega1sepb) $);
-			\coordinate (redarr2start) at ($ (vomega1sepb)!0.5!(vomega2sepb) $);
-			\coordinate (redarrm1start) at ($ (vomegam1sepb)!0.5!(vbr) $);
-			
-			\node [below=1 of redarr1start] (rec1) {Recursive call 1};
-			\node [below=1.5 of redarr2start] (rec2) {Recursive call 2};
-			\node [below=1 of redarrm1start] (recm1) {Recursive call $ s $};
-			
-			% reductions
-			\draw[->, thick, LightBlueZB] (redarr1start) -- (rec1);
-			\draw[->, thick, LightBlueZB] (redarr2start) -- (rec2);
-			\draw[->, thick, LightBlueZB] (redarrm1start) -- (recm1);
-		\end{tikzpicture}
-	\end{center}
 \end{frame}
 
 \begin{frame}{Classification of primitive groups and application to $ \Gamma_d $}
