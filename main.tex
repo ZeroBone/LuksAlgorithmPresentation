@@ -509,6 +509,10 @@
 	\end{definition}
 
 	The class $ \Gamma_d $ has a lot of nice properties, for example:
+	
+	\begin{lemma}[$ \Gamma_d $ closed under subgroups]
+		Let $ H $ be a finite $ \Gamma_d $-group and let $ H' \le H $. Then $ H' \in \Gamma_d $.
+	\end{lemma}
 
 	\begin{lemma}
 		Let $ H $ be finite group and $ N \trianglelefteq H $. Then \[
@@ -1188,7 +1192,7 @@
 \end{frame}
 
 \begin{frame}{Luks's algorithm for string isomorphism}
-	\vspace{-2pt}\scalebox{0.8}{
+	\vspace{-3pt}\scalebox{0.85}{
 		\begin{minipage}{\linewidth}
 			\begin{algorithm}[H]
 				\SetAlgoLined
@@ -1213,8 +1217,7 @@
 					\nl Compute $ \KernelOf(\psi_\Delta) = \bigcap_{i=1}^k \Stab_{\psi_\Delta}(\Delta_i) $\;
 					\nl Compute a transversal $ T $ of $ \KernelOf(\psi_\Delta) $ in $ \Gamma $\;
 					\nl For each $ t \in T $ compute $ \Theta_t \sigma_t := \strisoluks(u, v, \KernelOf(\psi_\Delta)t, \Omega) $\;
-					\nl Compress $ \bigcup_{t \in T} \Theta_t\sigma_t $ into a single coset $ \Theta \theta $\;
-					\nl \Return $ \Theta \theta $\;
+					\nl \Return compression of $ \bigcup_{t \in T} \Theta_t\sigma_t $ into a single coset\;
 					% \nl \Return $ \bigcup_{t \in T} \strisoluks(u, v, \KernelOf(\psi_\Delta)t, \Omega) $\;
 				}
 			\end{algorithm}
@@ -1543,13 +1546,14 @@
 	
 	\begin{itemize}
 		\item Since $ \Delta $ is minimal, by above theorem, $ \ImageOf(\psi_\Delta) $ is primitive
-		\item $ \Gamma \in \Gamma_d \implies \ImageOf(\psi_\Delta) \in \Gamma_d $ since $ \Gamma_d $ is closed under subgroups
+		\item By FHT, \[
+			\Gamma/\KernelOf(\psi_\Delta) \cong \ImageOf(\psi_\Delta)
+		\]
+		\item $ \Gamma \in \Gamma_d \implies \Gamma/\KernelOf(\psi_\Delta) \in \Gamma_d \implies \ImageOf(\psi_\Delta) \in \Gamma_d $
 		\item $ \rightsquigarrow $ By the Babai-Cameron-P\'{a}lfy theorem, \[
 			\abs{\ImageOf(\psi_\Delta)} \le \abs{D}^{O(1)}
 		\]
-		\item Since, by FHT, \[
-			\Gamma/\KernelOf(\psi_\Delta) \cong \ImageOf(\psi_\Delta)
-		\] it follows that the transversal size $ \abs{T} \le \abs{D}^{O(1)} $
+		\item $ \rightsquigarrow \abs{T} \le \abs{D}^{O(1)} $
 		\item $ \rightsquigarrow $ The transitive case of Luks's algorithm, excluding costs for recursive calls, runs in polynomial time
 	\end{itemize}
 \end{frame}
