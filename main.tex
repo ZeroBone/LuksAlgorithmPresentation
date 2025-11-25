@@ -1000,9 +1000,9 @@
 						\psi_\Delta : \Gamma &\rightarrow \Sym(\{\gamma \cdot \Delta \mid \gamma \in \Gamma\})\\
 						\gamma' &\mapsto (\gamma \cdot \Delta) \mapsto (\gamma'\gamma) \cdot \Delta
 					\end{align*} on the set of blocks!
-					\item We also denote this action using $ \diamond $: \[
-						\gamma' \diamond (\gamma \cdot \Delta) := (\gamma'\gamma) \cdot \Delta
-					\]
+					%\item We also denote this action using $ \diamond $: \[
+					%	\gamma' \diamond (\gamma \cdot \Delta) := (\gamma'\gamma) \cdot \Delta
+					%\]
 				\end{itemize}
 			\end{column}
 			\begin{column}{0.4\textwidth}
@@ -1050,8 +1050,8 @@
 					\filldraw[blue!80] (v6) circle (3pt);
 					
 					\node[below=-.1 of l4] (blocksystem) {$ \{\textcolor{red!80}{\underbrace{\{1,4\}}_{\Delta}},\textcolor{OliveGreenZB!80}{\underbrace{\{2,5\}}_{r\cdot\Delta}},\textcolor{blue!80}{\underbrace{\{3,6\}}_{r^2\cdot\Delta}}\} $};
-					\node[below=0 of blocksystem] (ex1) {$ \textcolor{gray}{r} \diamond \textcolor{red!80}{\{1,4\}} = \textcolor{OliveGreenZB!80}{\{2,5\}} $};
-					\node[below=0 of ex1] {$ \textcolor{MagentaZB}{fr} \diamond \textcolor{red!80}{\{1,4\}} = \textcolor{blue!80}{\{3,6\}} $};
+					\node[below=0 of blocksystem] (ex1) {$ \psi_\Delta(\textcolor{gray}{r})(\textcolor{red!80}{\{1,4\}}) = \textcolor{OliveGreenZB!80}{\{2,5\}} $};
+					\node[below=0 of ex1] {$ \psi_\Delta(\textcolor{MagentaZB}{fr})(\textcolor{red!80}{\{1,4\}}) = \textcolor{blue!80}{\{3,6\}} $};
 				\end{tikzpicture}
 			\end{column}
 		\end{columns}
@@ -1191,8 +1191,26 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Computing $ \KernelOf(\psi_\Delta) $ efficiently}
+	\textbf{\textcolor{DarkRedZB}{Problem}}: Computing $ \KernelOf(\psi_\Delta) $ by intersecting $ \psi_\Delta $'s stabilizers is computationally hard!
+	
+	\textbf{\textcolor{OliveGreenZB}{Solution}}: Iteratively compute stabilizers of refined actions:
+	
+	\begin{itemize}
+		\item Let $ \{\Delta_1, \dots, \Delta_k\} := \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} $ be the blocks
+		\item Compute $ \Stab_{\psi_\Delta}(\Delta_1) $
+		\item Compute $ \psi_\Delta^{(1)} := \psi_\Delta\restrict{\Stab_{\psi_\Delta}(\Delta_1)} $
+		\item Compute $ \Stab_{\psi_\Delta^{(1)}}(\Delta_2) $
+		\item Compute $ \psi_\Delta^{(2)} := \psi_\Delta^{(1)}\restrict{\Stab_{\psi_\Delta^{(1)}}(\Delta_2)} $
+		\item Compute $ \Stab_{\psi_\Delta^{(2)}}(\Delta_3) $
+		\item $ \dots $
+		\item Compute $ \Stab_{\psi_\Delta^{(k-1)}}(\Delta_k) = \KernelOf(\psi_\Delta) $
+	\end{itemize}
+	$ \rightsquigarrow $ we fully circumvent the need to intersect groups!
+\end{frame}
+
 \begin{frame}{Luks's algorithm for string isomorphism}
-	\vspace{-3pt}\scalebox{0.85}{
+	\vspace{-3pt}\scalebox{0.84}{
 		\begin{minipage}{\linewidth}
 			\begin{algorithm}[H]
 				\SetAlgoLined
@@ -1206,7 +1224,7 @@
 					}
 					\nl\If{$ \abs{\Omega} = 1 $}{
 						\nl Let $ \omega $ be such that $ \Omega = \{\omega\} $\;
-						\nl \Return $ \Gamma $ if $ u(\omega) = v(\omega) $ and $ \varnothing $ otherwise\;
+						\nl \Return $ \Gamma $ if $ u(\omega) = v(\omega) $ else $ \varnothing $\;
 					}
 					\nl\If{the action of $ \Gamma $ on $ \Omega $ is not transitive}{
 						\nl Compute an orbit $ \Omega' \subsetneq \Omega $\;
@@ -1214,7 +1232,7 @@
 						\nl \Return $ \strisoluks(u, v, \Gamma'\sigma', \Omega \setminus \Omega') $\;
 					}
 					\nl Compute a minimal block $ \Delta $ of the action of $ \Gamma $ on $ \Omega $ and the associated block system $ \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} =: \{\Delta_1, \dots, \Delta_k\}$\;
-					\nl Compute $ \KernelOf(\psi_\Delta) = \bigcap_{i=1}^k \Stab_{\psi_\Delta}(\Delta_i) $\;
+					\nl Compute $ \KernelOf(\psi_\Delta) = \Stab_{\psi_\Delta^{(k-1)}}(\Delta_k) $\;
 					\nl Compute a transversal $ T $ of $ \KernelOf(\psi_\Delta) $ in $ \Gamma $\;
 					\nl For each $ t \in T $ compute $ \Theta_t \sigma_t := \strisoluks(u, v, \KernelOf(\psi_\Delta)t, \Omega) $\;
 					\nl \Return compression of $ \bigcup_{t \in T} \Theta_t\sigma_t $ into a single coset\;
@@ -1295,7 +1313,7 @@
 			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomega1sept) -- (uomega2sept) node[pos=0.5,above=10pt,black]{$ \Gamma \cdot \omega_2 $};
 			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomegam1sept) -- (uomegam1endsept) node[pos=0.5,above=10pt,black]{$ \Gamma \cdot \omega_s $};
 			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomegam1endsept) -- (utr) node[pos=0.5,above=10pt,black]{$ D \setminus \Omega $};
-			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] ($ (utl) + (0,1) $) -- ($ (uomegam1endsept) + (0,1) $) node[pos=0.5,above=10pt,black]{$ \Omega $};
+			\draw [red!80, decorate, decoration = {brace, raise=5pt, amplitude=5pt}] ($ (utl) + (0,1) $) -- ($ (uomegam1endsept) + (0,1) $) node[pos=0.5,above=10pt,black]{$ \Omega $};
 			
 			\coordinate (omegaregsept) at ($ (uomegam1endsept) + (0,1) $);
 			\coordinate (omegaregsepb) at ($ (vomegam1endsepb) + (0,-.25) $);
@@ -1551,9 +1569,8 @@
 		\]
 		\item $ \Gamma \in \Gamma_d \implies \Gamma/\KernelOf(\psi_\Delta) \in \Gamma_d \implies \ImageOf(\psi_\Delta) \in \Gamma_d $
 		\item $ \rightsquigarrow $ By the Babai-Cameron-P\'{a}lfy theorem, \[
-			\abs{\ImageOf(\psi_\Delta)} \le \abs{D}^{O(1)}
+			\abs{T} = \abs{\ImageOf(\psi_\Delta)} \le \abs{D}^{O(1)}
 		\]
-		\item $ \rightsquigarrow \abs{T} \le \abs{D}^{O(1)} $
 		\item $ \rightsquigarrow $ The transitive case of Luks's algorithm, excluding costs for recursive calls, runs in polynomial time
 	\end{itemize}
 \end{frame}
