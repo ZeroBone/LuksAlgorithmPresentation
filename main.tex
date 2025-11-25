@@ -30,13 +30,13 @@
 
 \input{defs}
 
-\AtBeginSection[]
-{
-	\begin{frame}
-		\frametitle{Table of Contents}
-		\tableofcontents[currentsection]
-	\end{frame}
-}
+%\AtBeginSection[]
+%{
+%	\begin{frame}
+%		\frametitle{Table of Contents}
+%		\tableofcontents[currentsection]
+%	\end{frame}
+%}
 
 \begin{document}
 	
@@ -563,12 +563,15 @@
 	\textbf{Base case} ($ i = 0 $): $ \Aut(R_0, v) = \{\id\} \in \Gamma_d $
 	
 	\textbf{Inductive step}:\begin{itemize}
-		\item Since $ \sigma \in \Aut(R_i, v) $ must send vertices in $ V(R_{i-1}) $ to $ V(R_{i-1}) $, the map \begin{align*}
-			\varphi_i : \Aut(R_i, v) &\rightarrow \Aut(R_{i-1}, v)\\
+		\item Note that $ G[V(R_{i-1})] $ is equal to $ R_{i-1} $ up to possibly additional edges between vertices at distance exactly $ i-1 $ from $ v $
+		\item $ \rightsquigarrow $ By IH, $ \Aut(G[V(R_{i-1})], v) \le \Aut(R_{i-1}, v) \in \Gamma_d $
+		\item Since $ \Gamma_d $ is closed under subgroups, $ \Aut(G[V(R_{i-1})], v) \in \Gamma_d $
+		\item Since $ \sigma \in \Aut(R_i, v) $ must send vertices in $ V(R_{i-1}) $ to $ V(R_{i-1}) $, \begin{align*}
+			\varphi_i : \Aut(R_i, v) &\rightarrow \Aut(G[V(R_{i-1})], v)\\
 			\sigma &\mapsto \sigma\restrict{V(R_{i-1})}
 		\end{align*} is well-defined
-		\item By FHT and IH we have \[
-		\Aut(R_i, v)/\KernelOf(\varphi_i) \cong \ImageOf(\varphi_i) = \Aut(R_{i-1}, v) \overset{\text{IH}}{\in} \Gamma_d
+		\item By FHT, \[
+		\Aut(R_i, v)/\KernelOf(\varphi_i) \cong \ImageOf(\varphi_i) = \Aut(G[V(R_{i-1})], v) \in \Gamma_d
 		\]
 		\item By the above lemma, it is sufficient to prove $ \KernelOf(\varphi_i) \in \Gamma_d $
 	\end{itemize}
@@ -582,15 +585,15 @@
 		\begin{column}{0.65\textwidth}
 			\textbf{To show}: $ \KernelOf(\varphi_i) \in \Gamma_d $
 			\begin{itemize}
-				\item $ \KernelOf(\varphi_i) $ consists of exactly those $ \sigma \in \Aut(R_i, v) $ such that $ \sigma(u) = u\ \forall u \in V(R_{i-1}) $.
+				\item $ \KernelOf(\varphi_i) $ consists of exactly those $ \sigma \in \Aut(G[V(R_{i-1})], v) $ such that $ \sigma(u) = u\ \forall u \in V(R_{i-1}) $.
 				\item Let $ W $ be nodes of $ R_i $ that are not in $ R_{i-1} $
 				\item $ W $ is an independent set in $ R_i $
 				% \item $ \rightsquigarrow $ Agreeing on $ N(w) $ is an equivalence relation
-				\item $ \rightsquigarrow $ If $ \sigma(w_1) = w_2 $ for some $ \sigma \in \KernelOf(\varphi_i) $ then $ w_1, w_2 \in W $ and $ N_{R_i}(w_1) = N_{R_i}(w_2) $
-				\pause
+				\item $ \rightsquigarrow $ If $ \sigma(w) = w' $ for some $ \sigma \in \KernelOf(\varphi_i) $ then $ w, w' \in W $ and $ N_{R_i}(w) = N_{R_i}(w') $
+				%\pause
 				\item Since every node has degree $ \le d $, every $ w \in W $ can agree with $ \le d $ other $ w' \in W $ on the neighborhood
-				\item $ \rightsquigarrow \KernelOf(\varphi_i) $ is isomorphic to a subgroup of $ S_d^m $
-				\item Since $ S_d^m \in \Gamma_d $ and $ \Gamma_d $ is closed under taking subgroups, the result follows.
+				\item $ \rightsquigarrow \KernelOf(\varphi_i) $ isomorphic to a subgroup of $ S_d^m $
+				\item Since $ S_d^m \in \Gamma_d $ and $ \Gamma_d $ is closed under subgroups, the result follows.
 			\end{itemize}
 		\end{column}
 	\end{columns}
@@ -1194,7 +1197,7 @@
 \begin{frame}{Computing $ \KernelOf(\psi_\Delta) $ efficiently}
 	\textbf{\textcolor{DarkRedZB}{Problem}}: Computing $ \KernelOf(\psi_\Delta) $ by intersecting $ \psi_\Delta $'s stabilizers is computationally hard!
 	
-	\textbf{\textcolor{OliveGreenZB}{Solution}}: Iteratively compute stabilizers of refined actions:
+	\textbf{\textcolor{OliveGreenZB}{Solution}}: Iteratively restrict the acting group to the current stabilizer:
 	
 	\begin{itemize}
 		\item Let $ \{\Delta_1, \dots, \Delta_k\} := \{\gamma \cdot \Delta \mid \gamma \in \Gamma\} $ be the blocks
@@ -1256,10 +1259,10 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Case when $ \Gamma $ acts nontransitively on $ \Omega $}
+\begin{frame}{Case when $ \Gamma $ acts intransitively on $ \Omega $}
 	\begin{itemize}
-		\item Let $ \cdot : \Gamma \times \Omega \rightarrow \Omega $ denote the action
-		\item Let $ \omega_1, \dots, \omega_s $ be a transversal of $ \Gamma $ in $ \Omega $ (note: $ s \ge 2 $)
+		\item Let $ \cdot : \Gamma \times \Omega \rightarrow \Omega $ denote the action of $ \Gamma $ on $ \Omega $
+		\item Let $ \omega_1, \dots, \omega_s $ be a transversal of $ \{\Gamma \cdot \omega \mid \omega \in \Omega\} $ (note: $ s \ge 2 $)
 	\end{itemize}
 	\begin{center}
 		\begin{tikzpicture}[thick]
@@ -1559,20 +1562,26 @@
 	\end{theorem}
 \end{frame}
 
-\begin{frame}{Analysis of transitive case of Luks's algorithm}
+\begin{frame}{Analysis of case when $ \Gamma $ acts transitively on $ \Omega $}
 	We apply the above results to analyze the transitive case of Luks's algorithm:
 	
 	\begin{itemize}
 		\item Since $ \Delta $ is minimal, by above theorem, $ \ImageOf(\psi_\Delta) $ is primitive
 		\item By FHT, \[
-			\Gamma/\KernelOf(\psi_\Delta) \cong \ImageOf(\psi_\Delta)
+			\Gamma \in \Gamma_d \implies \Gamma/\KernelOf(\psi_\Delta) \in \Gamma_d \implies \ImageOf(\psi_\Delta) \in \Gamma_d
 		\]
-		\item $ \Gamma \in \Gamma_d \implies \Gamma/\KernelOf(\psi_\Delta) \in \Gamma_d \implies \ImageOf(\psi_\Delta) \in \Gamma_d $
 		\item $ \rightsquigarrow $ By the Babai-Cameron-P\'{a}lfy theorem, \[
 			\abs{T} = \abs{\ImageOf(\psi_\Delta)} \le \abs{D}^{O(1)}
 		\]
-		\item $ \rightsquigarrow $ The transitive case of Luks's algorithm, excluding costs for recursive calls, runs in polynomial time
+		\item $ \rightsquigarrow $ The transitive case of Luks's algorithm, excluding costs for recursive calls,\begin{itemize}
+			\item runs in polynomial time
+			\item makes polynomially many recursive calls
+		\end{itemize}
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{Running time of Luks's algorithm}
+	TODO
 \end{frame}
 
 \begin{frame}{Luks's algorithm for graph isomorphism}
