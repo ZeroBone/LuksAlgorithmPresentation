@@ -200,7 +200,7 @@
 	\]
 \end{frame}
 
-\input{four_vertex_graph_iso_classes}
+\input{figures/four_vertex_graph_iso_classes}
 
 \begin{frame}{Automorphism groups as stabilizers}
 	\textbf{Observation}: $ \Aut(G) $ is the stabilizer of $ G $ in the vertex renaming action of $ \Sym(V(G)) $ on the set of all graphs with vertices $ V(G) $.
@@ -540,7 +540,7 @@
 \begin{frame}{Proof of Luks's theorem}
 	\begin{columns}
 		\begin{column}{0.65\textwidth}
-			\input{luks_autgammad_thm_proof_rdef}
+			\input{figures/luks_autgammad_thm_proof_rdef}
 		\end{column}
 		\begin{column}{0.35\textwidth}  %%<--- here
 			Let $ R_i $ be a graph with \textbf{vertices}:
@@ -572,14 +572,14 @@
 		\item By FHT, \[
 		\Aut(R_i, v)/\KernelOf(\varphi_i) \cong \ImageOf(\varphi_i) = \Aut(G[V(R_{i-1})], v) \in \Gamma_d
 		\]
-		\item By the above lemma, it is sufficient to prove $ \KernelOf(\varphi_i) \in \Gamma_d $
+		\item By above lemma, it suffices to prove $ \KernelOf(\varphi_i) \in \Gamma_d $
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Proof of Luks's theorem (continued)}
 	\begin{columns}
 		\begin{column}{0.35\textwidth}
-			\input{uks_autgammad_thm_proof_im1toi}
+			\input{figures/luks_autgammad_thm_proof_im1toi}
 		\end{column}
 		\begin{column}{0.65\textwidth}
 			\textbf{To show}: $ \KernelOf(\varphi_i) \in \Gamma_d $
@@ -604,13 +604,12 @@
 	\begin{theorem}[Babai, Luks]
 		There is a polynomial-time Turing reduction from $ \GI $ for graphs of maximum degree $ d $ to $ \SI $ for $ \Gamma_d $-groups.
 	\end{theorem}
+
+	\textbf{Note}: W.l.o.g. we can assume that $ G_0 $ and $ G_1 $ are both connected
 \end{frame}
 
 \begin{frame}{Sketch of proof of Babai-Luks theorem}
-	\begin{itemize}
-		\item W.l.o.g. assume that $ G_0 $ and $ G_1 $ are both connected
-		\item For every $ (e_0, e_1) \in E(G_0) \times E(G_1) $, compute the following gadget
-	\end{itemize}
+	For every $ (e_0, e_1) \in E(G_0) \times E(G_1) $, compute the following gadget $ G $
 	\begin{center}
 		\begin{tikzpicture}[scale=0.8, thick]
 			
@@ -625,8 +624,8 @@
 				\node[grnode, left=.5 of v03] (v02) {2};
 				\node[grnode, right=.5 of v03] (v04) {4};
 				\node[grnode, above=1 of v03] (v05) {5};
-				\node[grnode, right=.5 of v05] (v06) {6};
-				\node[grnode, right=.5 of v06] (v07) {7};
+				\node[grnode, above=1.5 of v04] (v06) {6};
+				\node[grnode, right=1.5 of v05] (v07) {7};
 	
 				% edges
 				\draw (v01)--(v02) (v01)--(v03);
@@ -650,8 +649,8 @@
 				\node[grnode, left=.5 of v13] (v12) {b};
 				\node[grnode, right=.5 of v13] (v14) {d};
 				\node[grnode, above=1 of v13] (v15) {e};
-				\node[grnode, right=.5 of v15] (v16) {f};
-				\node[grnode, right=.5 of v16] (v17) {g};
+				\node[grnode, above=1.5 of v14] (v16) {f};
+				\node[grnode, right=1.5 of v15] (v17) {g};
 				
 				% edges
 				\draw (v11)--(v12) (v11)--(v13);
@@ -695,12 +694,15 @@
 			
 		\end{tikzpicture}
 	\end{center}
+	\vspace{-5pt}\begin{itemize}
+		\item $ \Aut(G, v) \neq \{\id\} \iff \exists\pi : \pi(G_0)=G_1\ \text{and}\ \pi(e_0)=e_1$
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{Sketch of proof of Babai-Luks theorem (continued)}
 	\begin{columns}
 		\begin{column}{0.35\textwidth}
-			\input{babai_luks_reduction_proof}
+			\input{figures/babai_luks_reduction_proof}
 		\end{column}
 		\begin{column}{0.65\textwidth}
 			\begin{itemize}
