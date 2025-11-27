@@ -648,19 +648,6 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Sketch of proof of Babai-Luks theorem (continued)}
-	\begin{columns}
-		\begin{column}{0.35\textwidth}
-			\input{figures/babai_luks_reduction_proof}
-		\end{column}
-		\begin{column}{0.65\textwidth}
-			\begin{itemize}
-				\item TODO
-			\end{itemize}
-		\end{column}
-	\end{columns}
-\end{frame}
-
 \begin{frame}{Introduction to blocks of group actions}
 	We start with an example:
 	\begin{center}
@@ -1011,7 +998,7 @@
 			\node[right=.5 of n1] (nd1) {$ (\KernelOf(\psi_\Delta), \Delta_1) $};
 			
 			% first layer
-			\node (n2) at ($ (root) + (-1.5, -1) $) {$ (\Gamma_1\sigma_1, \Delta_2 \cup \dots \cup \Delta_k) $};
+			\node (n2) at ($ (root) + (-0.6, -1) $) {$ (\Gamma_1\sigma_1, \Delta_2 \cup \dots \cup \Delta_k) $};
 			\node[right=.5 of n2] (n2gr) {$ (\Gamma_1, \Delta_2 \cup \dots \cup \Delta_k) $};
 			\node[right=.5 of n2gr] (n2grd2) {$ (\Gamma_1, \Delta_2) $};
 			
@@ -1043,10 +1030,10 @@
 			% last layer
 			\draw[->] (nk)--(nkgr);
 			
-			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (n2grd2.north east) -- (nkgr.south east) node[pos=0.7,left=-18pt,black,rotate=-90]{$ k $ nodes};
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (nd1.north east) -- (nkgr.south east) node[pos=0.7,left=-18pt,black,rotate=-90]{$ k $ nodes};
 		\end{tikzpicture}
 	\end{center}
-	\begin{itemize}
+	\vspace{-3pt}\begin{itemize}
 		\item The window size at every step is $ \le \abs{\Omega}/k $
 		\item By IH, every end node has $ \le (\abs{\Omega}/k)^{c+1} $ leaves
 		\item There are $ \le k $ such end nodes $ \rightsquigarrow $ the claim follows
@@ -1055,13 +1042,13 @@
 
 \begin{frame}{Luks's algorithm for graph isomorphism}
 	
-	We have thus shown:
+	Above claim, together with the observation that the degree of every non-leaf recursion call tree node or its child is $ \ge 3 $, yields:
 	
 	\begin{lemma}
 		Luks's algorithm for string isomorphism for $ \Gamma_d $-groups, where $ d $ is a constant, runs in polynomial time.
 	\end{lemma}
 	
-	Combining this result with the Babai-Luks reduction from $ \GI $ to $ \SI $ for $ \Gamma_d $-groups yields:
+	By combining this result with the Babai-Luks reduction from $ \GI $ to $ \SI $ for $ \Gamma_d $-groups, we obtain:
 	
 	\begin{theorem}[Luks]
 		$ \GI $ for graphs of maximum degree $ O(1) $ can be solved in polynomial time.
