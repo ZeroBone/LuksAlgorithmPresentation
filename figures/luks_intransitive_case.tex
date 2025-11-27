@@ -35,6 +35,21 @@
 	\coordinate (vomegam1endsept) at ($ (vtl-|omegam1endsep) $);
 	\coordinate (vomegam1endsepb) at ($ (vbl-|omegam1endsep) $);
 	
+	\coordinate (omegaregsept) at ($ (uomegam1endsept) + (0,1) $);
+	\coordinate (omegaregsepb) at ($ (vomegam1endsepb) + (0,-.25) $);
+	\coordinate (omegaregseptl) at ($ (omegaregsept-|utl) $);
+	
+	% colors for orbits
+	% first orbit
+	\fill[MagentaZB, opacity=0.25] (utl) -- (uomega1sept) -- (uomega1sepb) -- (ubl) -- cycle;
+	\fill[MagentaZB, opacity=0.25] (vtl) -- (vomega1sept) -- (vomega1sepb) -- (vbl) -- cycle;
+	% second orbit
+	\fill[DarkOrangeZB, opacity=0.25] (uomega1sept) -- (uomega2sept) -- (uomega2sepb) -- (uomega1sepb) -- cycle;
+	\fill[DarkOrangeZB, opacity=0.25] (vomega1sept) -- (vomega2sept) -- (vomega2sepb) -- (vomega1sepb) -- cycle;
+	% third orbit
+	\fill[TurquoiseZB, opacity=0.25] (uomegam1sept) -- (uomegam1endsept) -- (uomegam1endsepb) -- (uomegam1sepb) -- cycle;
+	\fill[TurquoiseZB, opacity=0.25] (vomegam1sept) -- (vomegam1endsept) -- (vomegam1endsepb) -- (vomegam1sepb) -- cycle;
+	
 	\draw (uomega1sept)--(uomega1sepb) (uomega2sept)--(uomega2sepb) (uomegam1sept)--(uomegam1sepb);
 	\draw (vomega1sept)--(vomega1sepb) (vomega2sept)--(vomega2sepb) (vomegam1sept)--(vomegam1sepb);
 	\draw (utl) -- (utr) -- (ubr) -- (ubl) -- cycle;
@@ -45,15 +60,12 @@
 	\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (utl) -- (ubl) node[pos=0.5,left=10pt,black]{$ u $};
 	\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (vtl) -- (vbl) node[pos=0.5,left=10pt,black]{$ v $};
 	
-	\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (utl) -- (uomega1sept) node[pos=0.5,above=10pt,black]{$ \Gamma \cdot \omega_1 $};
-	\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomega1sept) -- (uomega2sept) node[pos=0.5,above=10pt,black]{$ \Gamma \cdot \omega_2 $};
-	\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomegam1sept) -- (uomegam1endsept) node[pos=0.5,above=10pt,black]{$ \Gamma \cdot \omega_s $};
+	\draw [MagentaZB, decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (utl) -- (uomega1sept) node[pos=0.5,above=10pt]{$ \Gamma \cdot \omega_1 $};
+	\draw [DarkOrangeZB, decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomega1sept) -- (uomega2sept) node[pos=0.5,above=10pt]{$ \Gamma \cdot \omega_2 $};
+	\draw [TurquoiseZB, decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomegam1sept) -- (uomegam1endsept) node[pos=0.5,above=10pt]{$ \Gamma \cdot \omega_s $};
 	\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (uomegam1endsept) -- (utr) node[pos=0.5,above=10pt,black]{$ D \setminus \Omega $};
 	\draw [red!80, decorate, decoration = {brace, raise=5pt, amplitude=5pt}] ($ (utl) + (0,1) $) -- ($ (uomegam1endsept) + (0,1) $) node[pos=0.5,above=10pt,black]{$ \Omega $};
 	
-	\coordinate (omegaregsept) at ($ (uomegam1endsept) + (0,1) $);
-	\coordinate (omegaregsepb) at ($ (vomegam1endsepb) + (0,-.25) $);
-	\coordinate (omegaregseptl) at ($ (omegaregsept-|utl) $);
 	\draw[dashed, red!80] (omegaregsept)--(omegaregsepb);
 	\draw[dashed, red!80] (omegaregseptl)--(utl);
 	
@@ -82,16 +94,16 @@
 	\node[below=1 of sol2] (sol2gr) {$ \Gamma_2 $};
 	\node[below=1 of solsm1] (solsm1gr) {$ \Gamma_{s-1} $};
 	
-	\draw[->, LightBlueZB] (sol0gr) -- (sol1) node[midway, sloped, above, font=\small] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma \cdot \omega_1 $};
+	\draw[->, MagentaZB] (sol0gr) -- (sol1) node[midway, sloped, above, font=\small, LightBlueZB] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma \cdot \omega_1 $};
 	\draw[->, LightBlueZB] (sol1)--(sol1gr);
-	\draw[->, LightBlueZB] (sol1gr) -- (sol2) node[midway, sloped, above, font=\small] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma_1 \cdot \omega_2 $};
+	\draw[->, DarkOrangeZB] (sol1gr) -- (sol2) node[midway, sloped, above, font=\small, LightBlueZB] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma_1 \cdot \omega_2 $};
 	\draw[->, LightBlueZB] (sol2)--(sol2gr);
 	\coordinate (recdots) at ($ (sol2gr.north east)!0.5!(solsm1.south west) $);
 	\node[LightBlueZB] at (recdots) {\rotatebox[origin=c]{45}{$ \cdots $}};
 	\draw[->, LightBlueZB] (sol2gr)--($ (recdots) + (-.25,-.25) $);
 	\draw[->, LightBlueZB] ($ (recdots) + (.2,.2) $)--($ (solsm1.south west) + (.1,0) $);
 	\draw[->, LightBlueZB] (solsm1)--(solsm1gr);
-	\draw[->, LightBlueZB] (solsm1gr) -- (sols) node[midway, sloped, above, font=\small] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma_{s-1} \cdot \omega_s $};
+	\draw[->, TurquoiseZB] (solsm1gr) -- (sols) node[midway, sloped, above, font=\small, LightBlueZB] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma_{s-1} \cdot \omega_s $};
 	
 	\node[OliveGreenZB] (sollabel) at ($ (sols) + (1,-1) $) {Solution};
 	\draw[->, bend right=50, OliveGreenZB] (sollabel) to (sols.east);
