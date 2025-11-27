@@ -1,4 +1,7 @@
 \documentclass[handout]{beamer}
+
+\def\fullversion{1}
+
 % \documentclass{beamer}
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
@@ -28,8 +31,6 @@
 \institute[MPI-INF]{Max-Planck Institute for Informatics}
 
 \input{utils/defs}
-
-\def\fullversion{1}
 
 %\AtBeginSection[]
 %{
@@ -453,7 +454,6 @@
 	\end{example}
 \end{frame}
 
-% TODO: state lemma in terms of ker and im
 \begin{frame}{$ \GammaD $-groups}
 	\begin{definition}[Luks]
 		A finite group $ \Gamma $ is a $ \GammaD $-group (notation: $ \Gamma \in \GammaD $) if every composition factor of $ \Gamma $ is isomorphic to some subgroup of $ S_d $.
@@ -800,8 +800,6 @@
 	\end{center}
 \end{frame}
 
-% TODO: put BCP here in compressed version and reformulate it in terms of ker and im
-
 \if\fullversion1
 \begin{frame}{Kernels of block-induced homomorphisms}
 	\begin{itemize}
@@ -817,7 +815,11 @@
 \fi
 
 \begin{frame}{Decomposing groups using block-induced homomorphisms}
+	\if\fullversion1
 	The interesting case is when $ \KernelOf(\psi_\Delta) $ is non-trivial, for example:
+	\else
+	Consider $ \KernelOf(\psi_\Delta) $, for example:
+	\fi
 	\begin{center}
 		\input{figures/ker_of_block_induced_hom_exnontriv}
 	\end{center}
