@@ -1,5 +1,5 @@
-% \documentclass[handout]{beamer}
-\documentclass{beamer}
+\documentclass[handout]{beamer}
+% \documentclass{beamer}
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -644,7 +644,7 @@
 		\end{tikzpicture}
 	\end{center}
 	\vspace{-5pt}\begin{itemize}
-		\item $ \Aut(G, v) \neq \{\id\} \iff \exists\pi : \pi(G_0)=G_1\ \text{and}\ \pi(e_0)=e_1$
+		\item $ \Aut(G, v) \neq \{\id\} \iff G_0 \cong G_1\ \text{via}\ \sigma\ \text{such that}\ \sigma(e_0)=e_1$
 	\end{itemize}
 \end{frame}
 
@@ -655,7 +655,6 @@
 		\end{column}
 		\begin{column}{0.65\textwidth}
 			\begin{itemize}
-				\item W.l.o.g. assume that $ G_0 $ and $ G_1 $ are both connected
 				\item TODO
 			\end{itemize}
 		\end{column}
@@ -895,7 +894,7 @@
 	\begin{center}
 		\input{figures/luks_intransitive_case}
 	\end{center}
-	\vspace{-5pt}\textbf{Note}: $ \Gamma \ge \Gamma_1' \ge \Gamma_2' \ge \dots \ge \Gamma_{s-1}' $
+	\vspace{-5pt}\textbf{Note}: $ \Gamma \ge \Gamma_1 \ge \Gamma_2 \ge \dots \ge \Gamma_{s-1} $
 \end{frame}
 
 \section{Analysis of Luks's algorithm}
@@ -954,8 +953,8 @@
 			\Gamma \in \Gamma_d \implies \Gamma/\KernelOf(\psi_\Delta) \in \Gamma_d \implies \ImageOf(\psi_\Delta) \in \Gamma_d
 		\]
 		\item $ \rightsquigarrow $ By the Babai-Cameron-P\'{a}lfy theorem, \[
-			\abs{T} = \abs{\ImageOf(\psi_\Delta)} \le \abs{D}^{O(1)}
-		\]
+			\abs{T} = \abs{\ImageOf(\psi_\Delta)} \le k^c
+		\] for some constant $ c $
 		\item $ \rightsquigarrow $ The transitive case of Luks's algorithm, excluding costs for recursive calls,\begin{itemize}
 			\item runs in polynomial time
 			\item makes polynomially many recursive calls
@@ -963,12 +962,106 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Running time of Luks's algorithm}
-	TODO
+\newcommand{\NumLeaves}{\mathrm{\#Leaves}}
+
+\begin{frame}{Time complexity analysis}
+	\vspace{-5pt}\begin{claim}
+		Let $ \NumLeaves $ be the number of leaves in the tree of recursive calls. Then \[
+			\NumLeaves \le \sum_{\Gamma\cdot\omega \in \Omega/\Gamma} \abs{\Gamma\cdot\omega}^{c+1}
+		\] where $ c $ is the constant of the Babai-Cameron-P\'{a}lfy theorem above.
+	\end{claim}
+	We prove the claim by structural induction on the tree:
+	
+	\textbf{Base case} ($ \abs{\Omega} = 1 $): trivial
+	
+	\textbf{Inductive step}: First consider the intransitive case:\begin{itemize}
+		\item By IH, $ \NumLeaves(\strisoluks(u, v, \Gamma, \Omega')) \le \abs{\Omega'}^{c+1} $
+		\item By IH and since $ \Gamma' \le \Gamma $, \[
+		\NumLeaves(\strisoluks(u, v, \Gamma'\sigma', \Omega \setminus \Omega')) \le \sum_{\Gamma\cdot\omega \in (\Omega \setminus \Omega')/\Gamma} \abs{\Gamma\cdot\omega}^{c+1}
+		\]
+		\item $ \rightsquigarrow $ the claim follows if $ \Gamma $ acts intransitively on $ \Omega $
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Time complexity analysis -- transitive case}
+	\textbf{Assume}: $ \Gamma $ acts transitively on $ \Omega $
+	
+	\textbf{To show}: \[
+		\NumLeaves(\strisoluks{$ u $, $ v $, $ \Gamma\sigma $, $ \Omega $}) \le \abs{\Omega}^{c+1}
+	\] \textbf{Proof}:\begin{itemize}
+		\item We have already shown: $ \abs{T} \le k^c $
+		\item Clearly, \[
+			\NumLeaves(\strisoluks{$ u $, $ v $, $ \Gamma\sigma $, $ \Omega $}) \le k^c \cdot \NumLeaves(\Theta_t\sigma_t)
+		\] where $ \Theta_t\sigma_t = \strisoluks(u, v, \KernelOf(\psi_\Delta)t, \Omega) $ as defined in the algorithm
+		\item $ \rightsquigarrow $ it suffices to show \[
+			\NumLeaves(\Theta_t\sigma_t) \le k \cdot \Bigg(\frac{\abs{\Omega}}{k}\Bigg)^{c+1}
+		\]
+		%\item By IH, $ \NumLeaves(\underbrace{\strisoluks(u, v, \KernelOf(\psi_\Delta)t, \Omega)}_{\Theta_t\sigma_t}) \le \abs{\KernelOf(\psi_\Delta)}^{c+1} $
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Time complexity analysis -- transitive case (continued)}
+	\vspace{-4pt}\textbf{To show}: \[
+		\NumLeaves(\Theta_t\sigma_t) \le k \cdot (\abs{\Omega}/k)^{c+1}
+	\] \textbf{Proof}: The tree of recursive calls starting at $ \Theta_t\sigma_t $ will be (in the worst case) of the form:\begin{center}
+		\begin{tikzpicture}[thick, scale=1]
+			% vertices
+			\node (root) {$ (\KernelOf(\psi_\Delta)t, \Omega) $};
+			\node[right=.5 of root] (n1) {$ (\KernelOf(\psi_\Delta), \Omega) $};
+			\node[right=.5 of n1] (nd1) {$ (\KernelOf(\psi_\Delta), \Delta_1) $};
+			
+			% first layer
+			\node (n2) at ($ (root) + (-1.5, -1) $) {$ (\Gamma_1\sigma_1, \Delta_2 \cup \dots \cup \Delta_k) $};
+			\node[right=.5 of n2] (n2gr) {$ (\Gamma_1, \Delta_2 \cup \dots \cup \Delta_k) $};
+			\node[right=.5 of n2gr] (n2grd2) {$ (\Gamma_1, \Delta_2) $};
+			
+			% second layer
+			\node[below=.5 of n2] (n3) {$ (\Gamma_2\sigma_2, \Delta_3 \cup \dots \cup \Delta_k) $};
+			\node[right=.5 of n3] (n3gr) {$ (\Gamma_2, \Delta_3 \cup \dots \cup \Delta_k) $};
+			\node[right=.5 of n3gr] (n3grd3) {$ (\Gamma_2, \Delta_3) $};
+			
+			% dots
+			\node[below=-.1 of n3gr] (dots) {$ \vdots $};
+			
+			% last layer
+			\node[below=.75 of n3] (nk) {$ (\Gamma_{k-1}\sigma_{k-1}, \Delta_k) $};
+			\node[right=4.5 of nk] (nkgr) {$ (\Gamma_{k-1}, \Delta_k) $};
+			
+			% edges
+			\draw[->] (root)--(n1);
+			\draw[->] (n1)--(nd1);
+			% first layer
+			\draw[->] (n1)--(n2);
+			\draw[->] (n2)--(n2gr);
+			\draw[->] (n2gr)--(n2grd2);
+			
+			% second layer
+			\draw[->] (n2gr)--(n3);
+			\draw[->] (n3)--(n3gr);
+			\draw[->] (n3gr)--(n3grd3);
+			
+			% last layer
+			\draw[->] (nk)--(nkgr);
+			
+			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (n2grd2.north east) -- (nkgr.south east) node[pos=0.7,left=-18pt,black,rotate=-90]{$ k $ nodes};
+		\end{tikzpicture}
+	\end{center}
+	\begin{itemize}
+		\item The domain at every step is $ \le \abs{\Omega}/k $
+		\item By IH, every end node has $ \le (\abs{\Omega}/k)^{c+1} $ leaves
+		\item There are $ \le k $ such end nodes $ \rightsquigarrow $ the claim follows
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{Luks's algorithm for graph isomorphism}
-	Combining Luks's algorithm for $ \SI $ with the Babai-Luks reduction from $ \GI $ to $ \SI $ for $ \Gamma_d $-groups yields:
+	
+	We have thus shown:
+	
+	\begin{lemma}
+		Luks's algorithm for string isomorphism for $ \Gamma_d $-groups, where $ d $ is a constant, runs in polynomial time.
+	\end{lemma}
+	
+	Combining this result with the Babai-Luks reduction from $ \GI $ to $ \SI $ for $ \Gamma_d $-groups yields:
 	
 	\begin{theorem}[Luks]
 		$ \GI $ for graphs of maximum degree $ O(1) $ can be solved in polynomial time.

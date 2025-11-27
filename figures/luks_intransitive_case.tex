@@ -78,20 +78,20 @@
 	\node (sols) at (solchs) {$ \Gamma_s\sigma_s $};
 	
 	\node[below=1 of sol0] (sol0gr) {$ \Gamma $};
-	\node[below=1 of sol1] (sol1gr) {$ \Gamma_1' $};
-	\node[below=1 of sol2] (sol2gr) {$ \Gamma_2' $};
-	\node[below=1 of solsm1] (solsm1gr) {$ \Gamma_{s-1}' $};
+	\node[below=1 of sol1] (sol1gr) {$ \Gamma_1 $};
+	\node[below=1 of sol2] (sol2gr) {$ \Gamma_2 $};
+	\node[below=1 of solsm1] (solsm1gr) {$ \Gamma_{s-1} $};
 	
 	\draw[->, LightBlueZB] (sol0gr) -- (sol1) node[midway, sloped, above, font=\small] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma \cdot \omega_1 $};
 	\draw[->, LightBlueZB] (sol1)--(sol1gr);
-	\draw[->, LightBlueZB] (sol1gr) -- (sol2) node[midway, sloped, above, font=\small] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma_1' \cdot \omega_2 $};
+	\draw[->, LightBlueZB] (sol1gr) -- (sol2) node[midway, sloped, above, font=\small] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma_1 \cdot \omega_2 $};
 	\draw[->, LightBlueZB] (sol2)--(sol2gr);
 	\coordinate (recdots) at ($ (sol2gr.north east)!0.5!(solsm1.south west) $);
 	\node[LightBlueZB] at (recdots) {\rotatebox[origin=c]{45}{$ \cdots $}};
 	\draw[->, LightBlueZB] (sol2gr)--($ (recdots) + (-.25,-.25) $);
 	\draw[->, LightBlueZB] ($ (recdots) + (.2,.2) $)--($ (solsm1.south west) + (.1,0) $);
 	\draw[->, LightBlueZB] (solsm1)--(solsm1gr);
-	\draw[->, LightBlueZB] (solsm1gr) -- (sols) node[midway, sloped, above, font=\small] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma_{s-1}' \cdot \omega_s $};
+	\draw[->, LightBlueZB] (solsm1gr) -- (sols) node[midway, sloped, above, font=\small] {recursion} node[midway, sloped, below, font=\small] {$ \Omega = \Gamma_{s-1} \cdot \omega_s $};
 	
 	\node[OliveGreenZB] (sollabel) at ($ (sols) + (1,-1) $) {Solution};
 	\draw[->, bend right=50, OliveGreenZB] (sollabel) to (sols.east);
