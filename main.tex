@@ -185,6 +185,7 @@
 	\end{center}
 \end{frame}
 
+\if\fullversion1
 \begin{frame}{Solutions to $ \GI $ are sets of cosets}
 	\begin{itemize}
 		\item Let $ \cdot $ denote the vertex renaming action of $ \Sym(V(G)) $ on the set of all graphs with vertices $ V(G) $
@@ -227,6 +228,7 @@
 		\item $ \rightsquigarrow $ In this sense, solutions to $ \GI $ are cosets of the form $ \sigma \Aut(G_0) $
 	\end{itemize}
 \end{frame}
+\fi
 
 \begin{frame}{High-level overview}
 	We will show how to solve (a fragment of) $ \GI $ via an intermediate problem:
@@ -522,8 +524,6 @@
 		\end{column}
 		\begin{column}{0.35\textwidth}  %%<--- here
 			Let $ R_i $ be the subgraph of $ G $ induced by nodes reachable in $ \le i $ steps from $ v $
-			
-			\vspace{5pt}\textbf{Note}: $ \exists i\ R_i = G $
 		\end{column}
 	\end{columns}
 \end{frame}
