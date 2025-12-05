@@ -118,7 +118,7 @@
 	\textbf{Warning}: this diagram assumes $ \PH $ does not collapse (long-standing open question) and $ \GI \notin \P $ (open).
 \end{frame}
 
-\begin{frame}{Solutions to $ \GI $ have a very nice structure}
+\begin{frame}{Automorphism groups of graphs}
 	
 	\begin{itemize}
 		\item Unlike with $ \NP $-complete problems, the space of solutions to $ \GI $ has a lot of structure!
@@ -187,7 +187,7 @@
 \if\fullversion1
 \begin{frame}{In one sense, solutions to $ \GI $ are sets of cosets}
 	\begin{itemize}
-		\item Let $ \cdot $ denote the vertex renaming action of $ \Sym(V(G)) $ on the set of all graphs with vertices $ V(G) $
+		\item Let $ \cdot $ denote the vertex renaming action of $ S_n $ on the set of all graphs with vertices $ \{1, \dots, n\} $
 		\item Fix one of the input graphs $ G_0 $
 		\item In a sense, space of solutions to $ \GI $ is \[
 			\{G_1 \mid G_1 \cong G_0\} = S_n \cdot G_0
@@ -575,7 +575,7 @@
 \end{frame}
 
 \begin{frame}{Effectivizing Luks's theorem}
-	The level-driven construction in the proof of Luks's theorem can be turned into an algorithm for $ \GI $:
+	The level-driven construction in the proof of Luks's theorem and the reduction from $ \GI $ to $ \SI $ can be combined into an algorithm for $ \GI $:
 	
 	\begin{theorem}[Babai, Luks]
 		There is a polynomial-time Turing reduction from $ \GI $ for graphs of maximum degree $ d $ to $ \SI $ for $ \GammaD $-groups.
@@ -727,7 +727,7 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}{Some subsets of $ \Omega $ only permute or translate}
+\begin{frame}{Some subsets of $ \Omega $ only get permuted or translated}
 	\textbf{Observation}: for any $ \gamma \in \Gamma $ we have
 	\begin{center}
 		\input{figures/some_subsets_only_permute_or_translate}
@@ -839,7 +839,7 @@
 \end{frame}
 \fi
 
-\begin{frame}{Decomposing groups using block-induced homomorphisms}
+\begin{frame}{Partitioning groups using block-induced homomorphisms}
 	\if\fullversion1
 	The interesting case is when $ \KernelOf(\psi_\Delta) $ is non-trivial, for example:
 	\else
@@ -929,7 +929,7 @@
 
 \begin{frame}{Case when $ \Gamma $ acts intransitively on $ \Omega $}
 	% \item Let $ \cdot : \Gamma \times \Omega \rightarrow \Omega $ denote the action of $ \Gamma $ on $ \Omega
-	Let $ \omega_1, \dots, \omega_s $ be a transversal of $ \{\Gamma \cdot \omega \mid \omega \in \Omega\} $ (note: $ s \ge 2 $)
+	Let $ \omega_1, \dots, \omega_s $ be a transversal of $ \{\Gamma \cdot \omega \mid \omega \in \Omega\} $
 	\begin{center}
 		\input{figures/luks_intransitive_case}
 	\end{center}
@@ -1102,7 +1102,7 @@
 	\end{center}
 	\vspace{-3pt}\begin{itemize}
 		\item The window size at every step is $ \le \abs{\Omega}/k $
-		\item By IH, every end node has $ \le (\abs{\Omega}/k)^{c+1} $ leaves
+		\item $ \rightsquigarrow $ By IH, every end node has $ \le (\abs{\Omega}/k)^{c+1} $ leaves
 		\item There are $ \le k $ such end nodes $ \rightsquigarrow $ the claim follows
 	\end{itemize}
 \end{frame}
