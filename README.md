@@ -1,2 +1,2 @@
-# GraphIsomorphismPresentation
-Alexander Mayorov's presentation for a talk on the Graph Isomorphism problem
+# LuksAlgoP
+Alexander Mayorov's presentation for a talk about Luks's algorithm for the graph isomorphism problem.
