@@ -1,6 +1,6 @@
 \documentclass[handout]{beamer}
 
-\def\fullversion{1}
+\def\fullversion{0}
 
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
@@ -31,13 +31,20 @@
 
 \input{utils/defs}
 
-%\AtBeginSection[]
-%{
-%	\begin{frame}
-%		\frametitle{Table of Contents}
-%		\tableofcontents[currentsection]
-%	\end{frame}
-%}
+\setbeamertemplate{title page}{
+	\centering
+	{\Huge\inserttitle\par}
+	\vskip1em
+	{\large\insertsubtitle\par}
+	\vskip1em
+	{\insertauthor\par}
+	\vskip1em
+	{\insertinstitute\par}
+	\if\fullversion0
+	\vskip2em
+	{Full version of the presentation available at \textcolor{LightBlueZB}{\href{https://github.com/ZeroBone/LuksAlgoP/releases/latest}{github.com/ZeroBone/LuksAlgoP/releases/latest}}\par}
+	\fi
+}
 
 \begin{document}
 	
@@ -184,7 +191,6 @@
 	\end{center}
 \end{frame}
 
-\if\fullversion1
 \begin{frame}{In one sense, solutions to $ \GI $ are sets of cosets}
 	\begin{itemize}
 		\item Let $ \cdot $ denote the vertex renaming action of $ S_n $ on the set of all graphs with vertices $ \{1, \dots, n\} $
@@ -227,7 +233,6 @@
 		\item $ \rightsquigarrow $ In this sense, solutions to $ \GI $ are cosets of the form $ \sigma \Aut(G_0) $
 	\end{itemize}
 \end{frame}
-\fi
 
 \begin{frame}{High-level overview}
 	We will show how to solve (a fragment of) $ \GI $ via an intermediate problem:
@@ -473,8 +478,10 @@
 		\{\id\} \trianglelefteq \Gamma_1 \trianglelefteq \Gamma_2 \trianglelefteq \dots \trianglelefteq \Gamma_k = \Gamma
 		\] where $ \Gamma_1, \dots, \Gamma_k $ are groups. A subnormal series is a \textit{composition series} of $ \Gamma $ if it is strictly increasing and every $ \Gamma_i/\Gamma_{i-1} $ is simple (factor groups $ \Gamma_i/\Gamma_{i-1} $ are called \textit{composition factors}).
 	\end{definition}
-	\vspace{-5pt}\begin{theorem}[Jordan-H{\"o}lder]
-		Every finite group can be decomposed uniquely into its composition factors.
+	\vspace{-5pt}\begin{theorem}[Jordan, Jordan-H{\"o}lder]
+		Every group has a composition series. Moreover, the composition factors of any two composition series are equal up to isomorphism and ordering.
+		
+		% Every finite group can be decomposed uniquely into its composition factors.
 	\end{theorem}
 	\vspace{-5pt}\begin{example}
 		The composition series of $ S_n $ is $ \{\id\} \trianglelefteq A_n \trianglelefteq S_n $. It corresponds to the decomposition $ S_n \cong \Z_2 \rtimes A_n $.
@@ -1003,7 +1010,7 @@
 \end{frame}
 \else
 \begin{frame}{Analysis of case when $ \Gamma $ acts transitively on $ \Omega $}
-	\begin{theorem}[Babai, Cameron, P\'{a}lfy (special case, reformulated)]
+	\begin{theorem}[Babai, Cameron, P\'{a}lfy]
 		For every $ d \ge 1 $ there exists $ c $ such that for every $ \Gamma \in \GammaD $ and action $ \cdot $ of $ \Gamma $ on $ \Omega $ having minimal block $ \Delta $ it holds that $ \abs{\Gamma/\KernelOf(\psi_\Delta)} \le n^c $, where $ n := \abs{\{\gamma \cdot \Delta \mid \gamma \in \Gamma\}} $ is the number of blocks.
 	\end{theorem}
 	\begin{itemize}
