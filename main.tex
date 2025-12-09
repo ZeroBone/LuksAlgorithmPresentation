@@ -1,6 +1,6 @@
 \documentclass[handout]{beamer}
 
-\def\fullversion{1}
+\def\fullversion{0}
 
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
@@ -53,16 +53,6 @@
 
 \section{Basics}
 
-\begin{frame}{Graph Isomorphism Problem}
-	
-	% \textbf{Intuition}: Two graphs are called isomorphic whenever they are equal up to renaming of vertices.
-	
-	\begin{definition}[Graph isomorphism]
-		Undirected graphs \( G_0 = (V_0, E_0) \) and \( G_1 = (V_1, E_1) \) are called \textbf{isomorphic} (denoted $ G_0 \cong G_1 $) if there exists a bijection $ \sigma : V_0 \to V_1 $ such that \[
-		\{u,v\} \in E_0 \iff \{\sigma(u), \sigma(v)\} \in E_1
-		\]
-	\end{definition}
-
 \newcommand{\graphA}{%
 	\raisebox{-.5\height}{%
 		\begin{tikzpicture}[every node/.style={circle, draw, fill=gray!10, inner sep=1pt, minimum size=18pt}, scale=0.8]
@@ -103,20 +93,28 @@
 	}%
 }
 
-\begin{example}
-	\begin{center}
+\begin{frame}{Graph Isomorphism Problem}
+	
+	% \textbf{Intuition}: Two graphs are called isomorphic whenever they are equal up to renaming of vertices.
+	An \textbf{isomorphism} between undirected graphs \( G_0 = (V_0, E_0) \) and \( G_1 = (V_1, E_1) \) is a bijection $ \sigma : V_0 \to V_1 $ such that \[
+	\{u,v\} \in E_0 \iff \{\sigma(u), \sigma(v)\} \in E_1
+	\]\vspace{-15pt}\begin{itemize}
+		\item Let $ \Iso(G_0, G_1) $ denote the set of all isomorphisms between $ G_0 $ and $ G_1 $
+		\item $ G_0 $ and $ G_1 $ are \textbf{isomorphic} (notation: $ G_0 \cong G_1 $) if $ \Iso(G_0, G_1) \neq \varnothing $
+	\end{itemize}
+	
+	\textbf{Example}: \begin{center}
 		\renewcommand{\arraystretch}{1.5} % row height
 		\begin{tabular}{c c c c c}
 			\graphA & $\cong$ & \graphB & $\not\cong$ & \graphC
 		\end{tabular}
 	\end{center}
-\end{example}
 
-\begin{definition}[Graph Isomorphism Problem ($ \GI $)]
-	\textbf{Given}: Undirected graphs $ G_0 = (V_0, E_0) $, $ G_1 = (V_1, E_1) $
-	
-	\textbf{Decide}: Is $ G_0 \cong G_1 $?
-\end{definition}
+	\begin{definition}[Graph Isomorphism Problem ($ \GI $)]
+		\textbf{Given}: Undirected graphs $ G_0 = (V_0, E_0) $, $ G_1 = (V_1, E_1) $
+		
+		\textbf{Decide}: Is $ G_0 \cong G_1 $?
+	\end{definition}
 \end{frame}
 
 \begin{frame}{$ \GI $ has a very special complexity status (for all we know)}
@@ -130,7 +128,7 @@
 	
 	\begin{itemize}
 		\item Unlike with $ \NP $-complete problems, the space of solutions to $ \GI $ has a lot of structure!
-		\item To see this, consider first the isomorphisms between a graph and itself (a.k.a. automorphisms)
+		\item To see this, consider first $ \Aut(G) := \Iso(G, G) $ for a fixed graph $ G $
 	\end{itemize}
 	\textbf{Example}: The automorphism group of
 	\begin{center}
@@ -162,7 +160,6 @@
 \if\fullversion1
 
 \input{figures/four_vertex_graph_iso_classes}
-
 \begin{frame}{Automorphism groups as stabilizers}
 	\textbf{Observation}: $ \Aut(G) $ is the stabilizer of $ G $ in the vertex renaming action of $ \Sym(V(G)) $ on the set of all graphs with vertices $ V(G) $.
 	
@@ -194,7 +191,7 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}{In one sense, solutions to $ \GI $ are sets of cosets}
+\begin{frame}{Set of isomorphic graphs is a set of cosets}
 	\begin{itemize}
 		\item Let $ \cdot $ denote the vertex renaming action of $ S_n $ on the set of all graphs with vertices $ \{1, \dots, n\} $
 		\item Fix one of the input graphs $ G_0 $
@@ -207,13 +204,15 @@
 		\end{align*} is a bijection, we get \[
 			\{G_1 \mid G_1 \cong G_0\} \overset{1:1}{\longleftrightarrow} S_n/\Aut(G_0)
 		\]
-		\item $ \rightsquigarrow $ Solutions to $ \GI $ are sets of cosets!
+		\item $ \rightsquigarrow $ In this sense, solutions to $ \GI $ are sets of cosets!
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{In a different sense, solutions to $ \GI $ are cosets}
+\fi
+
+\begin{frame}{Set of graph isomorphisms is a coset}
 	\begin{itemize}
-		\item Fix graphs $ G_0 $ and $ G_1 $ and let $ \sigma : V(G_0) \rightarrow V(G_1) $ be an isomorphism
+		\item Fix graphs $ G_0 $ and $ G_1 $ and let $ \sigma \in \Iso(G_0, G_1) $
 		\item $ \rightsquigarrow $ For any $ \tau \in \Aut(G_0) $, $ \sigma\tau $ is also an isomorphism:\begin{center}
 			\begin{tikzpicture}[thick]
 				\node (g0) {$ G_0 $};
@@ -223,7 +222,7 @@
 				\draw[->, LightBlueZB] (g0) to[out=120,in=60,looseness=8] node[midway, above] {$ \Aut(G_0) $} (g0);
 			\end{tikzpicture}
 		\end{center}
-		\item There are no further solutions because for any isomorphisms $ \sigma_1, \sigma_2 $\begin{center}
+		\item There are no further solutions because for any $ \sigma_1, \sigma_2 \in \Iso(G_0, G_1) $\begin{center}
 			\begin{tikzpicture}[thick]
 				\node (g0) {$ G_0 $};
 				\node[right=4 of g0] (g1) {$ G_1 $};
@@ -233,10 +232,9 @@
 				\draw[->, LightBlueZB] (g0) to[out=120,in=60,looseness=8] node[midway, above] {$ \Aut(G_0) $} (g0);
 			\end{tikzpicture}
 		\end{center} we have $ \sigma_2^{-1} \sigma_1 \in \Aut(G_0) $ which holds iff $ \sigma_1 \Aut(G_0) = \sigma_2 \Aut(G_0) $
-		\item $ \rightsquigarrow $ In this sense, solutions to $ \GI $ are cosets of the form $ \sigma \Aut(G_0) $
+		\item $ \rightsquigarrow \Iso(G_0, G_1) $ is a coset of the form $ \sigma \Aut(G_0) $
 	\end{itemize}
 \end{frame}
-\fi
 
 \begin{frame}{High-level overview}
 	We will show how to solve (a fragment of) $ \GI $ via an intermediate problem:
@@ -251,10 +249,10 @@
 			
 			% reductions
 			\draw[->, LightBlueZB] (gi) --node[midway, right]{reduce} (si);
-			\draw[->, LightBlueZB] (si) --node[midway, right]{solve} (algo);
+			\draw[->, OliveGreenZB] (si) --node[midway, right]{solve} (algo);
 			
-			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (gi.north west) -- (si.south west) node[pos=0.5,left=10pt,black]{\blocktext{Encode graphs into strings, introduce group}};
-			\draw [decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (si.north east) -- (algo.south east) node[pos=0.5,right=10pt,black]{\blocktext{Use group-theoretic machinery}};
+			\draw [LightBlueZB, decorate, decoration = {brace, raise=5pt, amplitude=5pt, mirror}] (gi.north west) -- (si.south west) node[pos=0.5,left=10pt,black]{\blocktext{Encode graphs into strings, introduce group}};
+			\draw [OliveGreenZB, decorate, decoration = {brace, raise=5pt, amplitude=5pt}] (si.north east) -- (algo.south east) node[pos=0.5,right=10pt,black]{\blocktext{Use group-theoretic machinery}};
 		\end{tikzpicture}
 	\end{center}
 \end{frame}
@@ -482,10 +480,8 @@
 		\{\id\} \trianglelefteq \Gamma_1 \trianglelefteq \Gamma_2 \trianglelefteq \dots \trianglelefteq \Gamma_k = \Gamma
 		\] where $ \Gamma_1, \dots, \Gamma_k $ are groups. A subnormal series is a \textit{composition series} of $ \Gamma $ if it is strictly increasing and every $ \Gamma_i/\Gamma_{i-1} $ is simple (factor groups $ \Gamma_i/\Gamma_{i-1} $ are called \textit{composition factors}).
 	\end{definition}
-	\vspace{-5pt}\begin{theorem}[Jordan, Jordan-H{\"o}lder]
-		Every group has a composition series. Moreover, the composition factors of any two composition series are equal up to isomorphism and ordering.
-		
-		% Every finite group can be decomposed uniquely into its composition factors.
+	\vspace{-5pt}\begin{theorem}[Jordan-H{\"o}lder]
+		Every finite group has a composition series. Moreover, the composition factors are unique up to isomorphism and ordering.
 	\end{theorem}
 	\vspace{-5pt}\begin{example}
 		The composition series of $ S_n $ is $ \{\id\} \trianglelefteq A_n \trianglelefteq S_n $. It corresponds to the decomposition $ S_n \cong \Z_2 \rtimes A_n $.
@@ -497,7 +493,7 @@
 		A finite group $ \Gamma $ is a $ \GammaD $-group (notation: $ \Gamma \in \GammaD $) if every composition factor of $ \Gamma $ is isomorphic to some subgroup of $ S_d $.
 	\end{definition}
 
-	The class $ \GammaD $ has a lot of nice properties, for example:
+	The class $ \GammaD $ has a lot of nice properties, in particular:
 	
 	\begin{lemma}[$ \GammaD $ closed under subgroups]
 		Let $ H $ be a finite $ \GammaD $-group and let $ H' \le H $. Then $ H' \in \GammaD $.
@@ -1021,7 +1017,9 @@
 \else
 \begin{frame}{Analysis of case when $ \Gamma $ acts transitively on $ \Omega $}
 	\begin{theorem}[Babai, Cameron, P\'{a}lfy]
-		For every $ d \ge 1 $ there exists $ c $ such that for every $ \Gamma \in \GammaD $ and action $ \cdot $ of $ \Gamma $ on $ \Omega $ having minimal block $ \Delta $ it holds that $ \abs{\Gamma/\KernelOf(\psi_\Delta)} \le n^c $, where $ n := \abs{\{\gamma \cdot \Delta \mid \gamma \in \Gamma\}} $ is the number of blocks.
+		For every $ d \ge 1 $ there exists $ c $ such that for every set $ \Omega $, group $ \Gamma \in \GammaD $ and action $ \cdot $ of $ \Gamma $ on $ \Omega $ having minimal block $ \Delta $ it holds that \[
+			\abs{\Gamma/\KernelOf(\psi_\Delta)} \le n^c
+		\] where $ n := \abs{\{\gamma \cdot \Delta \mid \gamma \in \Gamma\}} $ is the number of blocks.
 	\end{theorem}
 	\begin{itemize}
 		\item $ \rightsquigarrow $ The transversal size is bounded by \[
